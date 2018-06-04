@@ -15,8 +15,6 @@ import java.util.ArrayList;
 public class CalendarListAdapter extends ArrayAdapter<Todo> {
     ArrayList<Todo> todoList;
     Context context;
-    View calRowDot;
-    int todoType, todoColor;
 
     public CalendarListAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<Todo> objects) {
         super(context, resource, objects);
@@ -35,21 +33,8 @@ public class CalendarListAdapter extends ArrayAdapter<Todo> {
         Todo todo = todoList.get(position);
 
         if (todo != null) {
-            calRowDot = (View) v.findViewById(R.id.calRowColor);
-            todoType = todo.getType();
+            View calRowDot = (View) v.findViewById(R.id.calRowColor);
 
-            if (calRowDot != null) {
-                switch (todoType) {
-                    case 0:
-                        todoColor = R.color.bluegreen;
-                        break;
-                    case 1:
-                        todoColor = R.color.orange;
-                        break;
-                }
-
-                calRowDot.setBackgroundResource(todoColor);
-            }
         }
 
         return v;

@@ -79,15 +79,6 @@ public class CalenderFragment extends Fragment {
 
         setCalendarDate(calendar.get(Calendar.MONTH) + 1);
 
-//        for (int i=0; i<7; i++) {
-//            View v = getLayoutInflater().inflate(R.layout.calendar_day, null);
-//            TextView calDayTitle = (TextView) v.findViewById(R.id.calDayTitle);
-//            calDayTitle.setText(day[i]);
-//            calendarGridView.addView(v);
-//        }
-
-//
-
         calendarGridAdapter = new CalendarGridAdapter(context, dayList);
         calendarGridView.setAdapter(calendarGridAdapter);
     }
@@ -96,7 +87,7 @@ public class CalenderFragment extends Fragment {
         calendar.set(Calendar.MONTH, month - 1);
 
         for (int i = 0; i < calendar.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-            dayList.add("" + (i + 1));
+            dayList.add((i + 1) + "");
         }
     }
 }
