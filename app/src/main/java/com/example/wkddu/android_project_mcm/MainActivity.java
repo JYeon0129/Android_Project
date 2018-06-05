@@ -37,6 +37,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menu_3.setOnClickListener(this);
         menu_4.setOnClickListener(this);
 
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        CalenderFragment calendarFragment = (CalenderFragment) new CalenderFragment();
+        transaction.replace(R.id.mainFragmantContainer, calendarFragment);
+        transaction.commit();
+
         menu_1.setSelected(true);
         currentFragment = CALENDAR_FRAGMENT;
     }
@@ -71,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void callFragment(int fragmentNumber) {
         if (fragmentNumber != currentFragment) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
             switch (fragmentNumber) {
                 case CALENDAR_FRAGMENT:
@@ -79,22 +86,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     transaction.commit();
                     break;
                 case GROUP_FRAGMENT:
-                    BlankFragment blankFragment = (BlankFragment) new BlankFragment();
-                    transaction.replace(R.id.mainFragmantContainer, blankFragment);
+                    GroupFragment groupFragment = (GroupFragment) new GroupFragment();
+                    transaction.replace(R.id.mainFragmantContainer, groupFragment);
                     transaction.commit();
                     break;
 
-//            case BILL_FRAGMENT:
-//                BlankFragment blankFragment = (BlankFragment) new BlankFragment();
-//                transaction.replace(R.id.mainFragmantContainer, blankFragment);
-//                transaction.commit();
-//                break;
-//
-//            case SETTINGS_FRAGMENT:
-//                BlankFragment blankFragment = (BlankFragment) new BlankFragment();
-//                transaction.replace(R.id.mainFragmantContainer, blankFragment);
-//                transaction.commit();
-//                break;
+                case BILL_FRAGMENT:
+                    BillFragment billFragment = (BillFragment) new BillFragment();
+                    transaction.replace(R.id.mainFragmantContainer, billFragment);
+                    transaction.commit();
+                    break;
+
+                case SETTINGS_FRAGMENT:
+                    SettingsFragment settingsFragment = (SettingsFragment) new SettingsFragment();
+                    transaction.replace(R.id.mainFragmantContainer, settingsFragment);
+                    transaction.commit();
+                    break;
             }
 
             currentFragment = fragmentNumber;

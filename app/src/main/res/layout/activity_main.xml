@@ -7,9 +7,8 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/mainFragmantContainer"
-        android:name="com.example.wkddu.android_project_mcm.CalenderFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
