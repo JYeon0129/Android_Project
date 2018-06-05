@@ -6,13 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AnimationUtils;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,15 +33,20 @@ public class CalenderFragment extends Fragment {
     Context context;
     GridView calendarGridView;
     CalendarGridAdapter calendarGridAdapter;
-    TextView calendarTopText;
+    TextView calendarMonthText;
+    TextView calendarYearText;
 
-    Calendar calendar;
-    String[] day = {"월", "화", "수", "목", "금", "토", "일"};
+    Calendar calendar, beforeCalendar;
+    String[] dayTitle = {"월", "화", "수", "목", "금", "토", "일"};
+    SimpleDateFormat curYearFormat;
+    SimpleDateFormat curMonthFormat;
+    SimpleDateFormat curDayFormat;
+    Date date;
+    int year, month, day, beforeLastDay;
+
     ArrayList<String> dayList;
 
-    public CalenderFragment() {
-        // Required empty public constructor
-    }
+    public CalenderFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,39 +65,163 @@ public class CalenderFragment extends Fragment {
 
     public void init() {
         calendarGridView = (GridView) getActivity().findViewById(R.id.calendarGridView);
-        calendarTopText = (TextView) getActivity().findViewById(R.id.calendarTopText);
+        calendarMonthText = (TextView) getActivity().findViewById(R.id.calendarMonthText);
+        calendarYearText = (TextView) getActivity().findViewById(R.id.calendarYearText);
+
         context = getActivity().getApplicationContext();
         calendar = Calendar.getInstance();
+        beforeCalendar = Calendar.getInstance();
         dayList = new ArrayList<>();
 
         /* 오늘의 날짜 설정, 연/월/일로 따로 저장 */
-        final Date current = new Date(System.currentTimeMillis());
-        final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
-        final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
-        final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
-        calendarTopText.setText(curYearFormat.format(current) + "/" + curMonthFormat.format(current));
+        date = new Date(System.currentTimeMillis());
+        curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
+        curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
+        curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
+        year = Integer.parseInt(curYearFormat.format(date));
+        month = Integer.parseInt(curMonthFormat.format(date));
+        day = Integer.parseInt(curDayFormat.format(date));
 
-        /* 이번달 1일 무슨요일인지 판단 mCal.set(Year,Month,Day) */
-        calendar.set(Integer.parseInt(curYearFormat.format(current)),
-            Integer.parseInt(curMonthFormat.format(current)) - 1, 1);
+        setCalendarGridView();
+    }
+
+    private void setCalendarGridView() {
+        /* 먼저 달력 내부를 초기화해줍니다. */
+        dayList = new ArrayList<>();
+        calendarGridView.setAdapter(null);
+
+        /* 상단 월/일 부분을 세팅해줍니다.*/
+        calendarMonthText.setText(month + "월");
+        calendarYearText.setText(year + "년");
+
+        /* 이번달 1일이 무슨요일인지... set(Year,Month,Day) */
+        calendar.set(year, month - 1, 1);
+        beforeCalendar.set(year, month - 2, 1);
+        beforeLastDay = calendar.getActualMaximum(beforeCalendar.DAY_OF_MONTH);
 
         int dayNum = calendar.get(Calendar.DAY_OF_WEEK);
 
-        for (int i = 1; i < dayNum; i++) {
-            dayList.add("");
+        for (int i = dayNum - 2, j = beforeLastDay; i >= 0; i--) {
+            dayList.add("b" + (beforeLastDay - i));
         }
 
-        setCalendarDate(calendar.get(Calendar.MONTH) + 1);
-
-        calendarGridAdapter = new CalendarGridAdapter(context, dayList);
-        calendarGridView.setAdapter(calendarGridAdapter);
-    }
-
-    private void setCalendarDate(int month) {
         calendar.set(Calendar.MONTH, month - 1);
 
-        for (int i = 0; i < calendar.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-            dayList.add((i + 1) + "");
+        for (int i = 1; i <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
+            dayList.add("c" + i);
         }
+
+        int size = dayList.size();
+        for (int i = 1; i <= 42 - size; i++) {
+            dayList.add("a" + i);
+        }
+
+        calendarGridAdapter = new CalendarGridAdapter(context, dayList);
+        calendarGridView.setVerticalScrollBarEnabled(false);
+
+        calendarGridView.setOnTouchListener(new OnSwipeTouchListener(context) {
+            public void onSwipeRight() {
+                if (month == 1) {
+                    year --;
+                    month = 12;
+                } else {
+                    month --;
+                }
+
+                setCalendarGridView();
+                SlideAnimationUtil.slideInFromLeft(context, calendarGridView);
+//                SlideAnimationUtil.slideOutToRight(context, );
+                Toast.makeText(context, year + "년" + month + "월", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onSwipeLeft() {
+                if (month == 12) {
+                    year ++;
+                    month = 1;
+                } else {
+                    month ++;
+                }
+
+                setCalendarGridView();
+                SlideAnimationUtil.slideInFromRight(context, calendarGridView);
+                Toast.makeText(context, year + "년" + month + "월", Toast.LENGTH_SHORT).show();
+            }
+
+            public boolean onTouch(View v, MotionEvent event) {
+                return this.gestureDetector.onTouchEvent(event);
+            }
+        });
+
+        calendarGridView.setAdapter(calendarGridAdapter);
+    }
+}
+
+class OnSwipeTouchListener implements View.OnTouchListener {
+    final GestureDetector gestureDetector;
+    public OnSwipeTouchListener (Context ctx){
+        gestureDetector = new GestureDetector(ctx, new GestureListener());
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
+    }
+
+    private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            onSwipeRight();
+                        } else {
+                            onSwipeLeft();
+                        }
+                    }
+                    result = true;
+                }
+
+                else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    result = false;
+                }
+
+                result = true;
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return result;
+        }
+    }
+
+    public void onSwipeRight() {}
+    public void onSwipeLeft() {}
+}
+
+class SlideAnimationUtil {
+    public static void slideInFromLeft(Context context, View view) {
+        runSimpleAnimation(context, view, R.anim.slide_from_left);
+    }
+
+    public static void slideInFromRight(Context context, View view) {
+        runSimpleAnimation(context, view, R.anim.slide_from_right);
+    }
+
+    private static void runSimpleAnimation(Context context, View view, int animationId) {
+        view.startAnimation(AnimationUtils.loadAnimation(
+                context, animationId
+        ));
     }
 }

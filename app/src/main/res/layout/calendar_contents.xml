@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="1dp">
 
     <TextView
         android:id="@+id/calDayText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="13sp"
         android:gravity="center"
         android:textColor="@color/darkgray"
-        android:textSize="13sp" />
+        android:textSize="11sp" />
 
     <LinearLayout
         android:id="@+id/calBalanceBg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="18sp"
         android:gravity="right">
 
         <TextView
@@ -40,7 +40,14 @@
         android:id="@+id/calRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="33sp"
         android:padding="2dp" />
 
-</LinearLayout>
+    <View
+        android:id="@+id/calAlphaView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:alpha="0.0" />
+
+</RelativeLayout>

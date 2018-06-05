@@ -59,11 +59,12 @@ public class CalendarGridAdapter extends BaseAdapter {
             holder.calBalanceText = v.findViewById(R.id.calBalanceText);
             holder.calBalancePlusMinus = v.findViewById(R.id.calBalancePlusMinus);
             holder.calRecyclerView = v.findViewById(R.id.calRecyclerView);
+            holder.calAlphaView = v.findViewById(R.id.calAlphaView);
 
             GridView layout = parent.findViewById(R.id.calendarGridView);
             gridViewHeight = layout.getHeight();
 
-            v.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, gridViewHeight / (dayList.size() / 7) + 1));
+            v.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, (gridViewHeight - 10) / 6));
             v.setTag(holder);
 
         } else {
@@ -82,10 +83,6 @@ public class CalendarGridAdapter extends BaseAdapter {
                 holder.calDayText.setTypeface(null, BOLD);
             }
 
-            /* 쓸 수 있는 금액 or 사용한 금액 표기하기 */
-            holder.calDayText.setText("" + getItem(position));
-            holder.calBalanceText.setText((10000 + position * 100) + "");
-
             /*
             배경색 설정하기
             * 1. 회색 (lightgray) : 예산일 경우 (아직 날짜가 지나지 않음)
@@ -95,8 +92,8 @@ public class CalendarGridAdapter extends BaseAdapter {
 
             // 미리보기로 대충 설정해뒀습니다!
 
-            if (Integer.parseInt(getItem(position)) > today) { // 1
-                holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.lightgray));
+            if (Integer.parseInt(getItem(position).substring(1)) > today) { // 1
+                holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.morelightgray));
                 holder.calBalanceText.setTextColor(context.getResources().getColor(R.color.darkgray));
             } else {
                 if (position % 3 == 0) { // 2
@@ -117,6 +114,15 @@ public class CalendarGridAdapter extends BaseAdapter {
             if (position % 3 == 0) {
                 todo.add(new Todo("밥약속", 5000, 1));
             }
+
+            /* 쓸 수 있는 금액 or 사용한 금액 표기하기 */
+            holder.calDayText.setText(getItem(position).substring(1));
+            holder.calBalanceText.setText((10000 + position * 100) + "");
+
+            if (getItem(position).charAt(0) == 'a' || getItem(position).charAt(0) == 'b') {
+                holder.calAlphaView.setAlpha(0.6f);
+            }
+
             RecyclerView.LayoutManager layoutManager;
             layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
             holder.calRecyclerView.setLayoutManager(layoutManager);
@@ -139,4 +145,5 @@ class ViewHolder {
     TextView calBalancePlusMinus;
     LinearLayout calBalanceBg;
     RecyclerView calRecyclerView;
+    View calAlphaView;
 }
