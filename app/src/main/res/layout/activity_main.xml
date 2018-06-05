@@ -7,31 +7,123 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/mainFragmantContainer"
-        android:name="com.example.wkddu.android_project_mcm.CalenderFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:id="@+id/linearLayout">
+        android:background="@drawable/border_top">
 
-        <Button
-            android:layout_weight="1"
+        <LinearLayout
             android:id="@+id/menu_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tab 1"/>
-
-        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/selector_button_1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11.5sp"
+                android:textColor="@color/button_click_text_color"
+                android:text="잔고관리" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/menu_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tab 2"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/selector_button_2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11.5sp"
+                android:textColor="@color/button_click_text_color"
+                android:text="그룹 관리" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:clickable="true">
+
+            <LinearLayout
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="1dp"
+                    android:src="@drawable/selector_button_3"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11.5sp"
+                android:textColor="@color/button_click_text_color"
+                android:text="영수증 등록" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/selector_button_4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11.5sp"
+                android:textColor="@color/button_click_text_color"
+                android:text="설정" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
