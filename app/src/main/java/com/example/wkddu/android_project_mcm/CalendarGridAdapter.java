@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static android.graphics.Typeface.BOLD;
@@ -24,11 +25,13 @@ public class CalendarGridAdapter extends BaseAdapter {
     LayoutInflater inflater;
     Context context;
     Calendar calendar;
-    int gridViewHeight;
+    int gridViewHeight, year, month;
 
-    public CalendarGridAdapter(Context context, List<String> list) {
+    public CalendarGridAdapter(Context context, List<String> list, int year, int month) {
         this.context = context;
         this.dayList = list;
+        this.year = year;
+        this.month = month;
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -68,77 +71,82 @@ public class CalendarGridAdapter extends BaseAdapter {
             v.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, (gridViewHeight - 10) / 6));
             v.setTag(holder);
 
+            try {
+                /* 캘린더 내용 채우기 */
+                if (getItem(position) != "") {
+                    /* 주말은 빨간색으로 바꿔줍니다 */
+                    if (position % 7 == 5 || position % 7 == 6) {
+                        holder.calDayText.setTextColor(context.getResources().getColor(R.color.red));
+                    }
+
+                    /* 오늘의 날짜는 폰트 색깔을 바꿔줍니다 */
+                    calendar = Calendar.getInstance();
+                    Integer today = calendar.get(Calendar.DAY_OF_MONTH);
+                    String sToday = String.valueOf(today);
+
+                    if (sToday.equals(getItem(position))) {
+                        holder.calDayText.setTextColor(context.getResources().getColor(R.color.bluegreen));
+                        holder.calDayText.setTypeface(null, BOLD);
+                    }
+
+                    /*
+                    배경색 설정하기
+                    * 1. 회색 (lightgray) : 예산일 경우 (아직 날짜가 지나지 않음)
+                    * 2. 빨간색 (danger) : 사용 가능 금액을 넘었을 경우
+                    * 3. 파란색 (save) : 사용 가능 금액을 넘지 않았을 경우
+                    */
+
+                    // 미리보기로 대충 설정해뒀습니다!
+
+                    if (Integer.parseInt(getItem(position).substring(1)) > today) { // 1
+                        holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.morelightgray));
+                        holder.calBalanceText.setTextColor(context.getResources().getColor(R.color.darkgray));
+                    } else {
+                        if (position % 3 == 0) { // 2
+                            holder.calBalancePlusMinus.setText("-");
+                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
+                        } else { // 3
+                            holder.calBalancePlusMinus.setText("+");
+                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
+                        }
+                    }
+
+                    /* 어댑터로 할 일 리스트 세팅하기 */
+                    // arrayList로 한건 미리보기용입니다.
+                    ArrayList<Todo> todo = new ArrayList<>();
+                    if (position % 2 == 0) {
+                        todo.add(new Todo("술약속", 10000, 0,
+                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
+                    }
+                    if (position % 3 == 0) {
+                        todo.add(new Todo("밥약속", 5000, 1,
+                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
+                    }
+
+                    /* 쓸 수 있는 금액 or 사용한 금액 표기하기 */
+                    holder.calDayText.setText(getItem(position).substring(1));
+                    holder.calBalanceText.setText((10000 + position * 100) + "");
+
+                    if (getItem(position).charAt(0) == 'a' || getItem(position).charAt(0) == 'b') {
+                        holder.calAlphaView.setAlpha(0.6f);
+                    }
+
+                    RecyclerView.LayoutManager layoutManager;
+                    layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                    holder.calRecyclerView.setLayoutManager(layoutManager);
+
+                    CalendarDotAdapter calendarDotAdapter = new CalendarDotAdapter(context, todo);
+
+                    if (holder.calRecyclerView != null) {
+                        holder.calRecyclerView.setAdapter(calendarDotAdapter);
+                    }
+                }
+            } catch (Exception e) {
+
+            }
+
         } else {
             holder = (GridViewHolder) v.getTag();
-        }
-
-        /* 캘린더 내용 채우기 */
-        if (getItem(position) != "") {
-            /* 주말은 빨간색으로 바꿔줍니다 */
-            if (position % 7 == 5 || position % 7 == 6) {
-                holder.calDayText.setTextColor(context.getResources().getColor(R.color.red));
-            }
-
-            /* 오늘의 날짜는 폰트 색깔을 바꿔줍니다 */
-            calendar = Calendar.getInstance();
-            Integer today = calendar.get(Calendar.DAY_OF_MONTH);
-            String sToday = String.valueOf(today);
-
-            if (sToday.equals(getItem(position))) {
-                holder.calDayText.setTextColor(context.getResources().getColor(R.color.bluegreen));
-                holder.calDayText.setTypeface(null, BOLD);
-            }
-
-            /*
-            배경색 설정하기
-            * 1. 회색 (lightgray) : 예산일 경우 (아직 날짜가 지나지 않음)
-            * 2. 빨간색 (danger) : 사용 가능 금액을 넘었을 경우
-            * 3. 파란색 (save) : 사용 가능 금액을 넘지 않았을 경우
-            */
-
-            // 미리보기로 대충 설정해뒀습니다!
-
-            if (Integer.parseInt(getItem(position).substring(1)) > today) { // 1
-                holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.morelightgray));
-                holder.calBalanceText.setTextColor(context.getResources().getColor(R.color.darkgray));
-            } else {
-                if (position % 3 == 0) { // 2
-                    holder.calBalancePlusMinus.setText("-");
-                    holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
-                } else { // 3
-                    holder.calBalancePlusMinus.setText("+");
-                    holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
-                }
-            }
-
-            /* 어댑터로 할 일 리스트 세팅하기 */
-            // arrayList로 한건 미리보기용입니다.
-            ArrayList<Todo> todo = new ArrayList<>();
-            if (position % 2 == 0) {
-                todo.add(new Todo("술약속", 10000, 0));
-            }
-            if (position % 3 == 0) {
-                todo.add(new Todo("밥약속", 5000, 1));
-            }
-
-            /* 쓸 수 있는 금액 or 사용한 금액 표기하기 */
-            holder.calDayText.setText(getItem(position).substring(1));
-            holder.calBalanceText.setText((10000 + position * 100) + "");
-
-            if (getItem(position).charAt(0) == 'a' || getItem(position).charAt(0) == 'b') {
-                holder.calAlphaView.setAlpha(0.6f);
-            }
-
-            RecyclerView.LayoutManager layoutManager;
-            layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-            holder.calRecyclerView.setLayoutManager(layoutManager);
-
-            CalendarDotAdapter calendarDotAdapter = new CalendarDotAdapter(context, todo);
-
-            if (holder.calRecyclerView != null) {
-                holder.calRecyclerView.setAdapter(calendarDotAdapter);
-            }
-
         }
 
         return v;

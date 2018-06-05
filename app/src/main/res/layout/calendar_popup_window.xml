@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp" >
+
+    <TextView
+        android:id="@+id/calPopupDayText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="27sp"
+        android:textColor="@color/darkgray"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="43dp"
+        android:layout_height="2dp"
+        android:background="@color/lightgray" />
+
+    <ListView
+        android:id="@+id/calPopupListView"
+        android:layout_marginTop="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5dp" />
+
+    <ImageButton
+        android:id="@+id/calPopupButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/img_plus"
+        android:layout_gravity="right|bottom"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent" />
+
+</FrameLayout>

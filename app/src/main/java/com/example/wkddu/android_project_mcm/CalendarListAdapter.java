@@ -1,9 +1,11 @@
 package com.example.wkddu.android_project_mcm;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +30,33 @@ public class CalendarListAdapter extends ArrayAdapter<Todo> {
         View v = view;
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.calendar_todo_dot, null);
+            v = vi.inflate(R.layout.calendar_todo_row, null);
         }
+
         Todo todo = todoList.get(position);
 
         if (todo != null) {
-            View calRowDot = (View) v.findViewById(R.id.calRowColor);
+            View calRowColor = (View) v.findViewById(R.id.calRowColor);
+            TextView calRowTitleText = (TextView) v.findViewById(R.id.calRowTitleText);
+            TextView calRowCostText = (TextView) v.findViewById(R.id.calRowCostText);
 
+            int todoType = todo.getType();
+            int todoColor = 0;
+
+            if (calRowColor != null) {
+                Helpers helpers = new Helpers();
+                todoColor = helpers.setTypeColor(todoType);
+
+                calRowColor.setBackgroundColor(context.getResources().getColor(todoColor));
+            }
+
+            if (calRowTitleText != null) {
+                calRowTitleText.setText(todo.getTodoName());
+            }
+
+            if (calRowCostText != null) {
+                calRowCostText.setText(todo.getCost()+"원");
+            }
         }
 
         return v;

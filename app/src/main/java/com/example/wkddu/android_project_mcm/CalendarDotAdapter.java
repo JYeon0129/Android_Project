@@ -3,6 +3,7 @@ package com.example.wkddu.android_project_mcm;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,14 +35,8 @@ public class CalendarDotAdapter extends RecyclerView.Adapter<MyViewHolder> {
         int todoColor = 0;
 
         if (holder.dot != null) {
-            switch (todoType) {
-                case 0:
-                    todoColor = R.color.bluegreen;
-                    break;
-                case 1:
-                    todoColor = R.color.orange;
-                    break;
-            }
+            Helpers helpers = new Helpers();
+            todoColor = helpers.setTypeColor(todoType);
 
             GradientDrawable drawable = (GradientDrawable) holder.dot.getBackground();
             drawable.setColor(context.getResources().getColor(todoColor));
@@ -60,6 +55,5 @@ class MyViewHolder extends RecyclerView.ViewHolder {
     public MyViewHolder(View v) {
         super(v);
         dot = (View) v.findViewById(R.id.calRowDot);
-
     }
 }

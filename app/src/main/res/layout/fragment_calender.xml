@@ -104,6 +104,7 @@
             android:scrollbars="none" />
 
         <ImageButton
+            android:id="@+id/calendarButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
@@ -112,7 +113,7 @@
             android:layout_marginBottom="5dp"
             android:src="@drawable/img_plus"
             android:scaleType="fitXY"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent" />
 
     </RelativeLayout>
 </LinearLayout>

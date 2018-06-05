@@ -1,22 +1,21 @@
 package com.example.wkddu.android_project_mcm;
 
 
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,14 +34,14 @@ public class CalenderFragment extends Fragment {
     CalendarDayAdapter calendarDayAdapter;
     TextView calendarMonthText;
     TextView calendarYearText;
+    ImageButton calendarButton;
 
     Calendar calendar, beforeCalendar;
     String[] dayTitle = {"월", "화", "수", "목", "금", "토", "일"};
     SimpleDateFormat curYearFormat;
     SimpleDateFormat curMonthFormat;
-    SimpleDateFormat curDayFormat;
     Date date;
-    int year, month, day, beforeLastDay;
+    int year, month, beforeLastDay;
 
     ArrayList<String> dayList;
 
@@ -68,20 +67,33 @@ public class CalenderFragment extends Fragment {
         calendarDayTitle = (GridView) getActivity().findViewById(R.id.calendarDayTitle);
         calendarMonthText = (TextView) getActivity().findViewById(R.id.calendarMonthText);
         calendarYearText = (TextView) getActivity().findViewById(R.id.calendarYearText);
+        calendarButton = (ImageButton) getActivity().findViewById(R.id.calendarButton);
 
         context = getActivity().getApplicationContext();
         calendar = Calendar.getInstance();
         beforeCalendar = Calendar.getInstance();
         dayList = new ArrayList<>();
 
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+
+                TodoFormFragment todoCreateFragment = (TodoFormFragment) new TodoFormFragment();
+                transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
+                transaction.commit();
+
+                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
+            }
+        });
+
         /* 오늘의 날짜 설정, 연/월/일로 따로 저장 */
         date = new Date(System.currentTimeMillis());
         curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
         curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
-        curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
         year = Integer.parseInt(curYearFormat.format(date));
         month = Integer.parseInt(curMonthFormat.format(date));
-        day = Integer.parseInt(curDayFormat.format(date));
 
         setCalendarGridView();
     }
@@ -121,10 +133,16 @@ public class CalenderFragment extends Fragment {
         calendarDayAdapter = new CalendarDayAdapter(context, dayTitle);
         calendarDayTitle.setAdapter(calendarDayAdapter);
 
-        calendarGridAdapter = new CalendarGridAdapter(context, dayList);
+        /* 캘린더 내부에 날짜와 할 일 채우기 */
+        calendarGridAdapter = new CalendarGridAdapter(context, dayList, year, month);
         calendarGridView.setVerticalScrollBarEnabled(false);
 
+        /* 캘린더 내부에 좌측, 우측 밀기 이벤트 적용 */
         calendarGridView.setOnTouchListener(new OnSwipeTouchListener(context) {
+            private int CLICK_ACTION_THRESHOLD = 200;
+            private float startX;
+            private float startY;
+
             public void onSwipeRight() {
                 if (month == 1) {
                     year --;
@@ -150,11 +168,56 @@ public class CalenderFragment extends Fragment {
             }
 
             public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = event.getX();
+                        startY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        float endX = event.getX();
+                        float endY = event.getY();
+
+                        if (isAClick(startX, endX, startY, endY)) {
+                            int p = ((GridView)v).pointToPosition((int)event.getX(), (int)event.getY());
+                            long id = ((GridView)v).pointToRowId((int)event.getX(), (int)event.getY());
+
+                            gridViewItemClick(((GridView)v), p, id);
+
+                            return false;
+                        }
+                        break;
+                }
+
                 return this.gestureDetector.onTouchEvent(event);
+            }
+
+            private boolean isAClick(float startX, float endX, float startY, float endY) {
+                float differenceX = Math.abs(startX - endX);
+                float differenceY = Math.abs(startY - endY);
+                return !(differenceX > CLICK_ACTION_THRESHOLD/* =5 */ || differenceY > CLICK_ACTION_THRESHOLD);
             }
         });
 
         calendarGridView.setAdapter(calendarGridAdapter);
+    }
+
+    /* 캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기 */
+    public void gridViewItemClick(View v, int position, long id) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        CalendarPopupFragment calendarPopupFragment = new CalendarPopupFragment();
+
+        ArrayList<Todo> todo = new ArrayList<>();
+        if (position % 2 == 0) {
+            todo.add(new Todo("술약속", 10000, 0,
+                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
+        }
+        if (position % 3 == 0) {
+            todo.add(new Todo("밥약속", 5000, 1,
+                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
+        }
+
+        calendarPopupFragment.setData(dayList.get(position), todo);
+        calendarPopupFragment.show(fragmentManager, "calendarPopupWindow");
     }
 }
 
