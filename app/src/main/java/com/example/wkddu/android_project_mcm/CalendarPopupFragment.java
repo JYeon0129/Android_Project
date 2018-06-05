@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -70,7 +69,7 @@ public class CalendarPopupFragment extends DialogFragment {
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
-                    TodoCreateFragment todoCreateFragment = (TodoCreateFragment) new TodoCreateFragment();
+                    TodoFormFragment todoCreateFragment = (TodoFormFragment) new TodoFormFragment();
                     transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
                     transaction.commit();
 

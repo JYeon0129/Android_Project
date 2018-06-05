@@ -1,14 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TodoCreateFragment">
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".TodoFormFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="create todo" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</FrameLayout>
+        <Button
+            android:id="@+id/todoFormCancle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/darkyellow"
+            android:textSize="14sp"
+            android:text="취소" />
+
+        <Button
+            android:id="@+id/todoFormSave"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/darkyellow"
+            android:textSize="14sp"
+            android:text="저장" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_text"/>
+
+        <EditText
+            android:id="@+id/todoFormTitleEdit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:singleLine="true"
+            android:background="@android:color/transparent"
+            android:hint="제목"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textCursorDrawable="@color/colorPrimaryDark"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_tag"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp">
+
+            <View
+                android:id="@+id/todoFormTypeView"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@color/bluegreen" />
+
+            <TextView
+                android:id="@+id/todoFormTypeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_coin"/>
+
+        <EditText
+            android:id="@+id/todoFormCostEdit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:singleLine="true"
+            android:background="@android:color/transparent"
+            android:hint="예상 비용"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textCursorDrawable="@color/colorPrimaryDark"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="2dp"
+        android:background="@color/lightgray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_balance"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="현재 잔고"
+            android:textSize="15sp"
+            android:textColor="@color/darkgray"/>
+
+        <TextView
+            android:id="@+id/todoFormBalanceText"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="10000원"
+            android:textSize="15sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45dp"
+            android:layout_marginLeft="42dp"
+            android:gravity="center_vertical"
+            android:text="할당 금액"
+            android:textSize="15sp"
+            android:textColor="@color/darkgray"/>
+
+        <TextView
+            android:id="@+id/todoFormAllowText"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="10000원"
+            android:textSize="15sp"
+            android:textColor="@color/red"/>
+    </LinearLayout>
+
+</LinearLayout>
