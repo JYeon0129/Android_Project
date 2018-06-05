@@ -3,6 +3,7 @@ package com.example.wkddu.android_project_mcm;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,11 +49,11 @@ public class CalendarGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View v, ViewGroup parent) {
-        ViewHolder holder = null;
+        GridViewHolder holder = null;
 
         if (v == null) {
             v = inflater.inflate(R.layout.calendar_contents, parent, false);
-            holder = new ViewHolder();
+            holder = new GridViewHolder();
 
             holder.calDayText = v.findViewById(R.id.calDayText);
             holder.calBalanceBg = v.findViewById(R.id.calBalanceBg);
@@ -68,11 +69,16 @@ public class CalendarGridAdapter extends BaseAdapter {
             v.setTag(holder);
 
         } else {
-            holder = (ViewHolder) v.getTag();
+            holder = (GridViewHolder) v.getTag();
         }
 
         /* 캘린더 내용 채우기 */
         if (getItem(position) != "") {
+            /* 주말은 빨간색으로 바꿔줍니다 */
+            if (position % 7 == 5 || position % 7 == 6) {
+                holder.calDayText.setTextColor(context.getResources().getColor(R.color.red));
+            }
+
             /* 오늘의 날짜는 폰트 색깔을 바꿔줍니다 */
             calendar = Calendar.getInstance();
             Integer today = calendar.get(Calendar.DAY_OF_MONTH);
@@ -139,7 +145,7 @@ public class CalendarGridAdapter extends BaseAdapter {
     }
 }
 
-class ViewHolder {
+class GridViewHolder {
     TextView calDayText;
     TextView calBalanceText;
     TextView calBalancePlusMinus;

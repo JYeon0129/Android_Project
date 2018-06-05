@@ -3,6 +3,7 @@
     <color name="colorPrimary">#1563CA</color>
     <color name="colorPrimaryDark">#185D9B</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="red">#e13532</color>
     <color name="danger">#F25F5C</color>
     <color name="redpink">#FF686B</color>
     <color name="pink">#FFA69E</color>

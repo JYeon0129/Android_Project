@@ -15,7 +15,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -31,8 +30,9 @@ import java.util.Locale;
  */
 public class CalenderFragment extends Fragment {
     Context context;
-    GridView calendarGridView;
+    GridView calendarGridView, calendarDayTitle;
     CalendarGridAdapter calendarGridAdapter;
+    CalendarDayAdapter calendarDayAdapter;
     TextView calendarMonthText;
     TextView calendarYearText;
 
@@ -65,6 +65,7 @@ public class CalenderFragment extends Fragment {
 
     public void init() {
         calendarGridView = (GridView) getActivity().findViewById(R.id.calendarGridView);
+        calendarDayTitle = (GridView) getActivity().findViewById(R.id.calendarDayTitle);
         calendarMonthText = (TextView) getActivity().findViewById(R.id.calendarMonthText);
         calendarYearText = (TextView) getActivity().findViewById(R.id.calendarYearText);
 
@@ -102,19 +103,23 @@ public class CalenderFragment extends Fragment {
         int dayNum = calendar.get(Calendar.DAY_OF_WEEK);
 
         for (int i = dayNum - 2, j = beforeLastDay; i >= 0; i--) {
-            dayList.add("b" + (beforeLastDay - i));
+            dayList.add("b" + (beforeLastDay - i)); // before
         }
 
         calendar.set(Calendar.MONTH, month - 1);
 
         for (int i = 1; i <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-            dayList.add("c" + i);
+            dayList.add("c" + i); // current
         }
 
         int size = dayList.size();
         for (int i = 1; i <= 42 - size; i++) {
-            dayList.add("a" + i);
+            dayList.add("a" + i); // after
         }
+
+        /* 캘린더 상단 날짜 부분 내용 채우기 */
+        calendarDayAdapter = new CalendarDayAdapter(context, dayTitle);
+        calendarDayTitle.setAdapter(calendarDayAdapter);
 
         calendarGridAdapter = new CalendarGridAdapter(context, dayList);
         calendarGridView.setVerticalScrollBarEnabled(false);
@@ -130,8 +135,6 @@ public class CalenderFragment extends Fragment {
 
                 setCalendarGridView();
                 SlideAnimationUtil.slideInFromLeft(context, calendarGridView);
-//                SlideAnimationUtil.slideOutToRight(context, );
-                Toast.makeText(context, year + "년" + month + "월", Toast.LENGTH_SHORT).show();
             }
 
             public void onSwipeLeft() {
@@ -144,7 +147,6 @@ public class CalenderFragment extends Fragment {
 
                 setCalendarGridView();
                 SlideAnimationUtil.slideInFromRight(context, calendarGridView);
-                Toast.makeText(context, year + "년" + month + "월", Toast.LENGTH_SHORT).show();
             }
 
             public boolean onTouch(View v, MotionEvent event) {
