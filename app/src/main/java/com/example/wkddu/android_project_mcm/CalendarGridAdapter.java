@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static android.graphics.Typeface.BOLD;
@@ -24,11 +25,13 @@ public class CalendarGridAdapter extends BaseAdapter {
     LayoutInflater inflater;
     Context context;
     Calendar calendar;
-    int gridViewHeight;
+    int gridViewHeight, year, month;
 
-    public CalendarGridAdapter(Context context, List<String> list) {
+    public CalendarGridAdapter(Context context, List<String> list, int year, int month) {
         this.context = context;
         this.dayList = list;
+        this.year = year;
+        this.month = month;
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -112,10 +115,12 @@ public class CalendarGridAdapter extends BaseAdapter {
                     // arrayList로 한건 미리보기용입니다.
                     ArrayList<Todo> todo = new ArrayList<>();
                     if (position % 2 == 0) {
-                        todo.add(new Todo("술약속", 10000, 0));
+                        todo.add(new Todo("술약속", 10000, 0,
+                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
                     }
                     if (position % 3 == 0) {
-                        todo.add(new Todo("밥약속", 5000, 1));
+                        todo.add(new Todo("밥약속", 5000, 1,
+                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
                     }
 
                     /* 쓸 수 있는 금액 or 사용한 금액 표기하기 */

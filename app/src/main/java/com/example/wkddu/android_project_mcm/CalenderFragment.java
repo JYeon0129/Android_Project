@@ -134,7 +134,7 @@ public class CalenderFragment extends Fragment {
         calendarDayTitle.setAdapter(calendarDayAdapter);
 
         /* 캘린더 내부에 날짜와 할 일 채우기 */
-        calendarGridAdapter = new CalendarGridAdapter(context, dayList);
+        calendarGridAdapter = new CalendarGridAdapter(context, dayList, year, month);
         calendarGridView.setVerticalScrollBarEnabled(false);
 
         /* 캘린더 내부에 좌측, 우측 밀기 이벤트 적용 */
@@ -208,10 +208,12 @@ public class CalenderFragment extends Fragment {
 
         ArrayList<Todo> todo = new ArrayList<>();
         if (position % 2 == 0) {
-            todo.add(new Todo("술약속", 10000, 0));
+            todo.add(new Todo("술약속", 10000, 0,
+                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
         }
         if (position % 3 == 0) {
-            todo.add(new Todo("밥약속", 5000, 1));
+            todo.add(new Todo("밥약속", 5000, 1,
+                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
         }
 
         calendarPopupFragment.setData(dayList.get(position), todo);

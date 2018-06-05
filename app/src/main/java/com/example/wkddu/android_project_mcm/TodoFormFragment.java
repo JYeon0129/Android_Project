@@ -17,7 +17,7 @@ import android.widget.TextView;
  */
 public class TodoFormFragment extends Fragment {
     EditText todoFormTitleEdit, todoFormCostEdit;
-    TextView todoFormTypeText, todoFormBalanceText, todoFormAllowText;
+    TextView todoFormTypeText, todoFormBalanceText, todoFormAllowText, todoFormDateText;
     Button todoFormCancle, todoFormSave;
     View todoFormTypeView;
 
@@ -30,7 +30,7 @@ public class TodoFormFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_todo_create, container, false);
+        return inflater.inflate(R.layout.fragment_todo_form, container, false);
     }
 
     @Override
@@ -46,6 +46,7 @@ public class TodoFormFragment extends Fragment {
         todoFormTypeText = (TextView) getActivity().findViewById(R.id.todoFormTypeText);
         todoFormBalanceText = (TextView) getActivity().findViewById(R.id.todoFormBalanceText);
         todoFormAllowText = (TextView) getActivity().findViewById(R.id.todoFormAllowText);
+        todoFormDateText = (TextView) getActivity().findViewById(R.id.todoFormDateText);
         todoFormCancle = (Button) getActivity().findViewById(R.id.todoFormCancle);
         todoFormSave = (Button) getActivity().findViewById(R.id.todoFormSave);
         todoFormTypeView = (View) getActivity().findViewById(R.id.todoFormTypeView);
@@ -61,6 +62,22 @@ public class TodoFormFragment extends Fragment {
         if (todoFormAllowText != null) {
 
         }
+
+        if (todoFormDateText != null) {
+
+        }
+
+        todoFormCancle.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+
+        todoFormSave.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 }

@@ -88,10 +88,12 @@ public class CalendarPopupFragment extends DialogFragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+                    transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
 
                     TodoDetailFragment todoDetailFragment = (TodoDetailFragment) new TodoDetailFragment();
-                    transaction.replace(R.id.mainFragmantContainer, todoDetailFragment);
+                    todoDetailFragment.setData(todoList.get(position));
+                    transaction.add(R.id.mainFragmantContainer, todoDetailFragment);
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     transaction.commit();
 
                     ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_DETAIL;
@@ -103,8 +105,6 @@ public class CalendarPopupFragment extends DialogFragment {
             calPopupListView.setAdapter(calendarListAdapter);
         }
     }
-
-
 
     /*이 프래그먼트가 받아야 하는 정보는
      * 1. String day : 무슨 요일인지
