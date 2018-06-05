@@ -1,6 +1,7 @@
 package com.example.wkddu.android_project_mcm;
 
 
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -121,10 +124,16 @@ public class CalenderFragment extends Fragment {
         calendarDayAdapter = new CalendarDayAdapter(context, dayTitle);
         calendarDayTitle.setAdapter(calendarDayAdapter);
 
+        /* 캘린더 내부에 날짜와 할 일 채우기 */
         calendarGridAdapter = new CalendarGridAdapter(context, dayList);
         calendarGridView.setVerticalScrollBarEnabled(false);
 
+        /* 캘린더 내부에 좌측, 우측 밀기 이벤트 적용 */
         calendarGridView.setOnTouchListener(new OnSwipeTouchListener(context) {
+            private int CLICK_ACTION_THRESHOLD = 200;
+            private float startX;
+            private float startY;
+
             public void onSwipeRight() {
                 if (month == 1) {
                     year --;
@@ -150,11 +159,54 @@ public class CalenderFragment extends Fragment {
             }
 
             public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = event.getX();
+                        startY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        float endX = event.getX();
+                        float endY = event.getY();
+
+                        if (isAClick(startX, endX, startY, endY)) {
+                            int p = ((GridView)v).pointToPosition((int)event.getX(), (int)event.getY());
+                            long id = ((GridView)v).pointToRowId((int)event.getX(), (int)event.getY());
+
+                            gridViewItemClick(((GridView)v), p, id);
+
+                            return false;
+                        }
+                        break;
+                }
+
                 return this.gestureDetector.onTouchEvent(event);
+            }
+
+            private boolean isAClick(float startX, float endX, float startY, float endY) {
+                float differenceX = Math.abs(startX - endX);
+                float differenceY = Math.abs(startY - endY);
+                return !(differenceX > CLICK_ACTION_THRESHOLD/* =5 */ || differenceY > CLICK_ACTION_THRESHOLD);
             }
         });
 
         calendarGridView.setAdapter(calendarGridAdapter);
+    }
+
+    /* 캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기 */
+    public void gridViewItemClick(View v, int position, long id) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        CalendarPopupFragment calendarPopupFragment = new CalendarPopupFragment();
+
+        ArrayList<Todo> todo = new ArrayList<>();
+        if (position % 2 == 0) {
+            todo.add(new Todo("술약속", 10000, 0));
+        }
+        if (position % 3 == 0) {
+            todo.add(new Todo("밥약속", 5000, 1));
+        }
+
+        calendarPopupFragment.setData(dayList.get(position), todo);
+        calendarPopupFragment.show(fragmentManager, "calendarPopupWindow");
     }
 }
 

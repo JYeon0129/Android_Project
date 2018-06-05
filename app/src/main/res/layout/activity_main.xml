@@ -17,7 +17,7 @@
         android:layout_height="55dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/border_top">
+        android:background="@drawable/set_border_top">
 
         <LinearLayout
             android:id="@+id/menu_1"
