@@ -6,12 +6,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,7 +26,9 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class CalendarPopupFragment extends DialogFragment {
-    TextView calendarPopupDayText;
+    TextView calPopupDayText;
+    ListView calPopupListView;
+    ImageButton calPopupButton;
     String day;
     ArrayList<Todo> todoList;
 
@@ -47,13 +54,58 @@ public class CalendarPopupFragment extends DialogFragment {
         init();
     }
 
-    public void init() {
-        calendarPopupDayText = (TextView) getActivity().findViewById(R.id.calendarPopupDayText);
 
-        if (calendarPopupDayText != null) {
-            calendarPopupDayText.setText(day+"일");
+    public void init() {
+        calPopupDayText = (TextView) getDialog().findViewById(R.id.calPopupDayText);
+        calPopupListView = (ListView) getDialog().findViewById(R.id.calPopupListView);
+        calPopupButton = (ImageButton) getDialog().findViewById(R.id.calPopupButton);
+
+        if (calPopupDayText != null) {
+            calPopupDayText.setText(day.substring(1) + "일");
+        }
+
+        if (calPopupButton != null) {
+            calPopupButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+
+                    TodoCreateFragment todoCreateFragment = (TodoCreateFragment) new TodoCreateFragment();
+                    transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
+                    transaction.commit();
+
+                    ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
+
+                    getDialog().dismiss();
+                }
+            });
+        }
+
+        if (calPopupListView != null) {
+            CalendarListAdapter calendarListAdapter = new CalendarListAdapter(
+                    getContext(), R.layout.calendar_todo_row, todoList);
+
+            calPopupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+
+                    TodoDetailFragment todoDetailFragment = (TodoDetailFragment) new TodoDetailFragment();
+                    transaction.replace(R.id.mainFragmantContainer, todoDetailFragment);
+                    transaction.commit();
+
+                    ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_DETAIL;
+
+                    getDialog().dismiss();
+                }
+            });
+
+            calPopupListView.setAdapter(calendarListAdapter);
         }
     }
+
+
 
     /*이 프래그먼트가 받아야 하는 정보는
      * 1. String day : 무슨 요일인지

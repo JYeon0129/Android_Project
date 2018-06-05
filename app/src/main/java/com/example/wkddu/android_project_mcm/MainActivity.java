@@ -12,6 +12,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     final int GROUP_FRAGMENT = 2;
     final int BILL_FRAGMENT = 3;
     final int SETTINGS_FRAGMENT = 4;
+    final int TODO_DETAIL = 5;
+    final int TODO_CREATE = 6;
 
     LinearLayout menu_1, menu_2, menu_3, menu_4;
 

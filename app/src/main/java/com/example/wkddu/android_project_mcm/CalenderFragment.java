@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,14 +40,14 @@ public class CalenderFragment extends Fragment {
     CalendarDayAdapter calendarDayAdapter;
     TextView calendarMonthText;
     TextView calendarYearText;
+    ImageButton calendarButton;
 
     Calendar calendar, beforeCalendar;
     String[] dayTitle = {"월", "화", "수", "목", "금", "토", "일"};
     SimpleDateFormat curYearFormat;
     SimpleDateFormat curMonthFormat;
-    SimpleDateFormat curDayFormat;
     Date date;
-    int year, month, day, beforeLastDay;
+    int year, month, beforeLastDay;
 
     ArrayList<String> dayList;
 
@@ -71,20 +73,33 @@ public class CalenderFragment extends Fragment {
         calendarDayTitle = (GridView) getActivity().findViewById(R.id.calendarDayTitle);
         calendarMonthText = (TextView) getActivity().findViewById(R.id.calendarMonthText);
         calendarYearText = (TextView) getActivity().findViewById(R.id.calendarYearText);
+        calendarButton = (ImageButton) getActivity().findViewById(R.id.calendarButton);
 
         context = getActivity().getApplicationContext();
         calendar = Calendar.getInstance();
         beforeCalendar = Calendar.getInstance();
         dayList = new ArrayList<>();
 
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+
+                TodoCreateFragment todoCreateFragment = (TodoCreateFragment) new TodoCreateFragment();
+                transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
+                transaction.commit();
+
+                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
+            }
+        });
+
         /* 오늘의 날짜 설정, 연/월/일로 따로 저장 */
         date = new Date(System.currentTimeMillis());
         curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
         curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
-        curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
         year = Integer.parseInt(curYearFormat.format(date));
         month = Integer.parseInt(curMonthFormat.format(date));
-        day = Integer.parseInt(curDayFormat.format(date));
 
         setCalendarGridView();
     }
