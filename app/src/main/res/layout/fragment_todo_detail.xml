@@ -74,7 +74,7 @@
             android:id="@+id/todoDetailDateText"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="2018년 6월 6일"
@@ -101,7 +101,7 @@
             android:id="@+id/todoDetailTitleText"
             android:layout_width="0dp"
             android:layout_weight="1.5"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="술약속"
@@ -126,15 +126,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_marginLeft="20dp">
 
             <View
                 android:id="@+id/todoDetailTypeView"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:background="@color/bluegreen" />
 
             <TextView
@@ -167,7 +167,7 @@
             android:id="@+id/todoDetailCostText"
             android:layout_width="0dp"
             android:layout_weight="1.5"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="10000원"
@@ -200,7 +200,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="현재 잔고"
@@ -211,7 +211,7 @@
             android:id="@+id/todoDetailBalanceText"
             android:layout_width="0dp"
             android:layout_weight="1.5"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="10000원"
@@ -230,7 +230,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="42dp"
             android:gravity="center_vertical"
             android:text="할당 금액"
@@ -241,7 +241,7 @@
             android:id="@+id/todoDetailAllowText"
             android:layout_width="0dp"
             android:layout_weight="1.5"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="10000원"
