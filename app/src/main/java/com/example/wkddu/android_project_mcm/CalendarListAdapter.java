@@ -43,20 +43,13 @@ public class CalendarListAdapter extends ArrayAdapter<Todo> {
             int todoType = todo.getType();
             int todoColor = 0;
 
-            if (calRowColor != null) {
-                Helpers helpers = new Helpers();
-                todoColor = helpers.setTypeColor(todoType);
+            Helpers helpers = new Helpers();
+            todoColor = helpers.setTypeColor(todoType);
 
-                calRowColor.setBackgroundColor(context.getResources().getColor(todoColor));
-            }
+            calRowColor.setBackgroundColor(context.getResources().getColor(todoColor));
 
-            if (calRowTitleText != null) {
-                calRowTitleText.setText(todo.getTodoName());
-            }
-
-            if (calRowCostText != null) {
-                calRowCostText.setText(todo.getCost()+"원");
-            }
+            calRowTitleText.setText(todo.getTodoName());
+            calRowCostText.setText(todo.getCost()+"원");
         }
 
         return v;

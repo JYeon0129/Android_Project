@@ -59,51 +59,46 @@ public class CalendarPopupFragment extends DialogFragment {
         calPopupListView = (ListView) getDialog().findViewById(R.id.calPopupListView);
         calPopupButton = (ImageButton) getDialog().findViewById(R.id.calPopupButton);
 
-        if (calPopupDayText != null) {
-            calPopupDayText.setText(day.substring(1) + "일");
-        }
+        calPopupDayText.setText(day.substring(1) + "일");
 
-        if (calPopupButton != null) {
-            calPopupButton.setOnClickListener(new View.OnClickListener() {
+        calPopupButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
-                    TodoFormFragment todoCreateFragment = (TodoFormFragment) new TodoFormFragment();
-                    transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
-                    transaction.commit();
+                TodoFormFragment todoCreateFragment = (TodoFormFragment) new TodoFormFragment();
+                transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
+                transaction.commit();
 
-                    ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
+                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
 
-                    getDialog().dismiss();
-                }
-            });
-        }
+                getDialog().dismiss();
+            }
+        });
 
-        if (calPopupListView != null) {
-            CalendarListAdapter calendarListAdapter = new CalendarListAdapter(
-                    getContext(), R.layout.calendar_todo_row, todoList);
+        CalendarListAdapter calendarListAdapter = new CalendarListAdapter(
+                getContext(), R.layout.calendar_todo_row, todoList);
 
-            calPopupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
+        calPopupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
 
-                    TodoDetailFragment todoDetailFragment = (TodoDetailFragment) new TodoDetailFragment();
-                    todoDetailFragment.setData(todoList.get(position));
-                    transaction.add(R.id.mainFragmantContainer, todoDetailFragment);
-                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    transaction.commit();
+                TodoDetailFragment todoDetailFragment = (TodoDetailFragment) new TodoDetailFragment();
+                todoDetailFragment.setData(todoList.get(position));
+                transaction.add(R.id.mainFragmantContainer, todoDetailFragment);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.commit();
 
-                    ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_DETAIL;
+                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_DETAIL;
 
-                    getDialog().dismiss();
-                }
-            });
+                getDialog().dismiss();
+            }
+        });
 
-            calPopupListView.setAdapter(calendarListAdapter);
-        }
+        calPopupListView.setAdapter(calendarListAdapter);
+
     }
 
     /*이 프래그먼트가 받아야 하는 정보는

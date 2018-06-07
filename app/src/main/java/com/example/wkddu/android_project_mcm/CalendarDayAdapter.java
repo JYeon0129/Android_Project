@@ -59,9 +59,7 @@ public class CalendarDayAdapter extends BaseAdapter {
         }
 
         /* 캘린더 내용 채우기 */
-        if (holder.calDayTitle != null) {
-            holder.calDayTitle.setText(dayList[position]);
-        }
+        holder.calDayTitle.setText(dayList[position]);
 
         if (position == 5 || position == 6) {
             holder.calDayTitle.setTextColor(context.getResources().getColor(R.color.red));
