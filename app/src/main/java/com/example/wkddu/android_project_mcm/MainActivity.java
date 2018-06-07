@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     LinearLayout menu_1, menu_2, menu_3, menu_4;
 
-    int currentFragment;
+    int currentFragment; // 현재 프래그먼트 구별하기
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menu_3.setOnClickListener(this);
         menu_4.setOnClickListener(this);
 
+        /* 초기 프래그먼트는 캘린더 프래그먼트라 여기서 먼저 초기화해줍니다! */
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         CalenderFragment calendarFragment = (CalenderFragment) new CalenderFragment();
         transaction.replace(R.id.mainFragmantContainer, calendarFragment);
         transaction.commit();
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
+            /* 현재 프래그먼트와 다른 프래그먼트를 호출할 경우 replace 해줍니다 */
             switch (fragmentNumber) {
                 case CALENDAR_FRAGMENT:
                     CalenderFragment calendarFragment = (CalenderFragment) new CalenderFragment();

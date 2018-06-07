@@ -3,13 +3,13 @@
     <item>
         <shape>
             <size
-                android:height="30dip"
-                android:width="30dip" />
+                android:height="27dip"
+                android:width="27dip" />
             <solid android:color="@android:color/transparent" />
         </shape>
     </item>
     <item
-        android:height="35dip"
-        android:width="35dip"
+        android:height="27dip"
+        android:width="27dip"
         android:drawable="@drawable/img_fail"/>
 </layer-list>

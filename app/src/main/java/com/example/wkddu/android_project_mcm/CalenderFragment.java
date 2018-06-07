@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,7 +16,12 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,18 +38,23 @@ public class CalenderFragment extends Fragment {
     GridView calendarGridView, calendarDayTitle;
     CalendarGridAdapter calendarGridAdapter;
     CalendarDayAdapter calendarDayAdapter;
-    TextView calendarMonthText;
-    TextView calendarYearText;
+    SeekBar calendarSeekBar;
+    TextView calendarMonthText, calendarYearText, calendarBalanceText;
     ImageButton calendarButton;
 
     Calendar calendar, beforeCalendar;
     String[] dayTitle = {"월", "화", "수", "목", "금", "토", "일"};
+    ArrayList<String> dayList;
     SimpleDateFormat curYearFormat;
     SimpleDateFormat curMonthFormat;
     Date date;
-    int year, month, beforeLastDay;
-
-    ArrayList<String> dayList;
+    int year, month, beforeLastDay, budget, spend;
+    /*
+     * year, month : 현재 연, 월
+     * beforeLastDay : 지난 달의 마지막 일
+     * budget : 이번 달의 총 예산 (수입)
+     * spend : 이번 달에 사용한 돈
+     */
 
     public CalenderFragment() {}
 
@@ -67,12 +78,16 @@ public class CalenderFragment extends Fragment {
         calendarDayTitle = (GridView) getActivity().findViewById(R.id.calendarDayTitle);
         calendarMonthText = (TextView) getActivity().findViewById(R.id.calendarMonthText);
         calendarYearText = (TextView) getActivity().findViewById(R.id.calendarYearText);
+        calendarBalanceText = (TextView) getActivity().findViewById(R.id.calendarBalanceText);
         calendarButton = (ImageButton) getActivity().findViewById(R.id.calendarButton);
+        calendarSeekBar = (SeekBar) getActivity().findViewById(R.id.calendarSeekBar);
 
         context = getActivity().getApplicationContext();
         calendar = Calendar.getInstance();
         beforeCalendar = Calendar.getInstance();
         dayList = new ArrayList<>();
+
+        setCalendarSeekBar();
 
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +103,13 @@ public class CalenderFragment extends Fragment {
             }
         });
 
+        calendarSeekBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
+
         /* 오늘의 날짜 설정, 연/월/일로 따로 저장 */
         date = new Date(System.currentTimeMillis());
         curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
@@ -96,6 +118,37 @@ public class CalenderFragment extends Fragment {
         month = Integer.parseInt(curMonthFormat.format(date));
 
         setCalendarGridView();
+    }
+
+    /*
+     * 이강민 : 잔액 보여주기
+     * 해당 월의 총 예산 (수입), 사용한 돈을 DB에서 가져와서 잔액을 계산하고 화면에 뿌려주면 됩니다!
+     * 여기서 화면 상단 바의 값을 설정합니다.
+     */
+    private void setCalendarSeekBar() {
+        budget = 50000;
+        spend = 10000;
+        
+        int percent = 0;
+        if (budget != 0) {
+            percent = (int)((spend / (float)budget) * 100);
+        }
+
+        calendarSeekBar.setProgress(percent);
+        calendarBalanceText.setText("잔액 : " + (budget - spend) + "원");
+
+        /*
+         * 이강민 : Seekbar thumb 이미지 바꾸기
+         * 목표로 했던 예산보다 실제 사용량이 많을 경우에는 우는 표정을,
+         * 반대일 경우에는 웃는 표정을 보여줍니다.
+         * 밑에 true가 들어간 자리가 웃는 표정이고 else가 우는 표정인데 저 조건문 내용만 바꾸면 됩니다!
+         */
+
+        if (true) {
+            calendarSeekBar.setThumb(getActivity().getResources().getDrawable(R.drawable.custom_thumb_smile));
+        } else {
+            calendarSeekBar.setThumb(getActivity().getResources().getDrawable(R.drawable.custom_thumb_fail));
+        }
     }
 
     private void setCalendarGridView() {
@@ -201,7 +254,14 @@ public class CalenderFragment extends Fragment {
         calendarGridView.setAdapter(calendarGridAdapter);
     }
 
-    /* 캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기 */
+    /*
+     * 이강민 : 캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기
+     * 지금 밑에는 ArrayList를 만들어서 랜덤으로 그냥 돌리고 있는데 다 지우고..
+     * 저 밑에 setData 함수 두 번째 인자에 ArrayList<Todo>로 넘기면 됩니다!
+     * 오늘 연도는 year, 월은 month, 일은 dayList.get(position).substring(1)에 담겨 있으니
+     * 이걸로 날짜 만들어서 쿼리 짜서 해당 날짜에 할 일들 가져오면 될 것 같아요!
+     */
+
     public void gridViewItemClick(View v, int position, long id) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         CalendarPopupFragment calendarPopupFragment = new CalendarPopupFragment();

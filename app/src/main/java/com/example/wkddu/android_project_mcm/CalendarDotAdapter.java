@@ -10,6 +10,12 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+/*
+ * 캘린더의 각 칸에 일정을 점으로 찍어주는 어댑터입니다
+ * 여기서 해줘야 할 일은
+ * 해당 날짜에 있는 일정을 불러와서 타입에 따라 점만 찍어주면 됩니다!
+ */
+
 public class CalendarDotAdapter extends RecyclerView.Adapter<MyViewHolder> {
     ArrayList<Todo> todoList;
     Context context;
