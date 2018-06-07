@@ -19,6 +19,13 @@ import java.util.List;
 
 import static android.graphics.Typeface.BOLD;
 
+/*
+ * 메인 캘린더의 각 칸의 내용을 채워주는 어댑터입니다
+ * 여기서 해줘야 할 일은
+ * 1. 해당 날짜에 얼마를 썼는지, 얼마를 써야 하는지 뿌려주고
+ * 2. 내장 DB에서 각 날짜에 해당하는 할 일 리스트들 끌어와서 뿌려주면 됩니다!
+ */
+
 public class CalendarGridAdapter extends BaseAdapter {
     List<String> dayList;
 
@@ -82,6 +89,7 @@ public class CalendarGridAdapter extends BaseAdapter {
                     /* 오늘의 날짜는 폰트 색깔을 바꿔줍니다 */
                     calendar = Calendar.getInstance();
                     Integer today = calendar.get(Calendar.DAY_OF_MONTH);
+                    Integer currentMonth = calendar.get(Calendar.MONTH) + 1;
                     String sToday = String.valueOf(today);
 
                     if (sToday.equals(getItem(position))) {
@@ -90,37 +98,27 @@ public class CalendarGridAdapter extends BaseAdapter {
                     }
 
                     /*
-                    배경색 설정하기
+                    * 이강민 : 배경색 설정하기
                     * 1. 회색 (lightgray) : 예산일 경우 (아직 날짜가 지나지 않음)
-                    * 2. 빨간색 (danger) : 사용 가능 금액을 넘었을 경우
-                    * 3. 파란색 (save) : 사용 가능 금액을 넘지 않았을 경우
+                    * 2. 빨간색 (danger) : 날짜가 지났고, 사용 가능 금액(예산)을 넘었을 경우
+                    * 3. 파란색 (save) : 날짜가 지났고, 실제로 쓴 돈이 사용 가능 금액(예산)을 넘지 않았을 경우
                     */
 
-                    // 미리보기로 대충 설정해뒀습니다!
+                    // 미리보기로 대충 설정해뒀습니다! 이거 참고해서 해주시면 될 것 같아요
 
-                    if (Integer.parseInt(getItem(position).substring(1)) > today) { // 1
+                    if (getItem(position).charAt(0) == 'a' ||
+                            currentMonth < month ||
+                            Integer.parseInt(getItem(position).substring(1)) > today) { // 1번 케이스
                         holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.morelightgray));
                         holder.calBalanceText.setTextColor(context.getResources().getColor(R.color.darkgray));
                     } else {
-                        if (position % 3 == 0) { // 2
+                        if (position % 3 == 0) { // 2번 케이스
                             holder.calBalancePlusMinus.setText("-");
                             holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
-                        } else { // 3
+                        } else { // 3번 케이스
                             holder.calBalancePlusMinus.setText("+");
                             holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
                         }
-                    }
-
-                    /* 어댑터로 할 일 리스트 세팅하기 */
-                    // arrayList로 한건 미리보기용입니다.
-                    ArrayList<Todo> todo = new ArrayList<>();
-                    if (position % 2 == 0) {
-                        todo.add(new Todo("술약속", 10000, 0,
-                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
-                    }
-                    if (position % 3 == 0) {
-                        todo.add(new Todo("밥약속", 5000, 1,
-                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
                     }
 
                     /* 쓸 수 있는 금액 or 사용한 금액 표기하기 */
@@ -129,6 +127,23 @@ public class CalendarGridAdapter extends BaseAdapter {
 
                     if (getItem(position).charAt(0) == 'a' || getItem(position).charAt(0) == 'b') {
                         holder.calAlphaView.setAlpha(0.6f);
+                    }
+
+                    /*
+                     * 이강민 : 어댑터로 할 일 리스트 세팅하기
+                     * 해당 날짜에 해야 할 일들을 내장 DB에서 끌고 와서
+                     * ArrayList<Todo>로 만들어서 밑에 있는 calendarDotAdapter 생성자의 두 번째 인자로 주면 됩니다!
+                     * ArrayList로 한건 미리보기용입니다. 이거 지우고 하시면 됩니다!
+                     */
+
+                    ArrayList<Todo> todo = new ArrayList<>();
+                    if (position % 2 == 0) {
+                        todo.add(new Todo("술약속", 10000, 0,
+                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
+                    }
+                    if (position % 3 == 0) {
+                        todo.add(new Todo("밥약속", 5000, 1,
+                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
                     }
 
                     RecyclerView.LayoutManager layoutManager;
