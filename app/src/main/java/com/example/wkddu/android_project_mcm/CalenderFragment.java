@@ -254,7 +254,14 @@ public class CalenderFragment extends Fragment {
         calendarGridView.setAdapter(calendarGridAdapter);
     }
 
-    /* 캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기 */
+    /*
+     * 이강민 : 캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기
+     * 지금 밑에는 ArrayList를 만들어서 랜덤으로 그냥 돌리고 있는데 다 지우고..
+     * 저 밑에 setData 함수 두 번째 인자에 ArrayList<Todo>로 넘기면 됩니다!
+     * 오늘 연도는 year, 월은 month, 일은 dayList.get(position).substring(1)에 담겨 있으니
+     * 이걸로 날짜 만들어서 쿼리 짜서 해당 날짜에 할 일들 가져오면 될 것 같아요!
+     */
+
     public void gridViewItemClick(View v, int position, long id) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         CalendarPopupFragment calendarPopupFragment = new CalendarPopupFragment();

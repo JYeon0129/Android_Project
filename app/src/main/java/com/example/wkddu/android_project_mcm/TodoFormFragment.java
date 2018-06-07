@@ -12,9 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-/**
- * A simple {@link Fragment} subclass.
+/*
+ * 할 일 폼 화면입니다. 새로 등록하거나 기존 내용을 수정할 때 씁니다!
+ * 여기서 해줘야 할 일은
+ * 저장 누르면 새로 저장하거나 수정하는 것만 하면 됩니다!
  */
+
 public class TodoFormFragment extends Fragment {
     EditText todoFormTitleEdit, todoFormCostEdit;
     TextView todoFormTypeText, todoFormBalanceText, todoFormAllowText, todoFormDateText;

@@ -92,7 +92,7 @@ public class CalendarGridAdapter extends BaseAdapter {
                     Integer currentMonth = calendar.get(Calendar.MONTH) + 1;
                     String sToday = String.valueOf(today);
 
-                    if (sToday.equals(getItem(position))) {
+                    if (sToday.equals(getItem(position).substring(1))) {
                         holder.calDayText.setTextColor(context.getResources().getColor(R.color.bluegreen));
                         holder.calDayText.setTypeface(null, BOLD);
                     }
@@ -102,9 +102,8 @@ public class CalendarGridAdapter extends BaseAdapter {
                     * 1. 회색 (lightgray) : 예산일 경우 (아직 날짜가 지나지 않음)
                     * 2. 빨간색 (danger) : 날짜가 지났고, 사용 가능 금액(예산)을 넘었을 경우
                     * 3. 파란색 (save) : 날짜가 지났고, 실제로 쓴 돈이 사용 가능 금액(예산)을 넘지 않았을 경우
+                    * 미리보기로 대충 설정해뒀습니다! 이거 참고해서 해주시면 될 것 같아요.
                     */
-
-                    // 미리보기로 대충 설정해뒀습니다! 이거 참고해서 해주시면 될 것 같아요
 
                     if (getItem(position).charAt(0) == 'a' ||
                             currentMonth < month ||
