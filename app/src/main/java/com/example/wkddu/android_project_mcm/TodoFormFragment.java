@@ -28,7 +28,6 @@ import java.util.List;
 public class TodoFormFragment extends Fragment implements View.OnClickListener {
     EditText todoFormTitleEdit, todoFormCostEdit;
     TextView todoFormTypeText, todoFormBalanceText, todoFormAllowText, todoFormDateText;
-    Button todoFormCancle, todoFormSave, todoFormButton1, todoFormButton2, todoFormButton3;
     View todoFormTypeView;
     ListView todoFormListView;
     Context context;
@@ -58,8 +57,6 @@ public class TodoFormFragment extends Fragment implements View.OnClickListener {
         todoFormCostEdit = (EditText) getActivity().findViewById(R.id.todoFormCostEdit);
         todoFormTypeText = (TextView) getActivity().findViewById(R.id.todoFormTypeText);
         todoFormDateText = (TextView) getActivity().findViewById(R.id.todoFormDateText);
-        todoFormCancle = (Button) getActivity().findViewById(R.id.todoFormCancle);
-        todoFormSave = (Button) getActivity().findViewById(R.id.todoFormSave);
         todoFormTypeView = (View) getActivity().findViewById(R.id.todoFormTypeView);
         todoFormListView = (ListView) getActivity().findViewById(R.id.todoFormListView);
 

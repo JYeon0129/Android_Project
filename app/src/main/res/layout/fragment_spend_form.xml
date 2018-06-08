@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    tools:context=".SpendFormFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/spendFormCancle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:textColor="@color/darkyellow"
+            android:textSize="14sp"
+            android:text="취소" />
+
+        <Button
+            android:id="@+id/spendFormSave"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:textColor="@color/darkyellow"
+            android:textSize="14sp"
+            android:text="저장" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_clock"/>
+
+        <TextView
+            android:id="@+id/spendFormDateText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="2018년 6월 6일"
+            android:textSize="13sp"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_text"/>
+
+        <EditText
+            android:id="@+id/spendFormTitleEdit"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="20dp"
+            android:singleLine="true"
+            android:background="@android:color/transparent"
+            android:hint="제목"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textCursorDrawable="@color/colorPrimaryDark"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_tag"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp">
+
+            <View
+                android:id="@+id/spendFormTypeView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@color/bluegreen" />
+
+            <TextView
+                android:id="@+id/spendFormTypeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/darkgray"
+                android:textSize="13sp"
+                android:text="술/유흥"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_coin"/>
+
+        <EditText
+            android:id="@+id/spendFormCostEdit"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="20dp"
+            android:singleLine="true"
+            android:background="@android:color/transparent"
+            android:hint="사용 금액"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textCursorDrawable="@color/colorPrimaryDark"/>
+
+    </LinearLayout>
+    
+    <Button
+        android:id="@+id/spendFormAddBill"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="영수증으로 추가하기"
+        android:textColor="@color/darkgray"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:background="@drawable/add_bill_button"/>
+</LinearLayout>

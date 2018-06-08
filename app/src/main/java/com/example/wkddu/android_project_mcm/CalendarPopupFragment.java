@@ -27,7 +27,6 @@ import java.util.ArrayList;
 public class CalendarPopupFragment extends DialogFragment {
     TextView calPopupDayText;
     ListView calPopupListView;
-    ImageButton calPopupButton;
     String day;
     ArrayList<Todo> todoList;
 
@@ -56,45 +55,11 @@ public class CalendarPopupFragment extends DialogFragment {
     public void init() {
         calPopupDayText = (TextView) getDialog().findViewById(R.id.calPopupDayText);
         calPopupListView = (ListView) getDialog().findViewById(R.id.calPopupListView);
-        calPopupButton = (ImageButton) getDialog().findViewById(R.id.calPopupButton);
 
         calPopupDayText.setText(day.substring(1) + "일");
 
-        calPopupButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
-
-                TodoFormFragment todoCreateFragment = (TodoFormFragment) new TodoFormFragment();
-                transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
-                transaction.commit();
-
-                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
-
-                getDialog().dismiss();
-            }
-        });
-
         CalendarListAdapter calendarListAdapter = new CalendarListAdapter(
                 getContext(), R.layout.calendar_todo_row, todoList);
-
-        calPopupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
-
-                TodoDetailFragment todoDetailFragment = (TodoDetailFragment) new TodoDetailFragment();
-                todoDetailFragment.setData(todoList.get(position));
-                transaction.add(R.id.mainFragmantContainer, todoDetailFragment);
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                transaction.commit();
-
-                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_DETAIL;
-
-                getDialog().dismiss();
-            }
-        });
 
         calPopupListView.setAdapter(calendarListAdapter);
 

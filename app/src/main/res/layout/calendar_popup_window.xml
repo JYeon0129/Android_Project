@@ -27,13 +27,4 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="5dp" />
 
-    <ImageButton
-        android:id="@+id/calPopupButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/img_plus"
-        android:layout_gravity="right|bottom"
-        android:scaleType="fitXY"
-        android:background="@android:color/transparent" />
-
 </FrameLayout>

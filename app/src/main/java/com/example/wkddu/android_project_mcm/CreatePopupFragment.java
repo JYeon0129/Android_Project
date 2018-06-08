@@ -64,7 +64,16 @@ public class CreatePopupFragment extends DialogFragment {
         createBtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
+                SpendFormFragment spendFormFragment = (SpendFormFragment) new SpendFormFragment();
+                transaction.replace(R.id.mainFragmantContainer, spendFormFragment);
+                transaction.commit();
+
+                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
+
+                getDialog().dismiss();
             }
         });
     }
