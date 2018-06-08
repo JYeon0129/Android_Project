@@ -1,5 +1,7 @@
 package com.example.wkddu.android_project_mcm;
 
+import android.util.Log;
+
 public class Helpers {
     Helpers() {}
 
@@ -7,8 +9,8 @@ public class Helpers {
      * Type 리스트
      * index    이름           색상명
      * ------------------------------
-     * 0        술/유흥            redpink
-     * 1        식비          bluegreen
+     * 0        술/유흥          redpink
+     * 1        식비            bluegreen
      * 2        주거/통신        orange
      * 3        생활용품         darkyellow
      * 4        의복/미용        pink
@@ -20,6 +22,7 @@ public class Helpers {
 
     public Type returnType (int typeNum) {
         Type type = new Type();
+        type.setTypeNum(typeNum);
 
         switch (typeNum) {
             case 0:

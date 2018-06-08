@@ -29,25 +29,27 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="bottom"
                 android:layout_marginRight="5dp"
                 android:text="잔액"
                 android:textSize="13sp"
                 android:textColor="@color/darkgray" />
 
             <TextView
+                android:id="@+id/billBalanceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="bottom"
                 android:text="10000"
-                android:textSize="20sp"
+                android:textSize="21sp"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="3dp"
+                android:layout_gravity="bottom"
                 android:text="원"
                 android:textSize="13sp"
                 android:textColor="@color/darkgray" />
@@ -92,7 +94,7 @@
                 android:background="@drawable/set_border_radius">
 
                 <Button
-                    android:id="@+id/todoFormButton1"
+                    android:id="@+id/billButton1"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
@@ -109,7 +111,7 @@
                     android:background="@color/lightgray" />
 
                 <Button
-                    android:id="@+id/todoFormButton2"
+                    android:id="@+id/billButton2"
                     android:layout_width="0dp"
                     android:layout_weight="0.9"
                     android:layout_height="match_parent"
@@ -125,7 +127,7 @@
                     android:background="@color/lightgray" />
 
                 <Button
-                    android:id="@+id/todoFormButton3"
+                    android:id="@+id/billButton3"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
@@ -154,21 +156,50 @@
                 android:textColor="@color/darkgray"/>
 
             <LinearLayout
+                android:id="@+id/billType"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="5dp"
+                android:clickable="true"
                 android:background="@drawable/set_border_radius">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="20dp">
+
+                    <View
+                        android:id="@+id/billTypeView"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@color/bluegreen" />
+
+                    <TextView
+                        android:id="@+id/billTypeText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/darkgray"
+                        android:textSize="13sp"
+                        android:text="식비"/>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="2dp"
+            android:background="@color/lightgray" />
 
         <ListView
-            android:id="@+id/todoFormListView"
+            android:id="@+id/billListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
             android:background="@drawable/set_border_except_top"/>
 
     </LinearLayout>

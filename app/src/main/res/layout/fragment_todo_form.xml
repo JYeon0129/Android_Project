@@ -104,10 +104,12 @@
         android:layout_marginBottom="5dp">
 
         <LinearLayout
+            android:id="@+id/todoDetailType"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clickable="true">
 
             <ImageView
                 android:layout_width="20dp"
@@ -135,7 +137,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/darkgray"
                     android:textSize="13sp"
-                    android:text="술/유흥"/>
+                    android:text="식비"/>
 
             </LinearLayout>
 

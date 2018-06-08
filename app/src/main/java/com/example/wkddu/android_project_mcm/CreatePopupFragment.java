@@ -49,10 +49,10 @@ public class CreatePopupFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+                transaction.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
 
-                TodoFormFragment todoCreateFragment = (TodoFormFragment) new TodoFormFragment();
-                transaction.add(R.id.mainFragmantContainer, todoCreateFragment);
+                TodoFormFragment todoFormFragment = (TodoFormFragment) new TodoFormFragment();
+                transaction.add(R.id.mainFragmantContainer, todoFormFragment, "todoFormFragment");
                 transaction.commit();
 
                 ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
@@ -65,10 +65,10 @@ public class CreatePopupFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+                transaction.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
 
                 SpendFormFragment spendFormFragment = (SpendFormFragment) new SpendFormFragment();
-                transaction.add(R.id.mainFragmantContainer, spendFormFragment);
+                transaction.add(R.id.mainFragmantContainer, spendFormFragment, "spendFormFragment");
                 transaction.commit();
 
                 ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;

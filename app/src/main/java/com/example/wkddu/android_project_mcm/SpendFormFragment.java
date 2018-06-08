@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,6 +29,8 @@ public class SpendFormFragment extends Fragment {
     EditText spendFormTitleEdit, spendFormCostEdit;
     View spendFormTypeView;
     Calendar selected;
+    LinearLayout spendDetailType;
+    Type type;
 
     Context context;
 
@@ -56,6 +59,7 @@ public class SpendFormFragment extends Fragment {
         spendFormTypeText = (TextView) getActivity().findViewById(R.id.spendFormTypeText);
         spendFormCostEdit = (EditText) getActivity().findViewById(R.id.spendFormCostEdit);
         spendFormCancle = (Button) getActivity().findViewById(R.id.spendFormCancle);
+        spendDetailType = (LinearLayout) getActivity().findViewById(R.id.spendDetailType);
         spendFormSave = (Button) getActivity().findViewById(R.id.spendFormSave);
         spendFormAddBill = (Button) getActivity().findViewById(R.id.spendFormAddBill);
         spendFormTypeView = (View) getActivity().findViewById(R.id.spendFormTypeView);
@@ -83,6 +87,16 @@ public class SpendFormFragment extends Fragment {
                         calendar.get(Calendar.DATE));
 
                 dialog.show();
+            }
+        });
+
+        spendDetailType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                TypePickerFragment typePickerFragment = new TypePickerFragment();
+
+                typePickerFragment.show(fragmentManager, "typePickerFragment");
             }
         });
 
@@ -128,4 +142,12 @@ public class SpendFormFragment extends Fragment {
             spendFormDateText.setText(year + "년 " + (monthOfYear + 1) + "월 " + dayOfMonth +"일");
         }
     };
+
+
+    public void setType(Type type) {
+        this.type = type;
+        spendFormTypeText.setText(type.getTypeName());
+        spendFormTypeView.setBackgroundColor(context.getResources().getColor(type.getTypeColor()));
+    }
+
 }
