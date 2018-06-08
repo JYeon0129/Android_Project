@@ -92,14 +92,10 @@ public class CalenderFragment extends Fragment {
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                CreatePopupFragment calendarPopupFragment = new CreatePopupFragment();
 
-                TodoFormFragment todoCreateFragment = (TodoFormFragment) new TodoFormFragment();
-                transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
-                transaction.commit();
-
-                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
+                calendarPopupFragment.show(fragmentManager, "createPopupWindow");
             }
         });
 

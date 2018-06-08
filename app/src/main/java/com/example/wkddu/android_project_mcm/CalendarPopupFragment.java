@@ -53,7 +53,6 @@ public class CalendarPopupFragment extends DialogFragment {
         init();
     }
 
-
     public void init() {
         calPopupDayText = (TextView) getDialog().findViewById(R.id.calPopupDayText);
         calPopupListView = (ListView) getDialog().findViewById(R.id.calPopupListView);
