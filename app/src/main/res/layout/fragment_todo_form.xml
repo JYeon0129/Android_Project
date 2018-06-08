@@ -137,7 +137,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/darkgray"
                     android:textSize="13sp"
-                    android:text="술/유흥"/>
+                    android:text="식비"/>
 
             </LinearLayout>
 
