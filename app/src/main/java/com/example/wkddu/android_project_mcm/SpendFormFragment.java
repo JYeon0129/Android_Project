@@ -59,6 +59,10 @@ public class SpendFormFragment extends Fragment implements View.OnClickListener 
 
     }
 
+    /*
+     * 심다슬 : spendFormAddBill 클릭 시 영수증 추가되게 하면 됨당!
+     */
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

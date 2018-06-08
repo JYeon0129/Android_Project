@@ -1,30 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="15dp" >
+    android:paddingTop="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="7dp">
 
-    <TextView
-        android:id="@+id/calPopupDayText"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="27sp"
-        android:textColor="@color/darkgray"/>
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_marginTop="43dp"
-        android:layout_height="2dp"
-        android:background="@color/lightgray" />
+        <TextView
+            android:id="@+id/calPopupDayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor="@color/darkgray"/>
 
-    <ListView
-        android:id="@+id/calPopupListView"
-        android:layout_marginTop="55dp"
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="1dp"
+            android:layout_height="2dp"
+            android:background="@color/darkgray" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5dp" />
+        android:orientation="vertical">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:textSize="12sp"
+            android:textColor="@color/darkgray"
+            android:textStyle="bold"
+            android:text="일정" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
+
+        <ListView
+            android:id="@+id/calPopupTodoListView"
+            android:layout_marginTop="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:textSize="12sp"
+            android:textColor="@color/lightgray"
+            android:textStyle="bold"
+            android:text="소비 내역" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="3dp"
+            android:layout_height="1dp"
+            android:background="@color/lightgray" />
+
+        <ListView
+            android:id="@+id/calPopupSpendListView"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5dp" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
