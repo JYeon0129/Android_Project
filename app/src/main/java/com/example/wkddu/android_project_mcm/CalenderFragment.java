@@ -92,14 +92,10 @@ public class CalenderFragment extends Fragment {
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                CreatePopupFragment calendarPopupFragment = new CreatePopupFragment();
 
-                TodoFormFragment todoCreateFragment = (TodoFormFragment) new TodoFormFragment();
-                transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
-                transaction.commit();
-
-                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
+                calendarPopupFragment.show(fragmentManager, "createPopupWindow");
             }
         });
 
@@ -258,6 +254,7 @@ public class CalenderFragment extends Fragment {
      * 이강민 : 캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기
      * 지금 밑에는 ArrayList를 만들어서 랜덤으로 그냥 돌리고 있는데 다 지우고..
      * 저 밑에 setData 함수 두 번째 인자에 ArrayList<Todo>로 넘기면 됩니다!
+     * 세 번째 인자는 해당 날짜의 지출 내역인데 ArrayList<Spend>로 넘기면 됩니다!
      * 오늘 연도는 year, 월은 month, 일은 dayList.get(position).substring(1)에 담겨 있으니
      * 이걸로 날짜 만들어서 쿼리 짜서 해당 날짜에 할 일들 가져오면 될 것 같아요!
      */
@@ -276,8 +273,23 @@ public class CalenderFragment extends Fragment {
                     new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
         }
 
-        calendarPopupFragment.setData(dayList.get(position), todo);
-        calendarPopupFragment.show(fragmentManager, "calendarPopupWindow");
+        ArrayList<Spend> spend = new ArrayList<>();
+        if (position % 2 == 0) {
+            spend.add(new Spend("술약속", 10000, 0,
+                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
+        }
+        if (position % 3 == 0) {
+            spend.add(new Spend("밥약속", 5000, 1,
+                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
+        }
+
+        calendarPopupFragment.setData(dayList.get(position), todo, spend);
+
+        if (todo.size() == 0 && spend.size() == 0) {
+            /* 할 일도 없고 사용 내역도 없는 날짜의 경우 팝업이 뜨지 않습니담 */
+        } else {
+            calendarPopupFragment.show(fragmentManager, "calendarPopupWindow");
+        }
     }
 }
 

@@ -14,11 +14,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CalendarListAdapter extends ArrayAdapter<Todo> {
+public class CalendarTodoListAdapter extends ArrayAdapter<Todo> {
     ArrayList<Todo> todoList;
     Context context;
 
-    public CalendarListAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<Todo> objects) {
+    public CalendarTodoListAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<Todo> objects) {
         super(context, resource, objects);
         this.todoList = objects;
         this.context = context;

@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="11.5sp"
                 android:textColor="@color/button_click_text_color"
-                android:text="영수증 등록" />
+                android:text="소비 내역" />
         </LinearLayout>
 
         <LinearLayout
