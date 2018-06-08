@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -61,10 +63,42 @@ public class CalendarPopupFragment extends DialogFragment {
         CalendarTodoListAdapter calendarTodoListAdapter = new CalendarTodoListAdapter(
                 getContext(), R.layout.calendar_todo_row, todoList);
 
+        calPopupTodoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
+
+                TodoDetailFragment todoDetailFragment = (TodoDetailFragment) new TodoDetailFragment();
+                todoDetailFragment.setData(todoList.get(position));
+                transaction.add(R.id.mainFragmantContainer, todoDetailFragment);
+                transaction.commit();
+
+                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_DETAIL;
+                getDialog().dismiss();
+            }
+        });
+
         calPopupTodoListView.setAdapter(calendarTodoListAdapter);
 
         CalendarSpendListAdapter calendarSpendListAdapter = new CalendarSpendListAdapter(
                 getContext(), R.layout.calendar_todo_row, spendList);
+
+        calPopupSpendListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
+
+                SpendDetailFragment spendDetailFragment = (SpendDetailFragment) new SpendDetailFragment();
+                spendDetailFragment.setData(spendList.get(position));
+                transaction.add(R.id.mainFragmantContainer, spendDetailFragment);
+                transaction.commit();
+
+                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_DETAIL;
+                getDialog().dismiss();
+            }
+        });
 
         calPopupSpendListView.setAdapter(calendarSpendListAdapter);
 

@@ -7,7 +7,7 @@ public class Todo {
     String todoName; // 화면에 보일 약속의 이름입니다.
     Date date; // 일정의 날짜를 저장해둡니다.
     int cost; // 예상 비용입니다.
-    int type; // 술약속인지 밥약속인지 회식인지 등 타입을 지정합니다.
+    int type; // 술약속인지 밥약속인지 회식인지 등 타입을 지정합니다. > Helper 클래스 참고
 
     public Todo(String todoName, int cost, int type, Date date) {
         this.todoName = todoName;
