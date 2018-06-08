@@ -52,7 +52,7 @@ public class CreatePopupFragment extends DialogFragment {
                 transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
                 TodoFormFragment todoCreateFragment = (TodoFormFragment) new TodoFormFragment();
-                transaction.replace(R.id.mainFragmantContainer, todoCreateFragment);
+                transaction.add(R.id.mainFragmantContainer, todoCreateFragment);
                 transaction.commit();
 
                 ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;
@@ -68,7 +68,7 @@ public class CreatePopupFragment extends DialogFragment {
                 transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
                 SpendFormFragment spendFormFragment = (SpendFormFragment) new SpendFormFragment();
-                transaction.replace(R.id.mainFragmantContainer, spendFormFragment);
+                transaction.add(R.id.mainFragmantContainer, spendFormFragment);
                 transaction.commit();
 
                 ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_CREATE;

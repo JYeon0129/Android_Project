@@ -39,10 +39,9 @@ public class CalendarSpendListAdapter extends ArrayAdapter<Spend> {
             TextView calRowCostText = (TextView) v.findViewById(R.id.calRowCostText);
 
             int todoType = spend.getType();
-            int todoColor = 0;
 
             Helpers helpers = new Helpers();
-            todoColor = helpers.setTypeColor(todoType);
+            int todoColor = helpers.returnType(todoType).getTypeColor();
 
             calRowColor.setBackgroundColor(context.getResources().getColor(todoColor));
 

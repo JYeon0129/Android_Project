@@ -1,20 +1,26 @@
 package com.example.wkddu.android_project_mcm;
 
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -25,12 +31,14 @@ import java.util.List;
  * 저장 누르면 새로 저장하거나 수정하는 것만 하면 됩니다!
  */
 
-public class TodoFormFragment extends Fragment implements View.OnClickListener {
+public class TodoFormFragment extends Fragment {
     EditText todoFormTitleEdit, todoFormCostEdit;
     TextView todoFormTypeText, todoFormBalanceText, todoFormAllowText, todoFormDateText;
     View todoFormTypeView;
+    Button todoFormCancle, todoFormSave, todoFormButton1, todoFormButton2, todoFormButton3;
     ListView todoFormListView;
     Context context;
+    Calendar selected;
 
 
     public TodoFormFragment() {
@@ -59,11 +67,90 @@ public class TodoFormFragment extends Fragment implements View.OnClickListener {
         todoFormDateText = (TextView) getActivity().findViewById(R.id.todoFormDateText);
         todoFormTypeView = (View) getActivity().findViewById(R.id.todoFormTypeView);
         todoFormListView = (ListView) getActivity().findViewById(R.id.todoFormListView);
+        todoFormCancle = (Button) getActivity().findViewById(R.id.todoFormCancle);
+        todoFormSave = (Button) getActivity().findViewById(R.id.todoFormSave);
+        todoFormButton1 = (Button) getActivity().findViewById(R.id.todoFormButton1);
+        todoFormButton2 = (Button) getActivity().findViewById(R.id.todoFormButton2);
+        todoFormButton3 = (Button) getActivity().findViewById(R.id.todoFormButton3);
 
         context = getActivity().getApplicationContext();
 
+        Calendar calendar = Calendar.getInstance();
+        todoFormDateText.setText(calendar.get(Calendar.YEAR) + "년 " +
+                        (calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.DATE) + "일");
+
         setTodoListAdapter();
+
+        todoFormDateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar;
+
+                if (selected != null) {
+                    calendar = selected;
+                } else {
+                    calendar = Calendar.getInstance();
+                }
+
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(),
+                        listener, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DATE));
+
+                dialog.show();
+            }
+        });
+
+        todoFormCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                Fragment currentFragment = fragmentManager.findFragmentById(R.id.mainFragmantContainer);
+                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
+                transaction.remove(currentFragment).commit();
+
+                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).CALENDAR_FRAGMENT;
+            }
+        });
+
+        todoFormSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        todoFormButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        todoFormButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        todoFormButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
+
+    private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            if (selected == null) selected = Calendar.getInstance();
+            selected.set(year, monthOfYear, dayOfMonth);
+            todoFormDateText.setText(year + "년 " + (monthOfYear + 1) + "월 " + dayOfMonth +"일");
+        }
+    };
 
     /*
      * 이장연 : 지출 내역 매핑해주기
@@ -86,23 +173,4 @@ public class TodoFormFragment extends Fragment implements View.OnClickListener {
         todoFormListView.setAdapter(todoListAdapter);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.todoFormCancle:
-                break;
-
-            case R.id.todoFormSave:
-                break;
-
-            case R.id.todoFormButton1:
-                break;
-
-            case R.id.todoFormButton2:
-                break;
-
-            case R.id.todoFormButton3:
-                break;
-        }
-    }
 }

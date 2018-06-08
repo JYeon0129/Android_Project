@@ -3,7 +3,6 @@ package com.example.wkddu.android_project_mcm;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,7 +25,7 @@ import java.util.Date;
  * 수정 버튼 누르면 TodoFormFragment에 내용만 채워서 보여주면 될 것 같아요
  */
 
-public class TodoDetailFragment extends Fragment {
+public class SpendDetailFragment extends Fragment {
     Context context;
     TextView todoDetailTitleText, todoDetailCostText, todoDetailDateText,
         todoDetailTypeText, todoDetailBalanceText, todoDetailAllowText, todoDetailAfterText;
@@ -34,9 +33,9 @@ public class TodoDetailFragment extends Fragment {
     ImageButton todoDetailBack;
     View todoDetailTypeView;
 
-    Todo todo;
+    Spend spend;
 
-    public TodoDetailFragment() {
+    public SpendDetailFragment() {
         // Required empty public constructor
     }
 
@@ -69,15 +68,15 @@ public class TodoDetailFragment extends Fragment {
         todoDetailBack = (ImageButton) getActivity().findViewById(R.id.todoDetailBack);
         todoDetailTypeView = (View) getActivity().findViewById(R.id.todoDetailTypeView);
 
-        todoDetailTitleText.setText(todo.getTodoName());
-        todoDetailCostText.setText(todo.getCost()+"원");
+        todoDetailTitleText.setText(spend.getTitle());
+        todoDetailCostText.setText(spend.getCost()+"원");
 
-        Date current = todo.getDate();
+        Date current = spend.getDate();
         String str = current.getYear() + "년 " + current.getMonth() + "월 " + current.getDay() + "일";
         todoDetailDateText.setText(str);
 
         Helpers helpers = new Helpers();
-        Type type = helpers.returnType(todo.getType());
+        Type type = helpers.returnType(spend.getType());
         todoDetailTypeText.setText(type.getTypeName());
 
         ColorDrawable drawable = (ColorDrawable) todoDetailTypeView.getBackground();
@@ -126,8 +125,8 @@ public class TodoDetailFragment extends Fragment {
      * Todo todo : 할 일에 대한 객체 자체만 받으면 된다.
      */
 
-    public void setData(Todo todo) {
-        this.todo = todo;
+    public void setData(Spend spend) {
+        this.spend = spend;
     }
 
 }
