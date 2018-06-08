@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     final int CALENDAR_FRAGMENT = 1;
     final int GROUP_FRAGMENT = 2;
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 case BILL_FRAGMENT:
                     BillFragment billFragment = (BillFragment) new BillFragment();
-                    transaction.replace(R.id.mainFragmantContainer, billFragment);
+                    transaction.replace(R.id.mainFragmantContainer, billFragment, "billFragment");
                     transaction.commit();
                     break;
 

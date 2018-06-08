@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +38,10 @@ public class TodoFormFragment extends Fragment {
     View todoFormTypeView;
     Button todoFormCancle, todoFormSave, todoFormButton1, todoFormButton2, todoFormButton3;
     ListView todoFormListView;
+    LinearLayout todoDetailType;
     Context context;
     Calendar selected;
+    Type type;
 
 
     public TodoFormFragment() {
@@ -67,6 +70,7 @@ public class TodoFormFragment extends Fragment {
         todoFormDateText = (TextView) getActivity().findViewById(R.id.todoFormDateText);
         todoFormTypeView = (View) getActivity().findViewById(R.id.todoFormTypeView);
         todoFormListView = (ListView) getActivity().findViewById(R.id.todoFormListView);
+        todoDetailType = (LinearLayout) getActivity().findViewById(R.id.todoDetailType);
         todoFormCancle = (Button) getActivity().findViewById(R.id.todoFormCancle);
         todoFormSave = (Button) getActivity().findViewById(R.id.todoFormSave);
         todoFormButton1 = (Button) getActivity().findViewById(R.id.todoFormButton1);
@@ -98,6 +102,16 @@ public class TodoFormFragment extends Fragment {
                         calendar.get(Calendar.DATE));
 
                 dialog.show();
+            }
+        });
+
+        todoDetailType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                TypePickerFragment typePickerFragment = new TypePickerFragment();
+
+                typePickerFragment.show(fragmentManager, "typePickerFragment");
             }
         });
 
@@ -156,6 +170,7 @@ public class TodoFormFragment extends Fragment {
      * 이장연 : 지출 내역 매핑해주기
      * 해당 지출 타입에 맞는 거를 추려서 todoListAdapter에 넣어주면 됩니다!
      * todoFormButton1, todoFormButton2, todoFormButton3 버튼 클릭 이벤트도 구현해야 합니다
+     * 대충 list 만들어서 샘플로 구현해뒀습니다!
      */
 
     public void setTodoListAdapter() {
@@ -171,6 +186,12 @@ public class TodoFormFragment extends Fragment {
 
         TodoListAdapter todoListAdapter = new TodoListAdapter(context, R.layout.spend_list_row, spends);
         todoFormListView.setAdapter(todoListAdapter);
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+        todoFormTypeText.setText(type.getTypeName());
+        todoFormTypeView.setBackgroundColor(context.getResources().getColor(type.getTypeColor()));
     }
 
 }
