@@ -40,13 +40,11 @@ public class CalendarDotAdapter extends RecyclerView.Adapter<MyViewHolder> {
         int todoType = todoList.get(position).getType();
         int todoColor = 0;
 
-        if (holder.dot != null) {
-            Helpers helpers = new Helpers();
-            todoColor = helpers.setTypeColor(todoType);
+        Helpers helpers = new Helpers();
+        todoColor = helpers.setTypeColor(todoType);
 
-            GradientDrawable drawable = (GradientDrawable) holder.dot.getBackground();
-            drawable.setColor(context.getResources().getColor(todoColor));
-        }
+        GradientDrawable drawable = (GradientDrawable) holder.dot.getBackground();
+        drawable.setColor(context.getResources().getColor(todoColor));
     }
 
     @Override

@@ -31,14 +31,14 @@
         <Button
             android:layout_width="0dp"
             android:layout_weight="2"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:background="@android:color/transparent" />
 
         <Button
             android:id="@+id/todoDetailUpdate"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:background="@android:color/transparent"
             android:textColor="@color/darkyellow"
             android:textSize="14sp"
@@ -48,7 +48,7 @@
             android:id="@+id/todoDetailDelete"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:background="@android:color/transparent"
             android:textColor="@color/darkyellow"
             android:textSize="14sp"
@@ -78,7 +78,7 @@
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="2018년 6월 6일"
-            android:textSize="15sp"
+            android:textSize="13dp"
             android:textColor="@color/black"/>
 
     </LinearLayout>
@@ -105,7 +105,7 @@
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="술약속"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textColor="@color/black"/>
 
     </LinearLayout>
@@ -143,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/darkgray"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:text="술/유흥"/>
 
         </LinearLayout>
@@ -171,7 +171,7 @@
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="10000원"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textColor="@color/black"/>
 
     </LinearLayout>
@@ -204,7 +204,7 @@
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="현재 잔고"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textColor="@color/darkgray"/>
 
         <TextView
@@ -214,9 +214,10 @@
             android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
-            android:text="10000원"
-            android:textSize="15sp"
-            android:textColor="@color/black"/>
+            android:text="20000원"
+            android:textSize="16sp"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -234,7 +235,7 @@
             android:layout_marginLeft="42dp"
             android:gravity="center_vertical"
             android:text="할당 금액"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textColor="@color/darkgray"/>
 
         <TextView
@@ -245,8 +246,41 @@
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="10000원"
-            android:textSize="15sp"
-            android:textColor="@color/red"/>
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:layout_marginLeft="42dp"
+            android:gravity="center_vertical"
+            android:text="사용 후 잔액"
+            android:textSize="13sp"
+            android:textColor="@color/darkgray"/>
+
+        <TextView
+            android:id="@+id/todoDetailAfterText"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="10000원"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -1,15 +1,22 @@
 package com.example.wkddu.android_project_mcm;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /*
@@ -18,11 +25,14 @@ import android.widget.TextView;
  * 저장 누르면 새로 저장하거나 수정하는 것만 하면 됩니다!
  */
 
-public class TodoFormFragment extends Fragment {
+public class TodoFormFragment extends Fragment implements View.OnClickListener {
     EditText todoFormTitleEdit, todoFormCostEdit;
     TextView todoFormTypeText, todoFormBalanceText, todoFormAllowText, todoFormDateText;
-    Button todoFormCancle, todoFormSave;
+    Button todoFormCancle, todoFormSave, todoFormButton1, todoFormButton2, todoFormButton3;
     View todoFormTypeView;
+    ListView todoFormListView;
+    Context context;
+
 
     public TodoFormFragment() {
         // Required empty public constructor
@@ -47,40 +57,55 @@ public class TodoFormFragment extends Fragment {
         todoFormTitleEdit = (EditText) getActivity().findViewById(R.id.todoFormTitleEdit);
         todoFormCostEdit = (EditText) getActivity().findViewById(R.id.todoFormCostEdit);
         todoFormTypeText = (TextView) getActivity().findViewById(R.id.todoFormTypeText);
-        todoFormBalanceText = (TextView) getActivity().findViewById(R.id.todoFormBalanceText);
-        todoFormAllowText = (TextView) getActivity().findViewById(R.id.todoFormAllowText);
         todoFormDateText = (TextView) getActivity().findViewById(R.id.todoFormDateText);
         todoFormCancle = (Button) getActivity().findViewById(R.id.todoFormCancle);
         todoFormSave = (Button) getActivity().findViewById(R.id.todoFormSave);
         todoFormTypeView = (View) getActivity().findViewById(R.id.todoFormTypeView);
+        todoFormListView = (ListView) getActivity().findViewById(R.id.todoFormListView);
 
-        if (todoFormTypeText != null) {
+        context = getActivity().getApplicationContext();
 
-        }
-
-        if (todoFormBalanceText != null) {
-
-        }
-
-        if (todoFormAllowText != null) {
-
-        }
-
-        if (todoFormDateText != null) {
-
-        }
-
-        todoFormCancle.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });
-
-        todoFormSave.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });
+        setTodoListAdapter();
     }
 
+    /*
+     * 이장연 : 지출 내역 매핑해주기
+     * 해당 지출 타입에 맞는 거를 추려서 todoListAdapter에 넣어주면 됩니다!
+     * todoFormButton1, todoFormButton2, todoFormButton3 버튼 클릭 이벤트도 구현해야 합니다
+     */
+
+    public void setTodoListAdapter() {
+        ArrayList<Spend> spends = new ArrayList<>();
+        spends.add(new Spend("술약속", 10000, 0,
+            new Date(2018, 6, 6)));
+        spends.add(new Spend("닭발집 부숨", 22000, 0,
+                new Date(2018, 6, 7)));
+        spends.add(new Spend("곱쏘*^^*", 14000, 0,
+                new Date(2018, 6, 8)));
+        spends.add(new Spend("술약속", 3000, 0,
+                new Date(2018, 6, 9)));
+
+        TodoListAdapter todoListAdapter = new TodoListAdapter(context, R.layout.spend_list_row, spends);
+        todoFormListView.setAdapter(todoListAdapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.todoFormCancle:
+                break;
+
+            case R.id.todoFormSave:
+                break;
+
+            case R.id.todoFormButton1:
+                break;
+
+            case R.id.todoFormButton2:
+                break;
+
+            case R.id.todoFormButton3:
+                break;
+        }
+    }
 }
