@@ -1,8 +1,18 @@
 package com.example.wkddu.android_project_mcm;
 
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -16,11 +26,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     final int SETTINGS_FRAGMENT = 4;
     final int TODO_DETAIL = 5;
     final int TODO_CREATE = 6;
-
+    final int smsReceiveRequest = 1;
+    final int smsReadRequest = 2;
     LinearLayout menu_1, menu_2, menu_3, menu_4;
 
     int currentFragment; // 현재 프래그먼트 구별하기
-
+    BroadcastReceiver broadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void init() {
+        askPermission(new String[]{Manifest.permission.RECEIVE_SMS}, smsReceiveRequest);
+        askPermission(new String[]{Manifest.permission.READ_SMS}, smsReadRequest);
+
         menu_1 = (LinearLayout) findViewById(R.id.menu_1);
         menu_2 = (LinearLayout) findViewById(R.id.menu_2);
         menu_3 = (LinearLayout) findViewById(R.id.menu_3);
@@ -111,5 +125,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             currentFragment = fragmentNumber;
         }
+    }
+    boolean checkAppPermission(String[] requestPermission){
+        boolean[] requestResult= new boolean[requestPermission.length];
+        for(int i=0; i< requestResult.length; i++){
+            requestResult[i] = (ContextCompat.checkSelfPermission(this,
+                    requestPermission[i]) == PackageManager.PERMISSION_GRANTED);
+            if(!requestResult[i]){
+                return false;
+            }
+        }return true;
+    }
+
+    void askPermission(String[] requestPermission, int REQ_PERMISSION) {
+        ActivityCompat.requestPermissions(this,requestPermission,REQ_PERMISSION);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch(requestCode) {
+            case smsReceiveRequest :
+                if(!checkAppPermission(permissions)) {// 퍼미션동의했을때할일
+                    Toast.makeText(this, "권한이 거절됨", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+            case smsReadRequest :
+                if(!checkAppPermission(permissions)) {// 퍼미션동의했을때할일
+                    Toast.makeText(this, "권한이 거절됨", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+        Log.d("onDestory()","브로드캐스트리시버 해제됨");
     }
 }
