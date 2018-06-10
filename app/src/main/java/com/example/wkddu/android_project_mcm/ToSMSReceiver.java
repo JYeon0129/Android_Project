@@ -14,15 +14,6 @@ import java.util.Date;
 public class ToSMSReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
-            Log.d("onReceive()","부팅완료");
-        }
-        if (Intent.ACTION_SCREEN_ON == intent.getAction()) {
-            Log.d("onReceive()","스크린 ON");
-        }
-        if (Intent.ACTION_SCREEN_OFF == intent.getAction()) {
-            Log.d("onReceive()","스크린 OFF");
-        }
         if ("android.provider.Telephony.SMS_RECEIVED".equals(intent.getAction())) {
             Log.d("onReceive()","문자가 수신되었습니다");
         }
@@ -44,6 +35,11 @@ public class ToSMSReceiver extends BroadcastReceiver {
         String origNumber = smsMessage[0].getOriginatingAddress();
         // SMS 메시지 확인
         String message = smsMessage[0].getMessageBody().toString();
+        StringParser(message);
         Log.d("문자 내용", "발신자 : "+origNumber+", 내용 : " + message);
+    }
+
+    public void StringParser(String message){
+
     }
 }

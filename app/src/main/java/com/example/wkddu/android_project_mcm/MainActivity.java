@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         askPermission(new String[]{Manifest.permission.RECEIVE_SMS}, smsReceiveRequest);
         askPermission(new String[]{Manifest.permission.READ_SMS}, smsReadRequest);
 
+        Intent clipintent = new Intent(getApplicationContext(), ToClipboardListener.class);
+        startService(clipintent);
+
         menu_1 = (LinearLayout) findViewById(R.id.menu_1);
         menu_2 = (LinearLayout) findViewById(R.id.menu_2);
         menu_3 = (LinearLayout) findViewById(R.id.menu_3);
