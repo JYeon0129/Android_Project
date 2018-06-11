@@ -9,6 +9,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ToSMSReceiver extends BroadcastReceiver {
@@ -40,6 +41,8 @@ public class ToSMSReceiver extends BroadcastReceiver {
     }
 
     public void StringParser(String message){
+        ArrayList<String> msg = new ArrayList<>();
 
+        //msg.add()
     }
 }
