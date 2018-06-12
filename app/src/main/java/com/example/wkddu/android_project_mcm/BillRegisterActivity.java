@@ -1,6 +1,7 @@
 package com.example.wkddu.android_project_mcm;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -234,11 +235,11 @@ public class BillRegisterActivity extends AppCompatActivity {
     }
 
     private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
-        private final WeakReference<MainActivity> mActivityWeakReference;
+        private final WeakReference<BillRegisterActivity> mActivityWeakReference;
         private Vision.Images.Annotate mRequest;
 
-        LableDetectionTask(MainActivity activity, Vision.Images.Annotate annotate) {
-            mActivityWeakReference = new WeakReference<>(activity);
+        LableDetectionTask(BillRegisterActivity activity, Vision.Images.Annotate annotate) {
+            mActivityWeakReference = new WeakReference<BillRegisterActivity>(activity);
             mRequest = annotate;
         }
 
@@ -259,7 +260,7 @@ public class BillRegisterActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
-            MainActivity activity = mActivityWeakReference.get();
+            BillRegisterActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
                 imageDetail.setText(result);
@@ -273,7 +274,7 @@ public class BillRegisterActivity extends AppCompatActivity {
 
         // Do the real work in an async task, because we need to use the network anyway
         try {
-            AsyncTask<Object, Void, String> labelDetectionTask = new LableDetectionTask(this.getApplicationContext(), prepareAnnotationRequest(bitmap));
+            AsyncTask<Object, Void, String> labelDetectionTask = new LableDetectionTask(this, prepareAnnotationRequest(bitmap));
             labelDetectionTask.execute();
         } catch (IOException e) {
             Log.d(TAG, "failed to make API request because of other IOException " +
