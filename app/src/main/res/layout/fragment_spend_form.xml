@@ -47,8 +47,8 @@
         android:layout_marginBottom="5dp">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center"
             android:src="@drawable/img_clock"/>
 
@@ -56,7 +56,7 @@
             android:id="@+id/spendFormDateText"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
             android:text="2018년 6월 6일"
@@ -74,15 +74,15 @@
         android:layout_marginBottom="5dp">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center"
             android:src="@drawable/img_text"/>
 
         <EditText
             android:id="@+id/spendFormTitleEdit"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:singleLine="true"
             android:background="@android:color/transparent"
@@ -104,14 +104,14 @@
         android:layout_marginBottom="5dp">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center"
             android:src="@drawable/img_tag"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_marginLeft="20dp">
@@ -143,15 +143,15 @@
         android:layout_marginBottom="5dp">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center"
             android:src="@drawable/img_coin"/>
 
         <EditText
             android:id="@+id/spendFormCostEdit"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="20dp"
             android:singleLine="true"
             android:background="@android:color/transparent"
@@ -162,17 +162,38 @@
             android:textCursorDrawable="@color/colorPrimaryDark"/>
 
     </LinearLayout>
-    
-    <Button
-        android:id="@+id/spendFormAddBill"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:text="영수증으로 추가하기"
-        android:textColor="@color/darkgray"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:background="@drawable/add_bill_button"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/spendFormAddBill"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="영수증으로 추가"
+            android:textColor="@color/darkgray"
+            android:textSize="15sp"
+            android:background="@drawable/add_bill_button"/>
+
+        <Button
+            android:id="@+id/spendFormClipBoard"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="클립보드로 추가"
+            android:textColor="@color/darkgray"
+            android:textSize="15sp"
+            android:background="@drawable/add_clipboard_button"/>
+
+    </LinearLayout>
+
 </LinearLayout>
