@@ -11,8 +11,13 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class ToSMSReceiver extends BroadcastReceiver {
+    String date_pattern = "^[0-9]{2}+\\/+[0-9]{2}$";
+    String pay_pattern = "^[0-9]*$";
+    String usage_pattern = "^[가-힣a-zA-Z0-9()]*$";
+    String not_usage_pattern ="^[0-9]{3}.원*$";
     @Override
     public void onReceive(Context context, Intent intent) {
         if ("android.provider.Telephony.SMS_RECEIVED".equals(intent.getAction())) {
@@ -41,8 +46,54 @@ public class ToSMSReceiver extends BroadcastReceiver {
     }
 
     public void StringParser(String message){
-        ArrayList<String> msg = new ArrayList<>();
+        String msg[] = message.split("\n");
+        ArrayList<String> msg_split = new ArrayList<>();
+        boolean bank_flag = false;
+        boolean date_flag = false;
+        String month ="";
+        String day = "";
+        String payment = "";
+        String usage = "";
 
-        //msg.add()
+        for(int i = 0; i < msg.length; i++){
+            Log.v("sms_line",msg[i]);
+            String temp[] = msg[i].split(" ");
+            for(int j = 0; j < temp.length; j++){
+                msg_split.add(temp[j]);
+                Log.v("sms_space_split",temp[j]);
+            }
+        }
+        for(int i = 0; i < msg_split.size(); i++){
+            String str = msg_split.get(i);
+            if(str.contains("신한체크") || str.contains("기업BC") || str.contains("국민")){
+                bank_flag = true;
+            }
+            if(bank_flag){
+                if(str.matches(date_pattern)){
+                    month = str.split("\\/")[0];
+                    day = str.split("\\/")[1];
+                    Log.v("sms_date_split",month + "  " + day);
+                    date_flag = true;
+                }
+            }
+        }
+        if(date_flag){
+            for(int i = 0; i < msg_split.size(); i++){
+                String str1 = msg_split.get(i).replace(",","");
+                String str2 = msg_split.get(i);
+                str1 = str1.replace("원","");
+                if(str1.matches(pay_pattern)){
+                    payment = str1;
+                    Log.v("sms_payment_split",payment);
+                }
+                if(str2.matches(usage_pattern) && !str2.contains("잔액") && !str2.matches(not_usage_pattern)&&!str2.contains("신한체크") && !str1.contains("기업BC")){
+                    usage = str2;
+                    Log.v("sms_usage_split",usage);
+                }
+            }
+        }
+        if(month != "" && day != "" && payment != "" && usage != ""){
+            //저장하면 됨
+        }
     }
 }

@@ -17,7 +17,6 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     public static final String DATABASE_TABLE_INDIVIDUAL = "individual";
     public static final String DATABASE_TABLE_CLIPBOARD = "clipboard";
 
-    //
     public static final String ID = "id"; // 사용 내역 목록
     public static final String PROMISENAME = "promisename"; // 약속이름
     public static final String PROMISEKIND = "promisekind"; //  약속종류()<ex)식비,술/유흥,주거/통신,생활용품,의복/미용,건강/문화,교육,교통,기타>
@@ -40,7 +39,6 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     public static final String CLIP_USAGE = "clipusage";
     public static final String CLIP_PAYMENT = "clippayment";
 
-
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -58,7 +56,6 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     public void addClipboard(Clipboard clipboard){
