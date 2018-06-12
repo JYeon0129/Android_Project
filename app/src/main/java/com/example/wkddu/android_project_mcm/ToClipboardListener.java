@@ -14,13 +14,14 @@ import java.util.regex.Pattern;
 
 public class ToClipboardListener extends Service implements ClipboardManager.OnPrimaryClipChangedListener{
     ClipboardManager clipboardManager;
-    String[] p_bank = {"KB국민","신한","우리",""};
-    String p_date = "^[0-9]+원$";
+    DBHandler dbHandler;
+
     @Override
     public void onCreate() {
         super.onCreate();
         clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         clipboardManager.addPrimaryClipChangedListener(this);
+        dbHandler = new DBHandler(this, DBHandler.DATABASE_NAME, null, 1);
         Log.v("clipboard ready","ready");
     }
 
@@ -42,7 +43,11 @@ public class ToClipboardListener extends Service implements ClipboardManager.OnP
         boolean title_flag = false;
         boolean day_flag = false;
 
-        Intent intent = new Intent(getApplicationContext(),TodoFormFragment.class);
+        String month = "";
+        String day = "";
+        String usage = "";
+        String payment = "";
+
         if (clipboardManager != null && clipboardManager.getPrimaryClip() != null) {
             ClipData data = clipboardManager.getPrimaryClip();
             Log.v("clipboard", "clip data - item : " + data.getItemAt(0).getText().toString());
@@ -55,7 +60,6 @@ public class ToClipboardListener extends Service implements ClipboardManager.OnP
                 }
             }
             for(int i = 0; i<parse_result.size(); i++){
-                Log.v("split_result",parse_result.get(i));
                 init_flag = parse_result.get(i).toString().equals("-");
                 String temp ="";
                 int title_index = 2;
@@ -69,7 +73,7 @@ public class ToClipboardListener extends Service implements ClipboardManager.OnP
                         temp = parse_result.get(i+2).toString().replace(",","");
                         temp = temp.replace("원","");
                         Log.v("split_payment",temp);
-                        intent.putExtra("payment",temp);
+                        payment = temp;
                     }
                     else if(title_flag){
                         while(true) {
@@ -80,14 +84,20 @@ public class ToClipboardListener extends Service implements ClipboardManager.OnP
                             else break;
                         }
                         Log.v("split_title",temp);
-                        intent.putExtra("title",temp);
+                        usage = temp;
                     }
                     else if(day_flag){
                         temp = parse_result.get(i+2).toString();
                         Log.v("split_date",temp);
-                        intent.putExtra("date",temp);
+                        pay_date = temp.split("\\.");
+                        month = pay_date[1];
+                        day = pay_date[2];
                     }
                 }
+            }
+            if(!payment.equals("") && !month.equals("") && !day.equals("") && !usage.equals("")){
+                Clipboard clipboard = new Clipboard(month,day,usage,payment);
+                dbHandler.addClipboard(clipboard);
             }
         }
         else {

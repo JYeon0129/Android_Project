@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public DBHandler dbHandler;
+
     final int CALENDAR_FRAGMENT = 1;
     final int BILL_FRAGMENT = 2;
     final int SETTINGS_FRAGMENT = 3;
@@ -146,12 +148,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
-        Log.d("onDestory()","브로드캐스트리시버 해제됨");
     }
 }

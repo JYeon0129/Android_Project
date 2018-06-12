@@ -33,7 +33,8 @@ public class SpendFormFragment extends Fragment {
     Type type;
 
     Context context;
-
+    DBHandler dbHandler;
+    Clipboard clipboard;
     public SpendFormFragment() {
         // Required empty public constructor
     }
@@ -66,10 +67,20 @@ public class SpendFormFragment extends Fragment {
 
         context = getActivity().getApplicationContext();
 
+        dbHandler = new DBHandler(context,DBHandler.DATABASE_NAME, null, 1);
+        clipboard = dbHandler.getClipboard();
         Calendar calendar = Calendar.getInstance();
-        spendFormDateText.setText(calendar.get(Calendar.YEAR) + "년 " +
-                (calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.DATE) + "일");
-
+        if(clipboard != null){
+            spendFormTitleEdit.setText(clipboard.getUsage());
+            spendFormCostEdit.setText(clipboard.getPayment());
+            spendFormDateText.setText(calendar.get(Calendar.YEAR) + "년 " +
+                    clipboard.getMonth() + "월 " + clipboard.getDay() + "일");
+            dbHandler.deleteClipboard();
+        }
+        else {
+            spendFormDateText.setText(calendar.get(Calendar.YEAR) + "년 " +
+                    (calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.DATE) + "일");
+        }
         spendFormDateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
