@@ -19,7 +19,6 @@
 
     <View
         android:layout_width="1dp"
-        android:layout_marginTop="4dp"
         android:layout_height="match_parent"
         android:background="@color/lightgray" />
 
@@ -38,7 +37,6 @@
 
     <View
         android:layout_width="1dp"
-        android:layout_marginTop="4dp"
         android:layout_height="match_parent"
         android:background="@color/lightgray" />
 
@@ -51,8 +49,8 @@
         <View
             android:id="@+id/spendTypeView"
             android:layout_width="5dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="4dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
             android:layout_gravity="center_vertical"
             android:background="@color/bluegreen" />
 
@@ -71,7 +69,6 @@
 
     <View
         android:layout_width="1dp"
-        android:layout_marginTop="4dp"
         android:layout_height="match_parent"
         android:background="@color/lightgray" />
 

@@ -8,13 +8,12 @@ import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     final int CALENDAR_FRAGMENT = 1;
-    final int GROUP_FRAGMENT = 2;
-    final int BILL_FRAGMENT = 3;
-    final int SETTINGS_FRAGMENT = 4;
-    final int TODO_DETAIL = 5;
-    final int TODO_CREATE = 6;
+    final int BILL_FRAGMENT = 2;
+    final int SETTINGS_FRAGMENT = 3;
+    final int TODO_DETAIL = 4;
+    final int TODO_CREATE = 5;
 
-    LinearLayout menu_1, menu_2, menu_3, menu_4;
+    LinearLayout menu_1, menu_2, menu_3;
 
     int currentFragment; // 현재 프래그먼트 구별하기
 
@@ -31,12 +30,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menu_1 = (LinearLayout) findViewById(R.id.menu_1);
         menu_2 = (LinearLayout) findViewById(R.id.menu_2);
         menu_3 = (LinearLayout) findViewById(R.id.menu_3);
-        menu_4 = (LinearLayout) findViewById(R.id.menu_4);
 
         menu_1.setOnClickListener(this);
         menu_2.setOnClickListener(this);
         menu_3.setOnClickListener(this);
-        menu_4.setOnClickListener(this);
 
         /* 초기 프래그먼트는 캘린더 프래그먼트라 여기서 먼저 초기화해줍니다! */
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -53,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menu_1.setSelected(false);
         menu_2.setSelected(false);
         menu_3.setSelected(false);
-        menu_4.setSelected(false);
 
         switch (v.getId()) {
             case R.id.menu_1:
@@ -62,14 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.menu_2:
                 menu_2.setSelected(true);
-                callFragment(GROUP_FRAGMENT);
+                callFragment(BILL_FRAGMENT);
                 break;
             case R.id.menu_3:
                 menu_3.setSelected(true);
-                callFragment(BILL_FRAGMENT);
-                break;
-            case R.id.menu_4:
-                menu_4.setSelected(true);
                 callFragment(SETTINGS_FRAGMENT);
                 break;
         }
@@ -85,11 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case CALENDAR_FRAGMENT:
                     CalenderFragment calendarFragment = (CalenderFragment) new CalenderFragment();
                     transaction.replace(R.id.mainFragmantContainer, calendarFragment);
-                    transaction.commit();
-                    break;
-                case GROUP_FRAGMENT:
-                    GroupFragment groupFragment = (GroupFragment) new GroupFragment();
-                    transaction.replace(R.id.mainFragmantContainer, groupFragment);
                     transaction.commit();
                     break;
 

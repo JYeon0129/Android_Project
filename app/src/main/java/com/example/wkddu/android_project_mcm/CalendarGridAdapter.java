@@ -92,7 +92,7 @@ public class CalendarGridAdapter extends BaseAdapter {
                     Integer currentMonth = calendar.get(Calendar.MONTH) + 1;
                     String sToday = String.valueOf(today);
 
-                    if (sToday.equals(getItem(position).substring(1))) {
+                    if (sToday.equals(getItem(position).substring(1)) && month == currentMonth) {
                         holder.calDayText.setTextColor(context.getResources().getColor(R.color.bluegreen));
                         holder.calDayText.setTypeface(null, BOLD);
                     }
