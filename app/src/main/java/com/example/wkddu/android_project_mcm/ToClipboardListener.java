@@ -65,13 +65,12 @@ public class ToClipboardListener extends Service implements ClipboardManager.OnP
                 int title_index = 2;
                 String[] pay_date = null;
                 if(init_flag){
-                    pay_flag = parse_result.get(i+1).toString().equals("결제금액:");
+                    pay_flag = parse_result.get(i+1).toString().contains("금액:") && !parse_result.get(i+1).toString().equals("충전금액:");
                     title_flag = parse_result.get(i+1).toString().equals("구매처:");
-                    day_flag = parse_result.get(i+1).toString().equals("일시:");
+                    day_flag = parse_result.get(i+1).toString().contains("일시:");
 
                     if(pay_flag){
-                        temp = parse_result.get(i+2).toString().replace(",","");
-                        temp = temp.replace("원","");
+                        temp = parse_result.get(i+2).toString().replaceAll("[^0-9]","");
                         Log.v("split_payment",temp);
                         payment = temp;
                     }
