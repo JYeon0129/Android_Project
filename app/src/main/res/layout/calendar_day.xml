@@ -7,9 +7,11 @@
 
     <TextView
         android:id="@+id/calDayTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:paddingTop="2dp"
+        android:paddingBottom="4dp"
         android:textSize="10sp"
-        android:textColor="@color/darkgray" />
+        android:textColor="@color/darkgray"/>
 </LinearLayout>
