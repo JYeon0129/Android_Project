@@ -66,9 +66,10 @@ public class ToClipboardListener extends Service implements ClipboardManager.OnP
                     day_flag = parse_result.get(i+1).toString().equals("일시:");
 
                     if(pay_flag){
-                        temp = parse_result.get(i+2).toString();
-                        temp.split("^[0-9]$");
+                        temp = parse_result.get(i+2).toString().replace(",","");
+                        temp = temp.replace("원","");
                         Log.v("split_payment",temp);
+                        intent.putExtra("payment",temp);
                     }
                     else if(title_flag){
                         while(true) {
@@ -79,12 +80,12 @@ public class ToClipboardListener extends Service implements ClipboardManager.OnP
                             else break;
                         }
                         Log.v("split_title",temp);
+                        intent.putExtra("title",temp);
                     }
                     else if(day_flag){
-                        pay_date = parse_result.get(i+2).toString().split(".");
-                        Log.v("split_date_parse",parse_result.get(i+2).toString());
-                        temp = pay_date[0]+pay_date[1];
+                        temp = parse_result.get(i+2).toString();
                         Log.v("split_date",temp);
+                        intent.putExtra("date",temp);
                     }
                 }
             }
