@@ -163,37 +163,15 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/spendFormAddBill"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/spendFormAddBill"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="영수증으로 추가"
-            android:textColor="@color/darkgray"
-            android:textSize="15sp"
-            android:background="@drawable/add_bill_button"/>
-
-        <Button
-            android:id="@+id/spendFormClipBoard"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="클립보드로 추가"
-            android:textColor="@color/darkgray"
-            android:textSize="15sp"
-            android:background="@drawable/add_clipboard_button"/>
-
-    </LinearLayout>
-
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="영수증으로 추가하기"
+        android:textColor="@color/darkgray"
+        android:textSize="15sp"
+        android:background="@drawable/add_bill_button"/>
 </LinearLayout>
