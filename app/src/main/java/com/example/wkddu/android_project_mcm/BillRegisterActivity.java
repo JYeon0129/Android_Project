@@ -68,9 +68,6 @@ public class BillRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_register);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(BillRegisterActivity.this);
