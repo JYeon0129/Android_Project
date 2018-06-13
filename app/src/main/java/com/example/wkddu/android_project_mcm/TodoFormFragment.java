@@ -212,8 +212,8 @@ public class TodoFormFragment extends Fragment {
         spends.add(new Schedule("술약속", 3000, 0,
                 new Date(2018, 6, 9)));
 
-        TodoListAdapter todoListAdapter = new TodoListAdapter(context, R.layout.spend_list_row, spends);
-        todoFormListView.setAdapter(todoListAdapter);
+//        TodoListAdapter todoListAdapter = new TodoListAdapter(context, R.layout.spend_list_row, spends);
+//        todoFormListView.setAdapter(todoListAdapter);
     }
 
     public void setType(Type type) {
