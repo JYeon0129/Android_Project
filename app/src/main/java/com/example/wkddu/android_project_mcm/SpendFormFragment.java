@@ -3,6 +3,7 @@ package com.example.wkddu.android_project_mcm;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -164,6 +164,14 @@ public class SpendFormFragment extends Fragment {
         spendFormAddBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /*
+                일단은 activity로 연결함
+                클릭했을 경우, 사진, 갤러리 선택하는 팝업창 뜨게 하고
+                제목과 가격을 인텐트로 넘겨 받음
+                 */
+                Intent intent=new Intent(getActivity().getApplicationContext(), BillRegisterActivity.class);
+                startActivity(intent);
 
             }
         });
