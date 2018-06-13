@@ -59,7 +59,9 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.v("Database","onCreate Database");
         //Clipboard
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
         String CREATE_CLIPBOARD_TABLE = "create table if not exists " + DATABASE_TABLE_CLIPBOARD + "(" + CLIP_MONTH +
                 " text, " + CLIP_DAY + " text, " + CLIP_USAGE + " text, " + CLIP_PAYMENT +" integer, PRIMARY KEY("+ CLIP_MONTH + ", " +
@@ -67,6 +69,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         db.execSQL(CREATE_CLIPBOARD_TABLE);
 
         //Month
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_MONTH);
         String CREATE_MONTH_TABLE = "create table if not exists " + DATABASE_TABLE_MONTH + "(" + MONTH_YEAR +
                 " text, " + MONTH_MONTH + " text, " + MONTH_TOTALBUDGET + " INTEGER, " + MONTH_TOTALSPEND +" INTEGER, " +
                 MONTH_TRANSFERREMAIN + " INTEGER, PRIMARY KEY("+ MONTH_YEAR + ", " +
@@ -74,12 +77,14 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         db.execSQL(CREATE_MONTH_TABLE);
 
         //Day
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_DAY);
         String CREATE_DAY_TABLE = "create table if not exists " + DATABASE_TABLE_DAY + "(" + DAY_YEAR +
                 " text, " + DAY_MONTH + " text, " + DAY_DAY + " text, " + DAY_LIMIT + " INTEGER, " + DAY_SPEND +
                 " INTEGER, PRIMARY KEY("+ DAY_YEAR + ", " + DAY_MONTH + ", " + DAY_DAY+ "))";
         db.execSQL(CREATE_DAY_TABLE);
 
         //Schedule
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_SCH);
         String CREATE_SCH_TABLE = "create table if not exists " + DATABASE_TABLE_SCH + "(" + SCH_YEAR +
                 " text, " + SCH_MONTH + " text, " + SCH_DAY + " text, " + SCH_CAT + " INTEGER, " + SCH_SPEND +
                 " INTEGER, " + SCH_USAGE + " text, PRIMARY KEY("+ SCH_YEAR + ", " + SCH_MONTH + ", " + SCH_DAY +
@@ -89,6 +94,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onCreate(db);
     }
     // 클립보드 테이블 메소드
     public void addClipboard(Clipboard clipboard){
@@ -175,7 +181,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     }
     // 1개월씩 검색해야하므로 검색키는 연도와 월
     public TABLE_MONTH getMonth(String s_year, String s_month){
-        String query = "SELECT * FROM "+DATABASE_TABLE_MONTH + " WHERE " + MONTH_YEAR + " = \'"+s_year +"\' and" +
+        String query = "SELECT * FROM "+DATABASE_TABLE_MONTH + " WHERE " + MONTH_YEAR + " = \'"+s_year +"\' and " +
                 MONTH_MONTH + " = \'"+s_month +"\'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query,null);
@@ -242,8 +248,8 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     }
     // 1일을 검색하므로 검색 키는 연도 월 일
     public TABLE_DAY getDay(String s_year, String s_month, String s_day){
-        String query = "SELECT * FROM "+DATABASE_TABLE_DAY + " WHERE " + DAY_YEAR + " = \'"+s_year +"\' and" +
-                DAY_MONTH + " = \'"+s_month +"\' and" + DAY_DAY + " = \'"+s_day +"\'";
+        String query = "SELECT * FROM "+DATABASE_TABLE_DAY + " WHERE " + DAY_YEAR + " = \'"+s_year +"\' and " +
+                DAY_MONTH + " = \'"+s_month +"\' and " + DAY_DAY + " = \'"+s_day +"\'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query,null);
         TABLE_DAY table_day = null;
@@ -310,9 +316,9 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     }
     // 1일을 검색하므로 검색 키는 연도 월 일
     public TABLE_SCH getSch(String s_year, String s_month, String s_day, int s_cat, int s_spend, String s_usage){
-        String query = "SELECT * FROM "+DATABASE_TABLE_SCH + " WHERE " + SCH_YEAR + " = \'"+s_year +"\' and" +
-                SCH_MONTH + " = \'"+s_month +"\' and" + SCH_DAY + " = \'"+s_day +"\'" + SCH_CAT + " = \'"+s_cat +"\' and" +
-                SCH_SPEND + " = \'"+s_spend +"\' and" + SCH_USAGE + " = \'"+s_usage +"\'";
+        String query = "SELECT * FROM "+DATABASE_TABLE_SCH + " WHERE " + SCH_YEAR + " = \'"+s_year +"\' and " +
+                SCH_MONTH + " = \'"+s_month +"\' and " + SCH_DAY + " = \'"+s_day +"\' and " + SCH_CAT + " = \'"+s_cat +"\' and " +
+                SCH_SPEND + " = \'"+s_spend +"\' and " + SCH_USAGE + " = \'"+s_usage +"\'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query,null);
         TABLE_SCH table_sch = null;

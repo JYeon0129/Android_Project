@@ -1,5 +1,9 @@
 package com.example.wkddu.android_project_mcm;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class TABLE_SCH {
     private String year;
     private String month;
@@ -17,8 +21,20 @@ public class TABLE_SCH {
         this.usage = usage;
     }
 
+    public TABLE_SCH(String month, String day, int spend, String usage) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
+        Date date = new Date();
+        this.year = simpleDateFormat.format(date);
+        this.month = month;
+        this.day = day;
+        this.spend = spend;
+        this.usage = usage;
+        this.category = 8;
+    }
+
     public String getYear() {
         return year;
+
     }
 
     public void setYear(String year) {
