@@ -48,7 +48,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+        super(context, DATABASE_NAME, factory, version);
     }
 
     @Override
