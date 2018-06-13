@@ -416,4 +416,56 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         db.close();
         return sch_all;
     }
+
+    public ArrayList<TABLE_SCH> getSchSub(String s_year, String s_month, String s_day){
+        String query = "SELECT * FROM "+DATABASE_TABLE_SCH + " WHERE " + SCH_YEAR + " = \'"+s_year +"\' and " +
+                SCH_MONTH + " = \'"+s_month +"\' and " + SCH_DAY + " = \'"+s_day +"\'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        ArrayList sch_all = new ArrayList();
+        TABLE_SCH table_sch = null;
+        if(cursor.moveToFirst())
+        {
+            String year = "";
+            String month = "";
+            String day = "";
+            int sch_cat = 0;
+            int sch_spend = 0;
+            String sch_usage ="";
+
+            while(!cursor.isAfterLast())
+            {
+                for(int i=0;i<cursor.getColumnCount();i++)
+                {
+                    switch (cursor.getColumnName(i))
+                    {
+                        case SCH_YEAR:
+                            year= cursor.getString(i);
+                            break;
+                        case SCH_MONTH:
+                            month = cursor.getString(i);
+                            break;
+                        case SCH_DAY:
+                            day= cursor.getString(i);
+                            break;
+                        case SCH_CAT:
+                            sch_cat = cursor.getInt(i);
+                            break;
+                        case SCH_SPEND:
+                            sch_spend = cursor.getInt(i);
+                            break;
+                        case SCH_USAGE:
+                            sch_usage = cursor.getString(i);
+                            break;
+                    }
+                }
+                table_sch = new TABLE_SCH(year,month,day,sch_cat, sch_spend, sch_usage);
+                sch_all.add(table_sch);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+        return sch_all;
+    }
 }
