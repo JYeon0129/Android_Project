@@ -16,7 +16,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +63,8 @@ public class BillRegisterActivity extends AppCompatActivity {
 
     private TextView mImageDetails;
     private ImageView mMainImage;
+    private LinearLayout billRegisterLinearLayout;
+    private ScrollView billRegisterScrollView;
 
     public static String storeName="";
     public static String cost="";
@@ -67,8 +73,18 @@ public class BillRegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_register);
+        getSupportActionBar().hide();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        init();
+    }
+
+    public void init() {
+        Button fab = (Button) findViewById(R.id.fab);
+        mImageDetails = (TextView) findViewById(R.id.image_details);
+        mMainImage = (ImageView) findViewById(R.id.main_image);
+        billRegisterLinearLayout = (LinearLayout) findViewById(R.id.billRegisterLinearLayout);
+        billRegisterScrollView = (ScrollView) findViewById(R.id.billRegisterScrollView);
+
         fab.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(BillRegisterActivity.this);
             builder
@@ -77,10 +93,6 @@ public class BillRegisterActivity extends AppCompatActivity {
                     .setNegativeButton(R.string.dialog_select_camera, (dialog, which) -> startCamera());
             builder.create().show();
         });
-
-        mImageDetails = findViewById(R.id.image_details);
-        mMainImage = findViewById(R.id.main_image);
-
     }
 
     public void startGalleryChooser() {
@@ -157,6 +169,8 @@ public class BillRegisterActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
                 Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
+            } finally {
+                billRegisterLinearLayout.setVisibility(View.INVISIBLE);
             }
         } else {
             Log.d(TAG, "Image picker gave us a null image.");
