@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-
 /*
  * 할 일 폼 화면입니다. 새로 등록하거나 기존 내용을 수정할 때 씁니다!
  * 여기서 해줘야 할 일은
@@ -267,17 +266,6 @@ public class TodoFormFragment extends Fragment {
                     defaultType = type.getTypeNum();
                 } else {
                     defaultType = 1;
-                }
-
-                DBHandler dbHandler = new DBHandler(context, null, null, 1);
-                Schedule todo = new Schedule(todoFormTitleEdit.getText().toString(),
-                        Integer.parseInt(todoFormCostEdit.getText().toString()),
-                        defaultType, null);
-                Boolean result = dbHandler.createSchedule(todo, resultDate, true);
-
-                if (result) {
-                    Toast.makeText(context, "저장이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                    goToCalendar();
                 }
             }
         });

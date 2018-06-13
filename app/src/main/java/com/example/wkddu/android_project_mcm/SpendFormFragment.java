@@ -144,16 +144,6 @@ public class SpendFormFragment extends Fragment {
                     defaultType = 1;
                 }
 
-                DBHandler dbHandler = new DBHandler(context, null, null, 1);
-                Schedule schedule = new Schedule(spendFormTitleEdit.getText().toString(),
-                        Integer.parseInt(spendFormCostEdit.getText().toString()),
-                        defaultType, null);
-                Boolean result = dbHandler.createSchedule(schedule, resultDate, false);
-
-                if (result) {
-                    Toast.makeText(context, "저장이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                    goToCalendar();
-                }
             }
         });
 

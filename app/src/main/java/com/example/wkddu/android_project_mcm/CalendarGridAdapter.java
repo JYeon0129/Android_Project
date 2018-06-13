@@ -214,17 +214,7 @@ public class CalendarGridAdapter extends BaseAdapter {
                     Date currentDate = new Date(year, month, Integer.parseInt(getItem(position).substring(1)));
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String resultDate = formatter.format(currentDate);
-                    ArrayList<Schedule> todo = dbHandler.readSchedules(resultDate, true);
 
-                    RecyclerView.LayoutManager layoutManager;
-                    layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-                    holder.calRecyclerView.setLayoutManager(layoutManager);
-
-                    CalendarDotAdapter calendarDotAdapter = new CalendarDotAdapter(context, todo);
-
-                    if (holder.calRecyclerView != null) {
-                        holder.calRecyclerView.setAdapter(calendarDotAdapter);
-                    }
                 }
             } catch (Exception e) {
 
