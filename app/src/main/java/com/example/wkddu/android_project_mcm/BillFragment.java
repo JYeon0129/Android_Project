@@ -115,7 +115,7 @@ public class BillFragment extends Fragment {
         billTypeText.setText(type.getTypeName());
         billTypeView.setBackgroundColor(getActivity().getResources().getColor(type.getTypeColor()));
     }
-    public void selectList(int type, int period){
+    public void selectList(int select_type, int period){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         Date TodayDate = new Date();
 
@@ -123,7 +123,7 @@ public class BillFragment extends Fragment {
         list_sch = new ArrayList<>();
         schedule = dbHandler.getSchAll();
         for(int i = 0; i< schedule.size(); i++){
-            if(schedule.get(i).getCategory() == type){ // type일치
+            if(schedule.get(i).getCategory() == select_type){ // type일치
                 // 기간내 존재하는
                 String schTime = schedule.get(i).getYear()+schedule.get(i).getMonth()+schedule.get(i).getDay();
                 try {
