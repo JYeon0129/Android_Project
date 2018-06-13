@@ -107,6 +107,10 @@ public class ToSMSReceiver extends BroadcastReceiver {
             dbHandler.addSch(table_sch);
             TABLE_SCH tt = dbHandler.getSch("2018",month,day,8,Integer.parseInt(payment),usage);
             Log.v("db_saved_sms",""+tt.getSpend());
+            ArrayList<TABLE_SCH> sch = dbHandler.getSchAll();
+            for(int i = 0; i< sch.size();i++){
+                Log.v(""+i+" 번 째 spend ", ""+sch.get(i).getSpend());
+            }
         }
     }
 }
