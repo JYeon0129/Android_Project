@@ -21,7 +21,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     /* clipboard 테이블에 들어갈 내용 */
     public static final String ID = "id"; // 사용 내역 목록
     public static final String PROMISENAME = "promisename"; // 약속이름
-    public static final String PROMISEKIND = "promisekind"; // 0일 경우 todo, 1일 경우 spend
+    public static final String PROMISEKIND = "promisekind"; // 1일 경우 todo, 0일 경우 spend
     public static final String PROMISETYPE = "promisetype"; //  약속종류()<ex)식비,술/유흥,주거/통신,생활용품,의복/미용,건강/문화,교육,교통,기타>
     public static final String EXPECTEDSPEND = "expectedspend"; // 예상비용
     public static final String TOTALBUDGET = "totalbudget";  // 총예산 수입(지금까지의 예산수입+한달예산수입(+이월금(달 바뀔 때))
@@ -134,7 +134,21 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         return clipboard;
     }
 
-    public void insertSchedule() {
+    public boolean insertSchedule (Schedule schedule, int isTodo) {
+        ContentValues values = new ContentValues();
+        values.put(PROMISENAME, schedule.getTitle());
+        values.put(PROMISEKIND, isTodo);
+        values.put(PROMISETYPE, schedule.getType());
+        values.put(SPEND, schedule.getCost());
+        values.put(USEDAY, schedule.getDate().toString());
 
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (db.insert(DATABASE_TABLE_SCHEDULE, null, values) > 0) {
+            db.close();
+            return true;
+        } else {
+            db.close();
+            return false;
+        }
     }
 }

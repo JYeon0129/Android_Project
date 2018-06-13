@@ -17,8 +17,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,20 +116,37 @@ public class SpendFormFragment extends Fragment {
         spendFormCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                Fragment currentFragment = fragmentManager.findFragmentById(R.id.mainFragmantContainer);
-                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
-                transaction.remove(currentFragment).commit();
-
-                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).CALENDAR_FRAGMENT;
+                goToCalendar();
             }
         });
 
         spendFormSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date defaultDate;
+                if (selected != null) {
+                    defaultDate = selected.getTime();
+                } else {
+                    defaultDate = new Date();
+                }
 
+                int defaultType;
+                if (type != null) {
+                    defaultType = type.getTypeNum();
+                } else {
+                    defaultType = 1;
+                }
+
+                DBHandler dbHandler = new DBHandler(context, null, null, 1);
+                Todo todo = new Todo(spendFormTitleEdit.getText().toString(),
+                        Integer.parseInt(spendFormCostEdit.getText().toString()),
+                        defaultType, defaultDate);
+                Boolean result = dbHandler.insertSchedule(todo, 1);
+
+                if (result) {
+                    Toast.makeText(context, "저장이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                    goToCalendar();
+                }
             }
         });
 
@@ -141,8 +160,16 @@ public class SpendFormFragment extends Fragment {
 
             }
         });
+    }
 
+    private void goToCalendar() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.mainFragmantContainer);
+        transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
+        transaction.remove(currentFragment).commit();
 
+        ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).CALENDAR_FRAGMENT;
     }
 
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {

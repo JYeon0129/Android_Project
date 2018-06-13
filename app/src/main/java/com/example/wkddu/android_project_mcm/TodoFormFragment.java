@@ -118,20 +118,37 @@ public class TodoFormFragment extends Fragment {
         todoFormCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                Fragment currentFragment = fragmentManager.findFragmentById(R.id.mainFragmantContainer);
-                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
-                transaction.remove(currentFragment).commit();
-
-                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).CALENDAR_FRAGMENT;
+                goToCalendar();
             }
         });
 
         todoFormSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date defaultDate;
+                if (selected != null) {
+                    defaultDate = selected.getTime();
+                } else {
+                    defaultDate = new Date();
+                }
 
+                int defaultType;
+                if (type != null) {
+                    defaultType = type.getTypeNum();
+                } else {
+                    defaultType = 1;
+                }
+
+                DBHandler dbHandler = new DBHandler(context, null, null, 1);
+                Todo todo = new Todo(todoFormTitleEdit.getText().toString(),
+                        Integer.parseInt(todoFormCostEdit.getText().toString()),
+                        defaultType, defaultDate);
+                Boolean result = dbHandler.insertSchedule(todo, 1);
+
+                if (result) {
+                    Toast.makeText(context, "저장이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                    goToCalendar();
+                }
             }
         });
 
@@ -165,6 +182,16 @@ public class TodoFormFragment extends Fragment {
             todoFormDateText.setText(year + "년 " + (monthOfYear + 1) + "월 " + dayOfMonth +"일");
         }
     };
+
+    private void goToCalendar() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.mainFragmantContainer);
+        transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
+        transaction.remove(currentFragment).commit();
+
+        ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).CALENDAR_FRAGMENT;
+    }
 
     /*
      * 이장연 : 지출 내역 매핑해주기
