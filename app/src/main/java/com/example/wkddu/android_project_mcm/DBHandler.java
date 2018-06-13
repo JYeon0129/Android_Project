@@ -288,5 +288,75 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     }
 
     //Schedule
+    public void addSch(TABLE_SCH sch){
+        ContentValues value = new ContentValues();
+        value.put(SCH_YEAR,sch.getYear());
+        value.put(SCH_MONTH,sch.getMonth());
+        value.put(SCH_DAY,sch.getDay());
+        value.put(SCH_CAT,sch.getCategory());
+        value.put(SCH_SPEND,sch.getSpend());
+        value.put(SCH_USAGE,sch.getUsage());
 
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(DATABASE_TABLE_SCH, null, value);
+        db.close();
+    }
+
+    public void deleteSch(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + DATABASE_TABLE_SCH;
+        db.execSQL(query);
+        db.close();
+    }
+    // 1일을 검색하므로 검색 키는 연도 월 일
+    public TABLE_SCH getSch(String s_year, String s_month, String s_day, int s_cat, int s_spend, String s_usage){
+        String query = "SELECT * FROM "+DATABASE_TABLE_SCH + " WHERE " + SCH_YEAR + " = \'"+s_year +"\' and" +
+                SCH_MONTH + " = \'"+s_month +"\' and" + SCH_DAY + " = \'"+s_day +"\'" + SCH_CAT + " = \'"+s_cat +"\' and" +
+                SCH_SPEND + " = \'"+s_spend +"\' and" + SCH_USAGE + " = \'"+s_usage +"\'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        TABLE_SCH table_sch = null;
+        if(cursor.moveToFirst())
+        {
+            String year = "";
+            String month = "";
+            String day = "";
+            int sch_cat = 0;
+            int sch_spend = 0;
+            String sch_usage ="";
+
+            while(!cursor.isAfterLast())
+            {
+                for(int i=0;i<cursor.getColumnCount();i++)
+                {
+                    switch (cursor.getColumnName(i))
+                    {
+                        case SCH_YEAR:
+                            year= cursor.getString(i);
+                            break;
+                        case SCH_MONTH:
+                            month = cursor.getString(i);
+                            break;
+                        case SCH_DAY:
+                            day= cursor.getString(i);
+                            break;
+                        case SCH_CAT:
+                            sch_cat = cursor.getInt(i);
+                            break;
+                        case SCH_SPEND:
+                            sch_spend = cursor.getInt(i);
+                            break;
+                        case SCH_USAGE:
+                            sch_usage = cursor.getString(i);
+                            break;
+                    }
+                }
+                table_sch = new TABLE_SCH(year,month,day,sch_cat, sch_spend, sch_usage);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+        return table_sch;
+    }
 }
