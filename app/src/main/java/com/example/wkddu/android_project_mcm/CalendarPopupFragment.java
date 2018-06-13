@@ -28,8 +28,7 @@ public class CalendarPopupFragment extends DialogFragment {
     ListView calPopupTodoListView;
     ListView calPopupSpendListView;
     String day;
-    ArrayList<Schedule> todoList;
-    ArrayList<Schedule> spendList;
+    ArrayList<TABLE_SCH> sches;
 
     public CalendarPopupFragment() {
         // Required empty public constructor
@@ -60,29 +59,29 @@ public class CalendarPopupFragment extends DialogFragment {
 
         calPopupDayText.setText(day.substring(1) + "일");
 
-        CalendarListAdapter calendarTodoListAdapter = new CalendarListAdapter(
-                getContext(), R.layout.calendar_todo_row, todoList);
-
-        calPopupTodoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
-
-                TodoDetailFragment todoDetailFragment = (TodoDetailFragment) new TodoDetailFragment();
-                todoDetailFragment.setData(todoList.get(position));
-                transaction.add(R.id.mainFragmantContainer, todoDetailFragment);
-                transaction.commit();
-
-                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_DETAIL;
-                getDialog().dismiss();
-            }
-        });
-
-        calPopupTodoListView.setAdapter(calendarTodoListAdapter);
+//        CalendarListAdapter calendarTodoListAdapter = new CalendarListAdapter(
+//                getContext(), R.layout.calendar_todo_row, sches);
+//
+//        calPopupTodoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
+//
+//                TodoDetailFragment todoDetailFragment = (TodoDetailFragment) new TodoDetailFragment();
+//                todoDetailFragment.setData(sches.get(position));
+//                transaction.add(R.id.mainFragmantContainer, todoDetailFragment);
+//                transaction.commit();
+//
+//                ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).TODO_DETAIL;
+//                getDialog().dismiss();
+//            }
+//        });
+//
+//        calPopupTodoListView.setAdapter(calendarTodoListAdapter);
 
         CalendarListAdapter calendarSpendListAdapter = new CalendarListAdapter(
-                getContext(), R.layout.calendar_todo_row, spendList);
+                getContext(), R.layout.calendar_todo_row, sches);
 
         calPopupSpendListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -91,7 +90,7 @@ public class CalendarPopupFragment extends DialogFragment {
                 transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
 
                 SpendDetailFragment spendDetailFragment = (SpendDetailFragment) new SpendDetailFragment();
-                spendDetailFragment.setData(spendList.get(position));
+                spendDetailFragment.setData(sches.get(position));
                 transaction.add(R.id.mainFragmantContainer, spendDetailFragment);
                 transaction.commit();
 
@@ -109,10 +108,9 @@ public class CalendarPopupFragment extends DialogFragment {
      * 2. ArrayList<Todo> todoList : 해당 요일에 해야할 일들
      */
 
-    public void setData(String day, ArrayList<Schedule> todoList, ArrayList<Schedule> spendList) {
+    public void setData(String day, ArrayList<TABLE_SCH> sches) {
         this.day = day;
-        this.todoList = todoList;
-        this.spendList = spendList;
+        this.sches = sches;
     }
 
     public void onResume() {

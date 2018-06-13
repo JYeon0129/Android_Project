@@ -19,15 +19,11 @@ import java.util.ArrayList;
 
 
 public class CalendarDotAdapter extends RecyclerView.Adapter<MyViewHolder> {
-    ArrayList<Schedule> todoList;
+    ArrayList<TABLE_SCH> todoList;
     Context context;
 
-    /*DatabaseRerence mDatabase;
-    mDatabase = FirebaseDatabase.getInstance().getReference("year");
-    DatabaseReference rDatabase = mDatabase.child("month");
-    DatabaseReference rDatabase = rDatabase.child("day");*/
 
-    public CalendarDotAdapter(Context context, ArrayList<Schedule> Data) {
+    public CalendarDotAdapter(Context context, ArrayList<TABLE_SCH> Data) {
         this.context = context;
         this.todoList = Data;
     }
@@ -44,7 +40,7 @@ public class CalendarDotAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        int todoType = todoList.get(position).getType();
+        int todoType = todoList.get(position).getCategory();
 
         Helpers helpers = new Helpers();
         int todoColor = helpers.returnType(todoType).getTypeColor();

@@ -195,30 +195,19 @@ public class CalendarGridAdapter extends BaseAdapter {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         //이것만 필요함
+                    */
+                    ArrayList<TABLE_SCH> schedules = dbHandler
+                            .getSchSub(year+"", month+"", getItem(position).substring(1));
 
+                    RecyclerView.LayoutManager layoutManager;
+                    layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                    holder.calRecyclerView.setLayoutManager(layoutManager);
 
-                        // A new comment has been added, add it to the displayed list
-                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+                    CalendarDotAdapter calendarDotAdapter = new CalendarDotAdapter(context, schedules);
 
-                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
-                        ImageData data = dataSnapshot.getValue(ImageData.class);
-
-                        // [START_EXCLUDE]
-                        // Update RecyclerView
-                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
-                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
-                        mAdapter.notifyItemInserted(mData.size() - 1);
-                        // [END_EXCLUDE]
-
-                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    if (holder.calRecyclerView != null) {
+                        holder.calRecyclerView.setAdapter(calendarDotAdapter);
                     }
-                }
-                    *
-                    * */
-                    Date currentDate = new Date(year, month, Integer.parseInt(getItem(position).substring(1)));
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                    String resultDate = formatter.format(currentDate);
-
                 }
             } catch (Exception e) {
 

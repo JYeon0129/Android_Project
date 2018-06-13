@@ -283,7 +283,7 @@ public class CalenderFragment extends Fragment {
     }
 
     /*
-     * 이강민 :  캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기
+
      * 지금 밑에는 ArrayList를 만들어서 랜덤으로 그냥 돌리고 있는데 다 지우고..
      * 저 밑에 setData 함수 두 번째 인자에 ArrayList<Todo>로 넘기면 됩니다!
      * 세 번째 인자는 해당 날짜의 지출 내역인데 ArrayList<Spend>로 넘기면 됩니다!
@@ -321,12 +321,15 @@ public class CalenderFragment extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         CalendarPopupFragment calendarPopupFragment = new CalendarPopupFragment();
 
-        ArrayList<Schedule> todo = new ArrayList<>();
-        ArrayList<Schedule> spend = new ArrayList<>();
+        DBHandler dbHandler = new DBHandler(context, null, null, 1);
+        ArrayList<TABLE_SCH> schedules = dbHandler
+                .getSchSub(year+"", month+"", dayList.get(position).substring(1));
 
-        calendarPopupFragment.setData(dayList.get(position), todo, spend);
+        ArrayList<TABLE_SCH> sches = new ArrayList<>();
 
-        if (todo.size() == 0 && spend.size() == 0) {
+        calendarPopupFragment.setData(dayList.get(position), sches);
+
+        if (sches.size() == 0) {
             /* 할 일도 없고 사용 내역도 없는 날짜의 경우 팝업이 뜨지 않습니담 */
         } else {
             calendarPopupFragment.show(fragmentManager, "calendarPopupWindow");
