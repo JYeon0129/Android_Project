@@ -14,12 +14,15 @@ import java.util.ArrayList;
 public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
     public static final String DATABASE_NAME = "MCMdatabase.db";
-    public static final String DATABASE_TABLE_INDIVIDUAL = "individual";
+    public static final String DATABASE_TABLE_CALENDAR = "calendar";
     public static final String DATABASE_TABLE_CLIPBOARD = "clipboard";
+    public static final String DATABASE_TABLE_SCHEDULE = "schedule";
 
+    /* clipboard 테이블에 들어갈 내용 */
     public static final String ID = "id"; // 사용 내역 목록
     public static final String PROMISENAME = "promisename"; // 약속이름
-    public static final String PROMISEKIND = "promisekind"; //  약속종류()<ex)식비,술/유흥,주거/통신,생활용품,의복/미용,건강/문화,교육,교통,기타>
+    public static final String PROMISEKIND = "promisekind"; // 0일 경우 todo, 1일 경우 spend
+    public static final String PROMISETYPE = "promisetype"; //  약속종류()<ex)식비,술/유흥,주거/통신,생활용품,의복/미용,건강/문화,교육,교통,기타>
     public static final String EXPECTEDSPEND = "expectedspend"; // 예상비용
     public static final String TOTALBUDGET = "totalbudget";  // 총예산 수입(지금까지의 예산수입+한달예산수입(+이월금(달 바뀔 때))
     public static final String MONTHINCOME = "monthincome"; // 한달예산 수입<ex)월급, 용돈>
@@ -39,19 +42,29 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     public static final String CLIP_USAGE = "clipusage";
     public static final String CLIP_PAYMENT = "clippayment";
 
+
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         //Clipboard
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
         String CREATE_CLIPBOARD_TABLE = "create table if not exists " + DATABASE_TABLE_CLIPBOARD + "(" + CLIP_MONTH +
                 " text, " + CLIP_DAY + " text, " + CLIP_USAGE + " text, " + CLIP_PAYMENT +" integer, PRIMARY KEY("+ CLIP_MONTH + ", " +
                 CLIP_DAY + ", "+ CLIP_USAGE + ", " + CLIP_PAYMENT + "))";
         db.execSQL(CREATE_CLIPBOARD_TABLE);
+
+        //db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_SCHEDULE);
+        String CREATE_SCHEDULE_TABLE = "create table if not exists " + DATABASE_TABLE_SCHEDULE + "(" +
+                ID + " integer primary key autoincrement, " +
+                PROMISENAME + " text, " +
+                PROMISEKIND + " integer, " +
+                PROMISETYPE + " integer, " +
+                SPEND + " integer, " +
+                USEDAY + " date)";
+        db.execSQL(CREATE_SCHEDULE_TABLE);
     }
 
     @Override
@@ -119,5 +132,9 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         cursor.close();
         db.close();
         return clipboard;
+    }
+
+    public void insertSchedule() {
+
     }
 }

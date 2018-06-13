@@ -47,7 +47,7 @@ public class CalendarTodoListAdapter extends ArrayAdapter<Todo> {
 
             calRowColor.setBackgroundColor(context.getResources().getColor(todoColor));
 
-            calRowTitleText.setText(todo.getTodoName());
+            calRowTitleText.setText(todo.getTitle());
             calRowCostText.setText(todo.getCost()+"원");
         }
 

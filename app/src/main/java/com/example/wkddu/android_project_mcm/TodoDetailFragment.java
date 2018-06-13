@@ -69,7 +69,7 @@ public class TodoDetailFragment extends Fragment {
         todoDetailBack = (ImageButton) getActivity().findViewById(R.id.todoDetailBack);
         todoDetailTypeView = (View) getActivity().findViewById(R.id.todoDetailTypeView);
 
-        todoDetailTitleText.setText(todo.getTodoName());
+        todoDetailTitleText.setText(todo.getTitle());
         todoDetailCostText.setText(todo.getCost()+"원");
 
         Date current = todo.getDate();
