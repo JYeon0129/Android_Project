@@ -145,7 +145,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         db.close();
         return clipboard;
     }
-
+    //sch method
     public boolean createSchedule (Schedule schedule, String date, boolean isTodo) {
         ContentValues values = new ContentValues();
         values.put(PROMISENAME, schedule.getTitle());
