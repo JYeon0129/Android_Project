@@ -34,6 +34,7 @@ public class CalendarGridAdapter extends BaseAdapter {
     Context context;
     Calendar calendar;
     int gridViewHeight, year, month;
+    int goalbudget = 10000;
     DBHandler dbHandler = new DBHandler(context, null, null, 1);
 
     public CalendarGridAdapter(Context context, List<String> list, int year, int month) {
@@ -113,13 +114,16 @@ public class CalendarGridAdapter extends BaseAdapter {
                         holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.morelightgray));
                         holder.calBalanceText.setTextColor(context.getResources().getColor(R.color.darkgray));
                     } else {
-                        if (position % 3 == 0) { // 2번 케이스
-                            holder.calBalancePlusMinus.setText("-");
-                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
-                        } else { // 3번 케이스
-                            holder.calBalancePlusMinus.setText("+");
-                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
-                        }
+//                        int nowLimit;
+//                        nowLimit=dbHandler.getDay(year+"",month+"", Integer.parseInt(getItem(position).substring(1))+"").getDay_limit();//현재 날짜 정보
+//                        int nowDaySpend;
+//                        nowDaySpend=dbHandler.getDay(year+"",month+"", Integer.parseInt(getItem(position).substring(1))+"").getDay_spend();
+//
+//                        if (nowLimit<nowDaySpend) { // 2번 케이스=>사용 가능 금액(예산)을 넘었을 경우
+//                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
+//                        } else if(nowLimit>=nowDaySpend) { // 3번 케이스
+//                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
+//                        }
                     }
 
                     /* 쓸 수 있는 금액 or 사용한 금액 표기하기
