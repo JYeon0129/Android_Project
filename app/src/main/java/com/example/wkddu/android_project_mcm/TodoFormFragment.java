@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -76,6 +77,8 @@ public class TodoFormFragment extends Fragment {
         todoFormButton1 = (Button) getActivity().findViewById(R.id.todoFormButton1);
         todoFormButton2 = (Button) getActivity().findViewById(R.id.todoFormButton2);
         todoFormButton3 = (Button) getActivity().findViewById(R.id.todoFormButton3);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         context = getActivity().getApplicationContext();
 

@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -66,6 +67,8 @@ public class SpendFormFragment extends Fragment {
         spendFormSave = (Button) getActivity().findViewById(R.id.spendFormSave);
         spendFormAddBill = (Button) getActivity().findViewById(R.id.spendFormAddBill);
         spendFormTypeView = (View) getActivity().findViewById(R.id.spendFormTypeView);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         context = getActivity().getApplicationContext();
 
