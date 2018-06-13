@@ -120,6 +120,34 @@ public class CalenderFragment extends Fragment {
      * 이강민 : 잔액 보여주기
      * 해당 월의 총 예산 (수입), 사용한 돈을 DB에서 가져와서 잔액을 계산하고 화면에 뿌려주면 됩니다!
      * 여기서 화면 상단 바의 값을 설정합니다.
+     * calendarBalanceText
+     */
+    /*
+     * year -> month -> day // 잔액 -> totalbuget - totalspend
+     * myRef.child("year").child("month").child("day").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+     * 화면 상단 바의 값 = (totalbudget - totalspend) / totalbudget) * 100
+     * 바로 밑 함수(setCalendarSeekBar()) 참고
      */
     private void setCalendarSeekBar() {
         budget = 50000;
@@ -139,7 +167,11 @@ public class CalenderFragment extends Fragment {
          * 반대일 경우에는 웃는 표정을 보여줍니다.
          * 밑에 true가 들어간 자리가 웃는 표정이고 else가 우는 표정인데 저 조건문 내용만 바꾸면 됩니다!
          */
-
+        /*
+         * totalbudget - totalspend < goalusage // 목표소비예산이 사용금액보다 큰 경우 웃는 이모티콘
+         *                          >           //                          작을 경우 울상 이모티콘으로 설정
+         * 바로 밑 소스코드 참조
+         */
         if (true) {
             calendarSeekBar.setThumb(getActivity().getResources().getDrawable(R.drawable.custom_thumb_smile));
         } else {
@@ -251,13 +283,39 @@ public class CalenderFragment extends Fragment {
     }
 
     /*
-     * 이강민 : 캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기
+     * 이강민 :  캘린더의 칸 클릭 시 해당 리스트 팝업 창 호출하기
      * 지금 밑에는 ArrayList를 만들어서 랜덤으로 그냥 돌리고 있는데 다 지우고..
      * 저 밑에 setData 함수 두 번째 인자에 ArrayList<Todo>로 넘기면 됩니다!
      * 세 번째 인자는 해당 날짜의 지출 내역인데 ArrayList<Spend>로 넘기면 됩니다!
      * 오늘 연도는 year, 월은 month, 일은 dayList.get(position).substring(1)에 담겨 있으니
      * 이걸로 날짜 만들어서 쿼리 짜서 해당 날짜에 할 일들 가져오면 될 것 같아요!
      */
+
+    /*
+     * year -> month -> day -> todo // 할 일
+     * myRef.child("year").child("month").child("day").child("todo").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+     * */
 
     public void gridViewItemClick(View v, int position, long id) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

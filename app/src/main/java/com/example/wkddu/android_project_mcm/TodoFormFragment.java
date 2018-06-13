@@ -132,6 +132,127 @@ public class TodoFormFragment extends Fragment {
         todoFormSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /*
+                 * todoFormDateText(일정날짜), todoFormTitleEdit(일정제목), todoFormTypeText(일정종류), todoFormCostEdit(사용할 돈-사용자지정), todoFormCostText(예상소비비용) 값 받아서 Firebase에 저장하기
+                 * year -> month -> day  // 해당날짜
+                 * year -> month -> day -> todo // 해당일정제목
+                 * year -> month -> day -> spendtodo -> category // 일정종류
+                 * year -> month -> day -> spendtodo -> spend // 사용할 돈(사용자지정)
+                 * year -> month -> day -> limit // 예상소비비용(자동계산)
+                 * myRef.child("year").child("month").child("day").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+                 * myRef.child("year").child("month").child("day").child("todo").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+                myRef.child("year").child("month").child("day").child("spendtodo").child("category").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+                myRef.child("year").child("month").child("day").child("spendtodo").child("spend").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+                myRef.child("year").child("month").child("day").child("limit").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+
+                 */
+
                 Calendar resultCal;
                 if (selected != null) {
                     resultCal = selected;

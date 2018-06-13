@@ -15,11 +15,17 @@ import java.util.ArrayList;
  * 여기서 해줘야 할 일은
  * 해당 날짜에 있는 일정을 불러와서 타입에 따라 점만 찍어주면 됩니다!
  */
-//넣어야 되는 위치, 필요한 위치를 주석으로 확인시켜주기
+
+
 
 public class CalendarDotAdapter extends RecyclerView.Adapter<MyViewHolder> {
     ArrayList<Schedule> todoList;
     Context context;
+
+    /*DatabaseRerence mDatabase;
+    mDatabase = FirebaseDatabase.getInstance().getReference("year");
+    DatabaseReference rDatabase = mDatabase.child("month");
+    DatabaseReference rDatabase = rDatabase.child("day");*/
 
     public CalendarDotAdapter(Context context, ArrayList<Schedule> Data) {
         this.context = context;
@@ -59,5 +65,36 @@ class MyViewHolder extends RecyclerView.ViewHolder {
     public MyViewHolder(View v) {
         super(v);
         dot = (View) v.findViewById(R.id.calRowDot);
+
+        /*
+         *
+         * year -> month -> day -> todo -> category(todoFormTypeView) // 일정카테고리별 색상
+         * ex) myRef.child("year").child("month").child("day").child("spendtodo").child("category").getValue(n); // 일정 카테고리별 색상 갯수 받기?
+         *
+         *    myRef.child("year").child("month").child("day").child("spendtodo").child("category").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+         *    // 받은 일정카테고리별 색상을 점 색상으로 매칭
+         *    // 매칭된 점색상을 달력에 출력하기
+         */
     }
 }

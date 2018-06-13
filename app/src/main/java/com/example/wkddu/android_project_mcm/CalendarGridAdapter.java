@@ -122,7 +122,56 @@ public class CalendarGridAdapter extends BaseAdapter {
                         }
                     }
 
-                    /* 쓸 수 있는 금액 or 사용한 금액 표기하기 */
+                    /* 쓸 수 있는 금액 or 사용한 금액 표기하기
+                    * year -> month -> day -> limit // 하루 사용할 수 있는 금액
+                    * year -> month -> day -> totaldayspend // 하루동안 사용한 금액
+                    * myRef.child("year").child("month").child("day").child("limit").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+
+                myRef.child("year").child("month").child("day").child("totaldayspend").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
+
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+                    * 바로 밑 두줄 소스코드 참고
+                    * */
                     holder.calDayText.setText(getItem(position).substring(1));
                     holder.calBalanceText.setText((10000 + position * 100) + "");
 
@@ -136,7 +185,32 @@ public class CalendarGridAdapter extends BaseAdapter {
                      * ArrayList<Todo>로 만들어서 밑에 있는 calendarDotAdapter 생성자의 두 번째 인자로 주면 됩니다!
                      * ArrayList로 한건 미리보기용입니다. 이거 지우고 하시면 됩니다!
                      */
+                    /*
+                    * year -> month -> day -> todo // 할 일
+                    * myRef.child("year").child("month").child("day").child("todo").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //이것만 필요함
 
+
+                        // A new comment has been added, add it to the displayed list
+                        //private List<Comment> mComments = new ArrayList<>(); //리스트를 만듦(객체들의 리스트)
+
+                        //Comment comment = dataSnapshot.getValue(Comment.class); //ImageData class 로 바꿔줘야됨됨
+                        ImageData data = dataSnapshot.getValue(ImageData.class);
+
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mCommentIds.add(dataSnapshot.getKey());//getKey() : 키값을 가져옴
+                        mData.add(data);//arrayList에 객체 하나를 추가(add)함
+                        mAdapter.notifyItemInserted(mData.size() - 1);
+                        // [END_EXCLUDE]
+
+                       Log.d("출력 로그", "onChildAdded:" + data.description.toString());
+                    }
+                }
+                    *
+                    * */
                     Date currentDate = new Date(year, month, Integer.parseInt(getItem(position).substring(1)));
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String resultDate = formatter.format(currentDate);
