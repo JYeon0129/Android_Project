@@ -33,7 +33,7 @@ public class SpendDetailFragment extends Fragment {
     ImageButton todoDetailBack;
     View todoDetailTypeView;
 
-    Schedule spend;
+    TABLE_SCH spend;
 
     public SpendDetailFragment() {
         // Required empty public constructor
@@ -68,15 +68,14 @@ public class SpendDetailFragment extends Fragment {
         todoDetailBack = (ImageButton) getActivity().findViewById(R.id.todoDetailBack);
         todoDetailTypeView = (View) getActivity().findViewById(R.id.todoDetailTypeView);
 
-        todoDetailTitleText.setText(spend.getTitle());
-        todoDetailCostText.setText(spend.getCost()+"원");
+        todoDetailTitleText.setText(spend.getUsage());
+        todoDetailCostText.setText(spend.getSpend()+"원");
 
-        Date current = spend.getDate();
-        String str = current.getYear() + "년 " + current.getMonth() + "월 " + current.getDay() + "일";
+        String str = spend.getYear() + "년 " + spend.getMonth() + "월 " + spend.getDay() + "일";
         todoDetailDateText.setText(str);
 
         Helpers helpers = new Helpers();
-        Type type = helpers.returnType(spend.getType());
+        Type type = helpers.returnType(spend.getCategory());
         todoDetailTypeText.setText(type.getTypeName());
 
         ColorDrawable drawable = (ColorDrawable) todoDetailTypeView.getBackground();
@@ -125,7 +124,7 @@ public class SpendDetailFragment extends Fragment {
      * Todo todo : 할 일에 대한 객체 자체만 받으면 된다.
      */
 
-    public void setData(Schedule spend) {
+    public void setData(TABLE_SCH spend) {
         this.spend = spend;
     }
 

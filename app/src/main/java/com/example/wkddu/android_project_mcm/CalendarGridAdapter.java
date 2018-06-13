@@ -137,9 +137,18 @@ public class CalendarGridAdapter extends BaseAdapter {
                      * ArrayList로 한건 미리보기용입니다. 이거 지우고 하시면 됩니다!
                      */
 
-                    Date currentDate = new Date(year, month, Integer.parseInt(getItem(position).substring(1)));
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                    String resultDate = formatter.format(currentDate);
+                    ArrayList<TABLE_SCH> schedules = dbHandler
+                            .getSchSub(year+"", month+"", getItem(position).substring(1));
+
+                    RecyclerView.LayoutManager layoutManager;
+                    layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                    holder.calRecyclerView.setLayoutManager(layoutManager);
+
+                    CalendarDotAdapter calendarDotAdapter = new CalendarDotAdapter(context, schedules);
+
+                    if (holder.calRecyclerView != null) {
+                        holder.calRecyclerView.setAdapter(calendarDotAdapter);
+                    }
 
                 }
             } catch (Exception e) {

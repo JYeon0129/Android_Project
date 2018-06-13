@@ -137,8 +137,9 @@ public class TodoFormFragment extends Fragment {
                 } else {
                     resultCal = Calendar.getInstance();
                 }
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                String resultDate = formatter.format(resultCal.getTime());
+                String year = resultCal.get(Calendar.YEAR)+"";
+                String month = resultCal.get(Calendar.MONTH)+"";
+                String day = resultCal.get(Calendar.DAY_OF_MONTH)+"";
 
                 int defaultType;
                 if (type != null) {
@@ -146,6 +147,15 @@ public class TodoFormFragment extends Fragment {
                 } else {
                     defaultType = 1;
                 }
+                int spend = Integer.parseInt(todoFormCostEdit.getText().toString());
+                String usage = todoFormTitleEdit.getText().toString();
+
+                TABLE_SCH sch = new TABLE_SCH(year, month, day, defaultType, spend, usage);
+                DBHandler dbHandler = new DBHandler(context, null, null, 1);
+                dbHandler.addSch(sch);
+
+                Toast.makeText(context, "저장이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                goToCalendar();
             }
         });
 
