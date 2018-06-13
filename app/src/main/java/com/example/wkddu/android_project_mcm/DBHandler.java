@@ -367,6 +367,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     }
 
     public ArrayList<TABLE_SCH> getSchAll(){
+        Log.v("getSchAll","call");
         String query = "SELECT * FROM "+ DATABASE_TABLE_SCH;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query,null);
@@ -408,6 +409,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
                     }
                 }
                 table_sch = new TABLE_SCH(year,month,day,sch_cat, sch_spend, sch_usage);
+                Log.v("getSCHall" ,year+"."+month+"."+day+" : "+sch_cat + " " + sch_usage + " " + sch_spend);
                 sch_all.add(table_sch);
                 cursor.moveToNext();
             }

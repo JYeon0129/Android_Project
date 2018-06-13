@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void init() {
         askPermission(new String[]{Manifest.permission.RECEIVE_SMS}, smsReceiveRequest);
         askPermission(new String[]{Manifest.permission.READ_SMS}, smsReadRequest);
-
+        dbHandler = new DBHandler(this,DBHandler.DATABASE_NAME,null,1);
+        dbHandler.onCreate(dbHandler.getWritableDatabase());
         Intent clipintent = new Intent(getApplicationContext(), ToClipboardListener.class);
         startService(clipintent);
 
