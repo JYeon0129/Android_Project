@@ -62,7 +62,6 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         Log.v("Database","onCreate Database");
         //Clipboard
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
-        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
         String CREATE_CLIPBOARD_TABLE = "create table if not exists " + DATABASE_TABLE_CLIPBOARD + "(" + CLIP_MONTH +
                 " text, " + CLIP_DAY + " text, " + CLIP_USAGE + " text, " + CLIP_PAYMENT +" integer, PRIMARY KEY("+ CLIP_MONTH + ", " +
                 CLIP_DAY + ", "+ CLIP_USAGE + ", " + CLIP_PAYMENT + "))";
@@ -94,6 +93,10 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_MONTH);
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_DAY);
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_SCH);
         onCreate(db);
     }
     // 클립보드 테이블 메소드
