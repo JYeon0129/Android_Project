@@ -34,7 +34,7 @@ public class CalendarGridAdapter extends BaseAdapter {
     Context context;
     Calendar calendar;
     int gridViewHeight, year, month;
-    DBHandler dbHandler = new DBHandler(context, null, null, 1);
+    DBHandler dbHandler;
 
     public CalendarGridAdapter(Context context, List<String> list, int year, int month) {
         this.context = context;
@@ -62,7 +62,7 @@ public class CalendarGridAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View v, ViewGroup parent) {
         GridViewHolder holder = null;
-
+        dbHandler = new DBHandler(context,DBHandler.DATABASE_NAME,null,1);
         if (v == null) {
             v = inflater.inflate(R.layout.calendar_contents, parent, false);
             holder = new GridViewHolder();
@@ -83,6 +83,10 @@ public class CalendarGridAdapter extends BaseAdapter {
             try {
                 /* 캘린더 내용 채우기 */
                 if (getItem(position) != "") {
+                    if(getItem(position).charAt(0) == 'c') {
+                        TABLE_DAY table_day = new TABLE_DAY("" + (year + 1900), "" + (month + 1), "" + getItem(position).substring(1), 10000, 20000);
+                        dbHandler.addDay(table_day);
+                    }
                     /* 주말은 빨간색으로 바꿔줍니다 */
                     if (position % 7 == 5 || position % 7 == 6) {
                         holder.calDayText.setTextColor(context.getResources().getColor(R.color.red));
@@ -113,19 +117,24 @@ public class CalendarGridAdapter extends BaseAdapter {
                         holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.morelightgray));
                         holder.calBalanceText.setTextColor(context.getResources().getColor(R.color.darkgray));
                     } else {
-                        if (position % 3 == 0) { // 2번 케이스
-                            holder.calBalancePlusMinus.setText("-");
+                        int day_limit = dbHandler.getDay(""+(year+1900),""+(month+1),""+today).getDay_limit();
+                        int day_spend = dbHandler.getDay(""+(year+1900),""+(month+1),""+today).getDay_spend();
+                        if (day_limit < day_spend) { // 2번 케이스
                             holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
                         } else { // 3번 케이스
-                            holder.calBalancePlusMinus.setText("+");
                             holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
                         }
                     }
 
                     /* 쓸 수 있는 금액 or 사용한 금액 표기하기 */
                     holder.calDayText.setText(getItem(position).substring(1));
-                    holder.calBalanceText.setText((10000 + position * 100) + "");
 
+                    String b = dbHandler.getDay((year+1900)+"", (month+1)+"", getItem(position).substring(1)).getDay();
+                    int a = dbHandler.getDay((year+1900)+"", (month+1)+"", getItem(position).substring(1)).getDay_limit();
+                    if(dbHandler.getDay((year+1900)+"", (month+1)+"", getItem(position).substring(1)).getDay_limit() != 0){
+                        Log.v("day",b + " " + a);
+                        holder.calBalanceText.setText(dbHandler.getDay((year+1900)+"", (month+1)+"", getItem(position).substring(1)).getDay());
+                    }
                     if (getItem(position).charAt(0) == 'a' || getItem(position).charAt(0) == 'b') {
                         holder.calAlphaView.setAlpha(0.6f);
                     }
@@ -137,8 +146,7 @@ public class CalendarGridAdapter extends BaseAdapter {
                      * ArrayList로 한건 미리보기용입니다. 이거 지우고 하시면 됩니다!
                      */
 
-                    ArrayList<TABLE_SCH> schedules = dbHandler
-                            .getSchSub(year+"", month+"", getItem(position).substring(1));
+                    ArrayList<TABLE_SCH> schedules = dbHandler.getSchSub((year+1900)+"", (month+1)+"", getItem(position).substring(1));
 
                     RecyclerView.LayoutManager layoutManager;
                     layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
@@ -147,12 +155,13 @@ public class CalendarGridAdapter extends BaseAdapter {
                     CalendarDotAdapter calendarDotAdapter = new CalendarDotAdapter(context, schedules);
 
                     if (holder.calRecyclerView != null) {
+
                         holder.calRecyclerView.setAdapter(calendarDotAdapter);
                     }
 
                 }
             } catch (Exception e) {
-
+                Log.v("calRecycle","ddddddddddddddddddddddddd");
             }
 
         } else {
