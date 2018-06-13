@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -19,26 +20,10 @@ import java.util.Locale;
 public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
     public static final String DATABASE_NAME = "MCMdatabase.db";
-    public static final String DATABASE_TABLE_TODO = "todo";
-    public static final String DATABASE_TABLE_SPEND = "spend";
     public static final String DATABASE_TABLE_CLIPBOARD = "clipboard";
-
-    /* clipboard 테이블에 들어갈 내용 */
-    public static final String ID = "id"; // 사용 내역 목록
-    public static final String PROMISENAME = "promisename"; // 약속이름
-    public static final String PROMISETYPE = "promisetype"; //  약속종류()<ex)식비,술/유흥,주거/통신,생활용품,의복/미용,건강/문화,교육,교통,기타>
-    public static final String EXPECTEDSPEND = "expectedspend"; // 예상비용
-    public static final String TOTALBUDGET = "totalbudget";  // 총예산 수입(지금까지의 예산수입+한달예산수입(+이월금(달 바뀔 때))
-    public static final String MONTHINCOME = "monthincome"; // 한달예산 수입<ex)월급, 용돈>
-    public static final String TOTALSPEND = "totalspend"; // 총사용금액(사용한 돈들의 합)
-    public static final String GOALMONEY = "goalmoney"; // 목표금액
-    public static final String SPENDSTORE = "spendstore"; // 결제 매장
-    public static final String SPEND = "spend"; // 사용한 돈(자동으로도 받아와야한다.)
-    public static final String TODAYPOCKET = "todaypocket"; // 오늘 하루 사용 가능한 용돈
-    public static final String USEDAY = "useday"; // 돈을 사용한 날짜
-    public static final String TRANSFERREMAINDER = "transferremainder"; // 이월금(달 마지막날의 잔액(자정전 마지막 사용금액을 뺀 잔액)이 이월금이 된다.)
-    public static final String REMAINDER = "remainder"; // 잔액
-    public static final String USEPERCENT = "usepercent"; // 사용률(총예산수입에서 얼마나 사용했는지 퍼센트(화면상단바)로 보여준다.)
+    public static final String DATABASE_TABLE_MONTH = "month_table";
+    public static final String DATABASE_TABLE_DAY = "day_table";
+    public static final String DATABASE_TABLE_SCH = "schedule";
 
     // Clipboard TABLE
     public static final String CLIP_MONTH = "clipmonth";
@@ -46,6 +31,27 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     public static final String CLIP_USAGE = "clipusage";
     public static final String CLIP_PAYMENT = "clippayment";
 
+    // Month TABLE
+    public static final String MONTH_YEAR = "year";
+    public static final String MONTH_MONTH = "month";
+    public static final String MONTH_TOTALBUDGET = "totalbudget";
+    public static final String MONTH_TOTALSPEND = "totalspend";
+    public static final String MONTH_TRANSFERREMAIN = "transferremain";
+
+    // Day TABLE
+    public static final String DAY_YEAR = "year";
+    public static final String DAY_MONTH = "month";
+    public static final String DAY_DAY = "day";
+    public static final String DAY_LIMIT = "daylimit";
+    public static final String DAY_SPEND = "dayspend";
+
+    // Schedule TABLE
+    public static final String SCH_YEAR = "year";
+    public static final String SCH_MONTH = "month";
+    public static final String SCH_DAY = "day";
+    public static final String SCH_CAT = "category";
+    public static final String SCH_SPEND = "spend";
+    public static final String SCH_USAGE = "usage";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, version);
@@ -60,29 +66,18 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
                 CLIP_DAY + ", "+ CLIP_USAGE + ", " + CLIP_PAYMENT + "))";
         db.execSQL(CREATE_CLIPBOARD_TABLE);
 
-        //db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_TODO);
-        String CREATE_TODO_TABLE = "create table if not exists " + DATABASE_TABLE_TODO + "(" +
-                ID + " integer primary key autoincrement, " +
-                PROMISENAME + " text, " +
-                PROMISETYPE + " integer, " +
-                SPEND + " integer, " +
-                USEDAY + " string)";
-        db.execSQL(CREATE_TODO_TABLE);
-
-        //db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_SPEND);
-        String CREATE_SPEND_TABLE = "create table if not exists " + DATABASE_TABLE_SPEND + "(" +
-                ID + " integer primary key autoincrement, " +
-                PROMISENAME + " text, " +
-                PROMISETYPE + " integer, " +
-                SPEND + " integer, " +
-                USEDAY + " string)";
-        db.execSQL(CREATE_SPEND_TABLE);
+        //Month
+        String CREATE_MONTH_TABLE = "create table if not exists " + DATABASE_TABLE_MONTH + "(" + MONTH_YEAR +
+                " text, " + MONTH_MONTH + " text, " + MONTH_TOTALBUDGET + " INTEGER, " + MONTH_TOTALSPEND +" INTEGER, " +
+                MONTH_TRANSFERREMAIN + " INTEGER, PRIMARY KEY("+ MONTH_YEAR + ", " +
+                MONTH_MONTH+ "))";
+        db.execSQL(CREATE_MONTH_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
-
+    // 클립보드 테이블 메소드
     public void addClipboard(Clipboard clipboard){
         ContentValues value = new ContentValues();
         value.put(CLIP_MONTH,clipboard.getMonth());
@@ -145,72 +140,72 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         db.close();
         return clipboard;
     }
-    //sch method
-    public boolean createSchedule (Schedule schedule, String date, boolean isTodo) {
-        ContentValues values = new ContentValues();
-        values.put(PROMISENAME, schedule.getTitle());
-        values.put(PROMISETYPE, schedule.getType());
-        values.put(SPEND, schedule.getCost());
-        values.put(USEDAY, date);
+
+    // Month
+    public void addMonth(TABLE_MONTH month){
+        ContentValues value = new ContentValues();
+        value.put(MONTH_YEAR,month.getYear());
+        value.put(MONTH_MONTH,month.getMonth());
+        value.put(MONTH_TOTALBUDGET,month.getTotal_budget());
+        value.put(MONTH_TOTALSPEND,month.getTotal_spend());
+        value.put(MONTH_TRANSFERREMAIN,month.getTransfer_remain());
 
         SQLiteDatabase db = this.getWritableDatabase();
-        long result = 0;
-
-        if (isTodo) {
-            result = db.insert(DATABASE_TABLE_TODO, null, values);
-        } else {
-            result = db.insert(DATABASE_TABLE_SPEND, null, values);
-        }
-
-        if (result > 0) {
-            db.close();
-            return true;
-        } else {
-            db.close();
-            return false;
-        }
+        db.insert(DATABASE_TABLE_MONTH, null, value);
+        db.close();
     }
 
-    public ArrayList<Schedule> readSchedules (String date, boolean isTodo) {
-        ArrayList<Schedule> schedules = new ArrayList<>();
-        String query = "";
-
-        if (isTodo) {
-            //query = "SELECT * FROM " + DATABASE_TABLE_TODO +
-//                       " WHERE " + USEDAY + " =\'" + date + "\'";
-        } else {
-            //query = "SELECT * FROM " + DATABASE_TABLE_SPEND +
-//                       " WHERE " + USEDAY + " =\'" + date + "\'";
-        }
-
-//
-        String query2 = "SELECT * FROM " + DATABASE_TABLE_TODO;
+    public void deleteMonth(){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query2, null);
+        String query = "DELETE FROM " + DATABASE_TABLE_MONTH;
+        db.execSQL(query);
+        db.close();
+    }
+    // 1개월씩 검색해야하므로 검색키는 연도와 월
+    public TABLE_MONTH getMonth(String s_year, String s_month){
+        String query = "SELECT * FROM "+DATABASE_TABLE_MONTH + " WHERE " + MONTH_YEAR + " = \'"+s_year +"\' and" +
+                MONTH_MONTH + " = \'"+s_month +"\'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        TABLE_MONTH table_month = null;
+        if(cursor.moveToFirst())
+        {
+            String year = "";
+            String month = "";
+            int total_budget = 0;
+            int total_spend = 0;
+            int transfer_remain = 0;
 
-        Log.d("cursor number", cursor.getCount()+"");
+            while(!cursor.isAfterLast())
+            {
+                for(int i=0;i<cursor.getColumnCount();i++)
+                {
+                    switch (cursor.getColumnName(i))
+                    {
+                        case MONTH_YEAR:
+                            year= cursor.getString(i);
+                            break;
+                        case MONTH_MONTH:
+                            month = cursor.getString(i);
+                            break;
+                        case MONTH_TOTALBUDGET:
+                            total_budget= cursor.getInt(i);
+                            break;
+                        case MONTH_TOTALSPEND:
+                            total_spend = cursor.getInt(i);
+                            break;
+                        case MONTH_TRANSFERREMAIN:
+                            transfer_remain = cursor.getInt(i);
+                            break;
+                    }
+                }
 
-        while (!cursor.isAfterLast()) {
-            Schedule schedule = new Schedule();
-
-            schedule.setTitle(cursor.getString(0));
-            schedule.setType(Integer.parseInt(cursor.getString(1)));
-            schedule.setCost(Integer.parseInt(cursor.getString(2)));
-
-            Date resultDate = null;
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-                String dateFromCursor = cursor.getString(3);
-                resultDate = format.parse(dateFromCursor);
-            } catch (ParseException e) {
-                e.printStackTrace();
+                table_month = new TABLE_MONTH(year,month,total_budget,total_spend,transfer_remain);
+                cursor.moveToNext();
             }
-
-            schedule.setDate(resultDate);
-            schedules.add(schedule);
-            cursor.moveToNext();
         }
-
-        return schedules;
+        cursor.close();
+        db.close();
+        return table_month;
     }
 }
