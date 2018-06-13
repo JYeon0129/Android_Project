@@ -3,10 +3,20 @@ package com.example.wkddu.android_project_mcm;
 import java.util.Date;
 
 public class Schedule {
+    int id;
     String title; // 화면에 보일 약속의 이름입니다.
     Date date; // 지출 내역의 날짜를 저장해둡니다.
     int cost; // 지출 비용입니다.
     int type; // 술약속인지 밥약속인지 회식인지 등 타입을 지정합니다. > Helper 클래스 참고
+
+    Schedule() {}
+
+    Schedule (String title, int cost, int type, Date date) {
+        this.title = title;
+        this.cost = cost;
+        this.type = type;
+        this.date = date;
+    }
 
     public String getTitle() {
         return this.title;

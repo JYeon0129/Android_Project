@@ -17,10 +17,10 @@ import java.util.ArrayList;
  */
 
 public class CalendarDotAdapter extends RecyclerView.Adapter<MyViewHolder> {
-    ArrayList<Todo> todoList;
+    ArrayList<Schedule> todoList;
     Context context;
 
-    public CalendarDotAdapter(Context context, ArrayList<Todo> Data) {
+    public CalendarDotAdapter(Context context, ArrayList<Schedule> Data) {
         this.context = context;
         this.todoList = Data;
     }

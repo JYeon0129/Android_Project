@@ -33,7 +33,7 @@ public class SpendDetailFragment extends Fragment {
     ImageButton todoDetailBack;
     View todoDetailTypeView;
 
-    Spend spend;
+    Schedule spend;
 
     public SpendDetailFragment() {
         // Required empty public constructor
@@ -125,7 +125,7 @@ public class SpendDetailFragment extends Fragment {
      * Todo todo : 할 일에 대한 객체 자체만 받으면 된다.
      */
 
-    public void setData(Spend spend) {
+    public void setData(Schedule spend) {
         this.spend = spend;
     }
 

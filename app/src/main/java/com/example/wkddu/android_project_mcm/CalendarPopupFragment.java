@@ -28,8 +28,8 @@ public class CalendarPopupFragment extends DialogFragment {
     ListView calPopupTodoListView;
     ListView calPopupSpendListView;
     String day;
-    ArrayList<Todo> todoList;
-    ArrayList<Spend> spendList;
+    ArrayList<Schedule> todoList;
+    ArrayList<Schedule> spendList;
 
     public CalendarPopupFragment() {
         // Required empty public constructor
@@ -60,7 +60,7 @@ public class CalendarPopupFragment extends DialogFragment {
 
         calPopupDayText.setText(day.substring(1) + "일");
 
-        CalendarTodoListAdapter calendarTodoListAdapter = new CalendarTodoListAdapter(
+        CalendarListAdapter calendarTodoListAdapter = new CalendarListAdapter(
                 getContext(), R.layout.calendar_todo_row, todoList);
 
         calPopupTodoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,7 +81,7 @@ public class CalendarPopupFragment extends DialogFragment {
 
         calPopupTodoListView.setAdapter(calendarTodoListAdapter);
 
-        CalendarSpendListAdapter calendarSpendListAdapter = new CalendarSpendListAdapter(
+        CalendarListAdapter calendarSpendListAdapter = new CalendarListAdapter(
                 getContext(), R.layout.calendar_todo_row, spendList);
 
         calPopupSpendListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,7 +109,7 @@ public class CalendarPopupFragment extends DialogFragment {
      * 2. ArrayList<Todo> todoList : 해당 요일에 해야할 일들
      */
 
-    public void setData(String day, ArrayList<Todo> todoList, ArrayList<Spend> spendList) {
+    public void setData(String day, ArrayList<Schedule> todoList, ArrayList<Schedule> spendList) {
         this.day = day;
         this.todoList = todoList;
         this.spendList = spendList;

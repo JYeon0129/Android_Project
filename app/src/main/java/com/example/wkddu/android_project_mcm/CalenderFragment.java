@@ -183,7 +183,7 @@ public class CalenderFragment extends Fragment {
         calendarDayTitle.setAdapter(calendarDayAdapter);
 
         /* 캘린더 내부에 날짜와 할 일 채우기 */
-        calendarGridAdapter = new CalendarGridAdapter(context, dayList, year, month);
+        calendarGridAdapter = new CalendarGridAdapter(context, dayList, year-1900, month-1);
         calendarGridView.setVerticalScrollBarEnabled(false);
 
         /* 캘린더 내부에 좌측, 우측 밀기 이벤트 적용 */
@@ -263,25 +263,8 @@ public class CalenderFragment extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         CalendarPopupFragment calendarPopupFragment = new CalendarPopupFragment();
 
-        ArrayList<Todo> todo = new ArrayList<>();
-        if (position % 2 == 0) {
-            todo.add(new Todo("술약속", 10000, 0,
-                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
-        }
-        if (position % 3 == 0) {
-            todo.add(new Todo("밥약속", 5000, 1,
-                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
-        }
-
-        ArrayList<Spend> spend = new ArrayList<>();
-        if (position % 2 == 0) {
-            spend.add(new Spend("술약속", 10000, 0,
-                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
-        }
-        if (position % 3 == 0) {
-            spend.add(new Spend("밥약속", 5000, 1,
-                    new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
-        }
+        ArrayList<Schedule> todo = new ArrayList<>();
+        ArrayList<Schedule> spend = new ArrayList<>();
 
         calendarPopupFragment.setData(dayList.get(position), todo, spend);
 

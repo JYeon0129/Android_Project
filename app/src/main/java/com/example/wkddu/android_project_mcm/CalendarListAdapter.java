@@ -14,11 +14,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CalendarTodoListAdapter extends ArrayAdapter<Todo> {
-    ArrayList<Todo> todoList;
+public class CalendarListAdapter extends ArrayAdapter<Schedule> {
+    ArrayList<Schedule> todoList;
     Context context;
 
-    public CalendarTodoListAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<Todo> objects) {
+    public CalendarListAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<Schedule> objects) {
         super(context, resource, objects);
         this.todoList = objects;
         this.context = context;
@@ -33,22 +33,22 @@ public class CalendarTodoListAdapter extends ArrayAdapter<Todo> {
             v = vi.inflate(R.layout.calendar_todo_row, null);
         }
 
-        Todo todo = todoList.get(position);
+        Schedule schedule = todoList.get(position);
 
-        if (todo != null) {
+        if (schedule != null) {
             View calRowColor = (View) v.findViewById(R.id.calRowColor);
             TextView calRowTitleText = (TextView) v.findViewById(R.id.calRowTitleText);
             TextView calRowCostText = (TextView) v.findViewById(R.id.calRowCostText);
 
-            int todoType = todo.getType();
+            int todoType = schedule.getType();
 
             Helpers helpers = new Helpers();
             int todoColor = helpers.returnType(todoType).getTypeColor();
 
             calRowColor.setBackgroundColor(context.getResources().getColor(todoColor));
 
-            calRowTitleText.setText(todo.getTitle());
-            calRowCostText.setText(todo.getCost()+"원");
+            calRowTitleText.setText(schedule.getTitle());
+            calRowCostText.setText(schedule.getCost()+"원");
         }
 
         return v;

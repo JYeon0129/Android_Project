@@ -34,7 +34,7 @@ public class TodoDetailFragment extends Fragment {
     ImageButton todoDetailBack;
     View todoDetailTypeView;
 
-    Todo todo;
+    Schedule todo;
 
     public TodoDetailFragment() {
         // Required empty public constructor
@@ -126,7 +126,7 @@ public class TodoDetailFragment extends Fragment {
      * Todo todo : 할 일에 대한 객체 자체만 받으면 된다.
      */
 
-    public void setData(Todo todo) {
+    public void setData(Schedule todo) {
         this.todo = todo;
     }
 

@@ -12,6 +12,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +34,7 @@ public class CalendarGridAdapter extends BaseAdapter {
     Context context;
     Calendar calendar;
     int gridViewHeight, year, month;
+    DBHandler dbHandler = new DBHandler(context, null, null, 1);
 
     public CalendarGridAdapter(Context context, List<String> list, int year, int month) {
         this.context = context;
@@ -89,7 +91,7 @@ public class CalendarGridAdapter extends BaseAdapter {
                     /* 오늘의 날짜는 폰트 색깔을 바꿔줍니다 */
                     calendar = Calendar.getInstance();
                     Integer today = calendar.get(Calendar.DAY_OF_MONTH);
-                    Integer currentMonth = calendar.get(Calendar.MONTH) + 1;
+                    Integer currentMonth = calendar.get(Calendar.MONTH);
                     String sToday = String.valueOf(today);
 
                     if (sToday.equals(getItem(position).substring(1)) && month == currentMonth) {
@@ -129,21 +131,16 @@ public class CalendarGridAdapter extends BaseAdapter {
                     }
 
                     /*
-                     * 이강민 : 어댑터로 할 일 리스트 세팅하기
+                     * 어댑터로 할 일 리스트 세팅하기
                      * 해당 날짜에 해야 할 일들을 내장 DB에서 끌고 와서
                      * ArrayList<Todo>로 만들어서 밑에 있는 calendarDotAdapter 생성자의 두 번째 인자로 주면 됩니다!
                      * ArrayList로 한건 미리보기용입니다. 이거 지우고 하시면 됩니다!
                      */
 
-                    ArrayList<Todo> todo = new ArrayList<>();
-                    if (position % 2 == 0) {
-                        todo.add(new Todo("술약속", 10000, 0,
-                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
-                    }
-                    if (position % 3 == 0) {
-                        todo.add(new Todo("밥약속", 5000, 1,
-                                new Date(year, month, Integer.parseInt(dayList.get(position).substring(1)))));
-                    }
+                    Date currentDate = new Date(year, month, Integer.parseInt(getItem(position).substring(1)));
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    String resultDate = formatter.format(currentDate);
+                    ArrayList<Schedule> todo = dbHandler.readSchedules(resultDate, true);
 
                     RecyclerView.LayoutManager layoutManager;
                     layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);

@@ -22,10 +22,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 /*
@@ -129,12 +132,14 @@ public class TodoFormFragment extends Fragment {
         todoFormSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date defaultDate;
+                Calendar resultCal;
                 if (selected != null) {
-                    defaultDate = selected.getTime();
+                    resultCal = selected;
                 } else {
-                    defaultDate = new Date();
+                    resultCal = Calendar.getInstance();
                 }
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String resultDate = formatter.format(resultCal.getTime());
 
                 int defaultType;
                 if (type != null) {
@@ -144,13 +149,13 @@ public class TodoFormFragment extends Fragment {
                 }
 
                 DBHandler dbHandler = new DBHandler(context, null, null, 1);
-                Todo todo = new Todo(todoFormTitleEdit.getText().toString(),
+                Schedule todo = new Schedule(todoFormTitleEdit.getText().toString(),
                         Integer.parseInt(todoFormCostEdit.getText().toString()),
-                        defaultType, defaultDate);
-                Boolean result = dbHandler.insertSchedule(todo, 1);
+                        defaultType, null);
+                Boolean result = dbHandler.createSchedule(todo, resultDate, true);
 
                 if (result) {
-                    Toast.makeText(context, "저장이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "저장이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                     goToCalendar();
                 }
             }
@@ -209,14 +214,14 @@ public class TodoFormFragment extends Fragment {
      */
 
     public void setTodoListAdapter() {
-        ArrayList<Spend> spends = new ArrayList<>();
-        spends.add(new Spend("술약속", 10000, 0,
+        ArrayList<Schedule> spends = new ArrayList<>();
+        spends.add(new Schedule("술약속", 10000, 0,
             new Date(2018, 6, 6)));
-        spends.add(new Spend("닭발집 부숨", 22000, 0,
+        spends.add(new Schedule("닭발집 부숨", 22000, 0,
                 new Date(2018, 6, 7)));
-        spends.add(new Spend("곱쏘*^^*", 14000, 0,
+        spends.add(new Schedule("곱쏘*^^*", 14000, 0,
                 new Date(2018, 6, 8)));
-        spends.add(new Spend("술약속", 3000, 0,
+        spends.add(new Schedule("술약속", 3000, 0,
                 new Date(2018, 6, 9)));
 
         TodoListAdapter todoListAdapter = new TodoListAdapter(context, R.layout.spend_list_row, spends);

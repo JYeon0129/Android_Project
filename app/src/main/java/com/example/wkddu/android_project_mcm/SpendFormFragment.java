@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -127,12 +128,14 @@ public class SpendFormFragment extends Fragment {
         spendFormSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date defaultDate;
+                Calendar resultCal;
                 if (selected != null) {
-                    defaultDate = selected.getTime();
+                    resultCal = selected;
                 } else {
-                    defaultDate = new Date();
+                    resultCal = Calendar.getInstance();
                 }
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String resultDate = formatter.format(resultCal.getTime());
 
                 int defaultType;
                 if (type != null) {
@@ -142,13 +145,13 @@ public class SpendFormFragment extends Fragment {
                 }
 
                 DBHandler dbHandler = new DBHandler(context, null, null, 1);
-                Todo todo = new Todo(spendFormTitleEdit.getText().toString(),
+                Schedule schedule = new Schedule(spendFormTitleEdit.getText().toString(),
                         Integer.parseInt(spendFormCostEdit.getText().toString()),
-                        defaultType, defaultDate);
-                Boolean result = dbHandler.insertSchedule(todo, 1);
+                        defaultType, null);
+                Boolean result = dbHandler.createSchedule(schedule, resultDate, false);
 
                 if (result) {
-                    Toast.makeText(context, "저장이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "저장이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                     goToCalendar();
                 }
             }

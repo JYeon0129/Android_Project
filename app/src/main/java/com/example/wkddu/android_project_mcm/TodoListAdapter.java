@@ -13,15 +13,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class TodoListAdapter extends ArrayAdapter<Spend>{
-    ArrayList<Spend> spends;
+public class TodoListAdapter extends ArrayAdapter<Schedule>{
+    ArrayList<Schedule> schedules;
     Context context;
     LayoutInflater inflater;
 
-    public TodoListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Spend> objects) {
+    public TodoListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Schedule> objects) {
         super(context, resource, objects);
 
-        this.spends = objects;
+        this.schedules = objects;
         this.context = context;
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -38,7 +38,7 @@ public class TodoListAdapter extends ArrayAdapter<Spend>{
             TextView spendCostText = (TextView) v.findViewById(R.id.spendCostText);
             View spendTypeView = (View) v.findViewById(R.id.spendTypeView);
 
-            Spend spend = getItem(position);
+            Schedule spend = getItem(position);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREA);
             spendDateText.setText(simpleDateFormat.format(spend.getDate()));
             spendTitleText.setText(spend.getTitle());

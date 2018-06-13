@@ -5,23 +5,27 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
     public static final String DATABASE_NAME = "MCMdatabase.db";
-    public static final String DATABASE_TABLE_CALENDAR = "calendar";
+    public static final String DATABASE_TABLE_TODO = "todo";
+    public static final String DATABASE_TABLE_SPEND = "spend";
     public static final String DATABASE_TABLE_CLIPBOARD = "clipboard";
-    public static final String DATABASE_TABLE_SCHEDULE = "schedule";
 
     /* clipboard 테이블에 들어갈 내용 */
     public static final String ID = "id"; // 사용 내역 목록
     public static final String PROMISENAME = "promisename"; // 약속이름
-    public static final String PROMISEKIND = "promisekind"; // 1일 경우 todo, 0일 경우 spend
     public static final String PROMISETYPE = "promisetype"; //  약속종류()<ex)식비,술/유흥,주거/통신,생활용품,의복/미용,건강/문화,교육,교통,기타>
     public static final String EXPECTEDSPEND = "expectedspend"; // 예상비용
     public static final String TOTALBUDGET = "totalbudget";  // 총예산 수입(지금까지의 예산수입+한달예산수입(+이월금(달 바뀔 때))
@@ -56,15 +60,23 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
                 CLIP_DAY + ", "+ CLIP_USAGE + ", " + CLIP_PAYMENT + "))";
         db.execSQL(CREATE_CLIPBOARD_TABLE);
 
-        //db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_SCHEDULE);
-        String CREATE_SCHEDULE_TABLE = "create table if not exists " + DATABASE_TABLE_SCHEDULE + "(" +
+        //db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_TODO);
+        String CREATE_TODO_TABLE = "create table if not exists " + DATABASE_TABLE_TODO + "(" +
                 ID + " integer primary key autoincrement, " +
                 PROMISENAME + " text, " +
-                PROMISEKIND + " integer, " +
                 PROMISETYPE + " integer, " +
                 SPEND + " integer, " +
-                USEDAY + " date)";
-        db.execSQL(CREATE_SCHEDULE_TABLE);
+                USEDAY + " string)";
+        db.execSQL(CREATE_TODO_TABLE);
+
+        //db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_SPEND);
+        String CREATE_SPEND_TABLE = "create table if not exists " + DATABASE_TABLE_SPEND + "(" +
+                ID + " integer primary key autoincrement, " +
+                PROMISENAME + " text, " +
+                PROMISETYPE + " integer, " +
+                SPEND + " integer, " +
+                USEDAY + " string)";
+        db.execSQL(CREATE_SPEND_TABLE);
     }
 
     @Override
@@ -134,21 +146,71 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         return clipboard;
     }
 
-    public boolean insertSchedule (Schedule schedule, int isTodo) {
+    public boolean createSchedule (Schedule schedule, String date, boolean isTodo) {
         ContentValues values = new ContentValues();
         values.put(PROMISENAME, schedule.getTitle());
-        values.put(PROMISEKIND, isTodo);
         values.put(PROMISETYPE, schedule.getType());
         values.put(SPEND, schedule.getCost());
-        values.put(USEDAY, schedule.getDate().toString());
+        values.put(USEDAY, date);
 
         SQLiteDatabase db = this.getWritableDatabase();
-        if (db.insert(DATABASE_TABLE_SCHEDULE, null, values) > 0) {
+        long result = 0;
+
+        if (isTodo) {
+            result = db.insert(DATABASE_TABLE_TODO, null, values);
+        } else {
+            result = db.insert(DATABASE_TABLE_SPEND, null, values);
+        }
+
+        if (result > 0) {
             db.close();
             return true;
         } else {
             db.close();
             return false;
         }
+    }
+
+    public ArrayList<Schedule> readSchedules (String date, boolean isTodo) {
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        String query = "";
+
+        if (isTodo) {
+            //query = "SELECT * FROM " + DATABASE_TABLE_TODO +
+//                       " WHERE " + USEDAY + " =\'" + date + "\'";
+        } else {
+            //query = "SELECT * FROM " + DATABASE_TABLE_SPEND +
+//                       " WHERE " + USEDAY + " =\'" + date + "\'";
+        }
+
+//
+        String query2 = "SELECT * FROM " + DATABASE_TABLE_TODO;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query2, null);
+
+        Log.d("cursor number", cursor.getCount()+"");
+
+        while (!cursor.isAfterLast()) {
+            Schedule schedule = new Schedule();
+
+            schedule.setTitle(cursor.getString(0));
+            schedule.setType(Integer.parseInt(cursor.getString(1)));
+            schedule.setCost(Integer.parseInt(cursor.getString(2)));
+
+            Date resultDate = null;
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                String dateFromCursor = cursor.getString(3);
+                resultDate = format.parse(dateFromCursor);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            schedule.setDate(resultDate);
+            schedules.add(schedule);
+            cursor.moveToNext();
+        }
+
+        return schedules;
     }
 }
