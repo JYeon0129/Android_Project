@@ -74,6 +74,7 @@ public class SpendFormFragment extends Fragment {
 
         context = getActivity().getApplicationContext();
 
+        //clipboard정보 추가
         dbHandler = new DBHandler(context,DBHandler.DATABASE_NAME, null, 1);
         clipboard = dbHandler.getClipboard();
         Calendar calendar = Calendar.getInstance();

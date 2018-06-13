@@ -2,6 +2,10 @@ package com.example.wkddu.android_project_mcm;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -43,11 +47,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BillRegisterActivity extends AppCompatActivity {
 
+    static FragmentManager fm;
     private static final String CLOUD_VISION_API_KEY = "AIzaSyD6GMW_lyOA4N55pd43OcrIvjx6x0tv6kc";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
@@ -66,9 +73,10 @@ public class BillRegisterActivity extends AppCompatActivity {
     private LinearLayout billRegisterLinearLayout;
     private ScrollView billRegisterScrollView;
 
-    public static String storeName="";
-    public static String cost="";
-
+    public static String storeName="";//결국 반환 되어야 할 데이터 (제목)
+    public static String cost="";//결국 반환 되어야 할 데이터 (가격=> 사용한 가격)
+    public static String name_and_cost="";//token은 /인것임
+    public static DBHandler dbHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +87,7 @@ public class BillRegisterActivity extends AppCompatActivity {
     }
 
     public void init() {
+        dbHandler = new DBHandler(this, DBHandler.DATABASE_NAME, null, 1);
         Button fab = (Button) findViewById(R.id.fab);
         mImageDetails = (TextView) findViewById(R.id.image_details);
         mMainImage = (ImageView) findViewById(R.id.main_image);
@@ -270,11 +279,21 @@ public class BillRegisterActivity extends AppCompatActivity {
             return "Cloud Vision API request failed. Check logs for details.";
         }
 
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String result) {//성공 되었을 경우 여기에 함수 호출이 진행됨
             BillRegisterActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
                 imageDetail.setText(result);
+
+                String[] receiptData=result.split("/");
+                storeName=receiptData[0];//usage
+                cost=receiptData[1];//spend
+                Date date = new Date();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");
+                String str = simpleDateFormat.format(date);
+
+                Clipboard clipboard = new Clipboard(str.split("-")[0],str.split("-")[1],storeName,cost);
+                dbHandler.addClipboard(clipboard);
             }
         }
     }
@@ -337,96 +356,50 @@ public class BillRegisterActivity extends AppCompatActivity {
             message = "nothing";
         }
 
-        String store_cost="";
-        store_cost=selectStore(message);
-        return store_cost;//매장명을 반환함
-        //return  message;
+
+        name_and_cost=selectStore(message);
+      return name_and_cost;//"매장명/사용금액" 의 form을 맞춰서 반환함
+      //return message;
     }
 
-    public static String selectStore(String str){
+    public static String selectStore(String str){//str은 읽어온 모든 문자열들을 의미하는 것=>개행은 엔터로 됨
         String result="";
 
         //점포명 검사
-//       String tmp="상 호";
-//       int index= str.indexOf(tmp);
-//
-//       if(index>=0){
-//           for(int i=index;i<str.length();i++){
-//               if(str.charAt(i)=='\n'){
-//                   //엔터를 만나면
-//                   break;
-//               }
-//               result+=str.charAt(i);
-//
-//           }
-//           result+="/";
-//       }
+       String tmp="상";
+       int index= str.indexOf(tmp);
 
-        String []tmp={"상 호","가맹점","가맹점명","상호","점포"};//상호, 가맹점, 가맹점명,점포
+       if(index>=0){
+           for(int i=index;i<str.length();i++){
+               if(str.charAt(i)=='\n'){
+                   //엔터를 만나면
+                   break;
+               }
+               result+=str.charAt(i);
 
-        for(int i=0;i<tmp.length;i++){
-            int index= str.indexOf(tmp[i]);
+           }
+           result+="/";
+       }
 
-            if(index>=0){
-                for(int j=index;j<str.length();j++){
-                    if(str.charAt(j)=='\n'){
-                        //엔터를 만나면
-                        break;
-                    }
-                    result+=str.charAt(j);
 
+       //금액 검사
+
+        String tmp2="승인금";
+       int index2=str.indexOf(tmp2);
+
+        if(index2>=0){
+            for(int i=index2;i<str.length();i++){
+                if(str.charAt(i)=='\n'){
+                    //엔터를 만나면
+                    break;
                 }
-                result+="/";
+                result+=str.charAt(i);
+
             }
-            break;//하나 찾았으면 그만해도됨
+            //result+="/";
         }
 
 
-
-        //금액 검사
-//       int flag=0;
-//        String tmp2="총금액";
-//        int index2= str.indexOf(tmp2);
-//        if(index2>=0){//합계라는 글자를 찾은 다음에는 반드시 개행 후에 가격이 들어감 token은 콤마
-//            for(int i=index2;i<str.length();i++){
-//                if(str.charAt(i)=='\n'){
-//                    //엔터를 만나면
-//                   flag++;//값을 대입
-//                }
-//                if(flag==2){
-//                    break;//두번 엔터를 만나면 그건 끝난것임
-//                }
-//                if(flag==1){
-//                    //다음 엔터를 만날때까지 대입
-//                    result+=str.charAt(i);
-//                }
-//
-//            }
-//        }
-
-        int flag=0;
-        String []tmp2={"받을금액","총금액","합계금액","합계","합 계","합  계","합   계","승인금액","결제금액"};//합계,결제금액, 합계금액, 총금액,받을금액, 승인금액
-
-        for(int i=0;i<tmp2.length;i++){
-            int index2= str.indexOf(tmp2[i]);
-            if(index2>=0){//합계라는 글자를 찾은 다음에는 반드시 개행 후에 가격이 들어감 token은 콤마
-                for(int j=index2;j<str.length();j++){
-                    if(str.charAt(j)=='\n'){
-                        //엔터를 만나면
-                        flag++;//값을 대입
-                    }
-                    if(flag==2){
-                        break;//두번 엔터를 만나면 그건 끝난것임
-                    }
-                    if(flag==1){
-                        //다음 엔터를 만날때까지 대입
-                        result+=str.charAt(j);
-                    }
-
-                }
-                break;//하나 맞는거 찾았으면 그만해도됨
-            }
-        }
 
         return result;
     }

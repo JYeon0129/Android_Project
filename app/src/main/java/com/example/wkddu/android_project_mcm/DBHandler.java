@@ -97,6 +97,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         onCreate(db);
     }
     // 클립보드 테이블 메소드
+
     public void addClipboard(Clipboard clipboard){
         ContentValues value = new ContentValues();
         value.put(CLIP_MONTH,clipboard.getMonth());
