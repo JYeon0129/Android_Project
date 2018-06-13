@@ -72,6 +72,19 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
                 MONTH_TRANSFERREMAIN + " INTEGER, PRIMARY KEY("+ MONTH_YEAR + ", " +
                 MONTH_MONTH+ "))";
         db.execSQL(CREATE_MONTH_TABLE);
+
+        //Day
+        String CREATE_DAY_TABLE = "create table if not exists " + DATABASE_TABLE_DAY + "(" + DAY_YEAR +
+                " text, " + DAY_MONTH + " text, " + DAY_DAY + " text, " + DAY_LIMIT + " INTEGER, " + DAY_SPEND +
+                " INTEGER, PRIMARY KEY("+ DAY_YEAR + ", " + DAY_MONTH + ", " + DAY_DAY+ "))";
+        db.execSQL(CREATE_DAY_TABLE);
+
+        //Schedule
+        String CREATE_SCH_TABLE = "create table if not exists " + DATABASE_TABLE_SCH + "(" + SCH_YEAR +
+                " text, " + SCH_MONTH + " text, " + SCH_DAY + " text, " + SCH_CAT + " INTEGER, " + SCH_SPEND +
+                " INTEGER, " + SCH_USAGE + " text, PRIMARY KEY("+ SCH_YEAR + ", " + SCH_MONTH + ", " + SCH_DAY +
+                ", " + SCH_CAT + ", " + SCH_SPEND+ ", " + SCH_USAGE + "))";
+        db.execSQL(CREATE_SCH_TABLE);
     }
 
     @Override
@@ -131,7 +144,6 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
                             break;
                     }
                 }
-
                 clipboard = new Clipboard(month,day,usage,payment);
                 cursor.moveToNext();
             }
@@ -199,7 +211,6 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
                             break;
                     }
                 }
-
                 table_month = new TABLE_MONTH(year,month,total_budget,total_spend,transfer_remain);
                 cursor.moveToNext();
             }
@@ -208,4 +219,74 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         db.close();
         return table_month;
     }
+
+    // Day
+    public void addDay(TABLE_DAY day){
+        ContentValues value = new ContentValues();
+        value.put(DAY_YEAR,day.getYear());
+        value.put(DAY_MONTH,day.getMonth());
+        value.put(DAY_DAY,day.getDay());
+        value.put(DAY_LIMIT,day.getDay_limit());
+        value.put(DAY_SPEND,day.getDay_spend());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(DATABASE_TABLE_DAY, null, value);
+        db.close();
+    }
+
+    public void deleteDay(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + DATABASE_TABLE_DAY;
+        db.execSQL(query);
+        db.close();
+    }
+    // 1일을 검색하므로 검색 키는 연도 월 일
+    public TABLE_DAY getDay(String s_year, String s_month, String s_day){
+        String query = "SELECT * FROM "+DATABASE_TABLE_DAY + " WHERE " + DAY_YEAR + " = \'"+s_year +"\' and" +
+                DAY_MONTH + " = \'"+s_month +"\' and" + DAY_DAY + " = \'"+s_day +"\'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        TABLE_DAY table_day = null;
+        if(cursor.moveToFirst())
+        {
+            String year = "";
+            String month = "";
+            String day = "";
+            int day_limit = 0;
+            int day_spend = 0;
+
+            while(!cursor.isAfterLast())
+            {
+                for(int i=0;i<cursor.getColumnCount();i++)
+                {
+                    switch (cursor.getColumnName(i))
+                    {
+                        case DAY_YEAR:
+                            year= cursor.getString(i);
+                            break;
+                        case DAY_MONTH:
+                            month = cursor.getString(i);
+                            break;
+                        case DAY_DAY:
+                            day= cursor.getString(i);
+                            break;
+                        case DAY_LIMIT:
+                            day_limit = cursor.getInt(i);
+                            break;
+                        case DAY_SPEND:
+                            day_spend = cursor.getInt(i);
+                            break;
+                    }
+                }
+                table_day = new TABLE_DAY(year,month,day,day_limit, day_spend);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+        return table_day;
+    }
+
+    //Schedule
+
 }
