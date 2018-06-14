@@ -283,15 +283,8 @@ public class BillRegisterActivity extends AppCompatActivity {
             BillRegisterActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
-                imageDetail.setText(result);
+               // imageDetail.setText(result);
 
-<<<<<<< HEAD
-                Toast.makeText(activity.getApplicationContext(),
-                    "등록이 완료되었습니다!", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(activity, MainActivity.class);
-                activity.startActivity(intent);
-=======
                 String[] receiptData=result.split("/");
                 String[] data1=receiptData[0].split(":");
                 String[] data2=receiptData[1].split(":");
@@ -310,7 +303,12 @@ public class BillRegisterActivity extends AppCompatActivity {
                 Clipboard clipboard = new Clipboard(str.split("-")[0],str.split("-")[1],storeName,cost);
                 dbHandler.addClipboard(clipboard);
 
->>>>>>> 4b80cb64e276c8e3b013ba81fcda7c669026b59d
+                Toast.makeText(activity.getApplicationContext(),
+                    "등록이 완료되었습니다!", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(activity, MainActivity.class);
+                activity.startActivity(intent);
+
             }
         }
     }
@@ -350,19 +348,7 @@ public class BillRegisterActivity extends AppCompatActivity {
     }
 
     private static String convertResponseToString(BatchAnnotateImagesResponse response) {
-//        StringBuilder message = new StringBuilder("I found these things:\n\n");
-//
-//        List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
-//        if (labels != null) {
-//            for (EntityAnnotation label : labels) {
-//                message.append(String.format(Locale.KOREAN, "%.3f: %s", label.getScore(), label.getDescription()));
-//                message.append("\n");
-//            }
-//        } else {
-//            message.append("nothing");
-//        }
-//
-//        return message.toString();
+
 
         String message = "I found these things:\n\n";
         List<EntityAnnotation> labels = response.getResponses().get(0).getTextAnnotations();
