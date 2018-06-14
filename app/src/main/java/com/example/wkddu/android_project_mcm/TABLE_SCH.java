@@ -32,7 +32,7 @@ public class TABLE_SCH {
         this.category = 8;
     }
 
-    public String getYear() {
+    public String getFullYear() {
         return year;
 
     }

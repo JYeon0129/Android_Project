@@ -39,7 +39,7 @@ public class TodoListAdapter extends ArrayAdapter<TABLE_SCH>{
             View spendTypeView = (View) v.findViewById(R.id.spendTypeView);
 
             TABLE_SCH spend = getItem(position);
-            String sch_date = spend.getYear() + "." + spend.getMonth() + "." + spend.getDay();
+            String sch_date = spend.getFullYear() + "." + spend.getMonth() + "." + spend.getDay();
             spendDateText.setText(sch_date);
             spendTitleText.setText(spend.getUsage());
             spendCostText.setText(spend.getSpend()+"");

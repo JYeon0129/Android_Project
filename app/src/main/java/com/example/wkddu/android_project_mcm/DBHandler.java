@@ -162,7 +162,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     // Month
     public void addMonth(TABLE_MONTH month){
         ContentValues value = new ContentValues();
-        value.put(MONTH_YEAR,month.getYear());
+        value.put(MONTH_YEAR,month.getFullYear());
         value.put(MONTH_MONTH,month.getMonth());
         value.put(MONTH_TOTALBUDGET,month.getTotal_budget());
         value.put(MONTH_TOTALSPEND,month.getTotal_spend());
@@ -229,7 +229,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     // Day
     public void addDay(TABLE_DAY day){
         ContentValues value = new ContentValues();
-        value.put(DAY_YEAR,day.getYear());
+        value.put(DAY_YEAR,day.getFullYear());
         value.put(DAY_MONTH,day.getMonth());
         value.put(DAY_DAY,day.getDay());
         value.put(DAY_LIMIT,day.getDay_limit());
@@ -296,7 +296,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     //Schedule
     public void addSch(TABLE_SCH sch){
         ContentValues value = new ContentValues();
-        value.put(SCH_YEAR,sch.getYear());
+        value.put(SCH_YEAR,sch.getFullYear());
         value.put(SCH_MONTH,sch.getMonth());
         value.put(SCH_DAY,sch.getDay());
         value.put(SCH_CAT,sch.getCategory());

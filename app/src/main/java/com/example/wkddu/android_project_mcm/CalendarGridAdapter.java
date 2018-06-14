@@ -1,6 +1,8 @@
 package com.example.wkddu.android_project_mcm;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +22,12 @@ import java.util.Date;
 import java.util.List;
 
 import static android.graphics.Typeface.BOLD;
+import static com.example.wkddu.android_project_mcm.DBHandler.DATABASE_TABLE_DAY;
+import static com.example.wkddu.android_project_mcm.DBHandler.DAY_DAY;
+import static com.example.wkddu.android_project_mcm.DBHandler.DAY_LIMIT;
+import static com.example.wkddu.android_project_mcm.DBHandler.DAY_MONTH;
+import static com.example.wkddu.android_project_mcm.DBHandler.DAY_SPEND;
+import static com.example.wkddu.android_project_mcm.DBHandler.DAY_YEAR;
 
 /*
  * 메인 캘린더의 각 칸의 내용을 채워주는 어댑터입니다
@@ -35,7 +44,7 @@ public class CalendarGridAdapter extends BaseAdapter {
     Calendar calendar;
     int gridViewHeight, year, month;
     int goalbudget = 10000;
-    DBHandler dbHandler = new DBHandler(context, null, null, 1);
+    DBHandler dbHandler = new DBHandler(context.getApplicationContext(), null, null, 1);
 
     public CalendarGridAdapter(Context context, List<String> list, int year, int month) {
         this.context = context;
@@ -114,16 +123,24 @@ public class CalendarGridAdapter extends BaseAdapter {
                         holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.morelightgray));
                         holder.calBalanceText.setTextColor(context.getResources().getColor(R.color.darkgray));
                     } else {
-//                        int nowLimit;
-//                        nowLimit=dbHandler.getDay(year+"",month+"", Integer.parseInt(getItem(position).substring(1))+"").getDay_limit();//현재 날짜 정보
-//                        int nowDaySpend;
-//                        nowDaySpend=dbHandler.getDay(year+"",month+"", Integer.parseInt(getItem(position).substring(1))+"").getDay_spend();
-//
-//                        if (nowLimit<nowDaySpend) { // 2번 케이스=>사용 가능 금액(예산)을 넘었을 경우
-//                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
-//                        } else if(nowLimit>=nowDaySpend) { // 3번 케이스
-//                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
-//                        }
+
+                        if (position % 3 == 0) { // 2번 케이스=>사용 가능 금액(예산)을 넘었을 경우
+                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
+                        } else  { // 3번 케이스
+                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
+                        }
+
+                        /*int nowLimit=-1;
+                        nowLimit=dbHandler.getDay(year+"",month+"", Integer.parseInt(getItem(position).substring(1))+"").getDay_limit();//현재 날짜 정보
+
+                        int nowDaySpend=-1;
+                        Log.d("daySpend",nowDaySpend+"");
+                        nowDaySpend=dbHandler.getDay(year+"",month+"", Integer.parseInt(getItem(position).substring(1))+"").getDay_spend();
+                        if (nowLimit<nowDaySpend) { // 2번 케이스=>사용 가능 금액(예산)을 넘었을 경우
+                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
+                        } else if(nowLimit>=nowDaySpend) { // 3번 케이스
+                            holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
+                        }*/
                     }
 
                     /* 쓸 수 있는 금액 or 사용한 금액 표기하기
@@ -198,6 +215,17 @@ public class CalendarGridAdapter extends BaseAdapter {
                     */
                     ArrayList<TABLE_SCH> schedules = dbHandler
                             .getSchSub(year+"", month+"", getItem(position).substring(1));
+
+
+                        ContentValues value = new ContentValues();
+                        value.put(DAY_YEAR, "2018");
+                        value.put(DAY_MONTH, "6");
+                        value.put(DAY_DAY, "13");
+                        value.put(DAY_LIMIT,"10000");
+                        value.put(DAY_SPEND,"12000");
+                    SQLiteDatabase db = this.getWritableDatabase();
+                    db.insert(DATABASE_TABLE_DAY, null, value);
+                    db.close();
 
                     RecyclerView.LayoutManager layoutManager;
                     layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);

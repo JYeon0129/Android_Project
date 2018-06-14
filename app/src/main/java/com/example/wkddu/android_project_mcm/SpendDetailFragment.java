@@ -71,7 +71,7 @@ public class SpendDetailFragment extends Fragment {
         todoDetailTitleText.setText(spend.getUsage());
         todoDetailCostText.setText(spend.getSpend()+"원");
 
-        String str = spend.getYear() + "년 " + spend.getMonth() + "월 " + spend.getDay() + "일";
+        String str = spend.getFullYear() + "년 " + spend.getMonth() + "월 " + spend.getDay() + "일";
         todoDetailDateText.setText(str);
 
         Helpers helpers = new Helpers();

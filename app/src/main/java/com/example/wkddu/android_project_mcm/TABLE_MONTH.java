@@ -23,7 +23,7 @@ public class TABLE_MONTH {
         this.total_spend = 0;
     }
 
-    public String getYear() {
+    public String getFullYear() {
         return year;
     }
 

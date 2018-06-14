@@ -125,7 +125,7 @@ public class BillFragment extends Fragment {
         for(int i = 0; i< schedule.size(); i++){
             if(schedule.get(i).getCategory() == type){ // type일치
                 // 기간내 존재하는
-                String schTime = schedule.get(i).getYear()+schedule.get(i).getMonth()+schedule.get(i).getDay();
+                String schTime = schedule.get(i).getFullYear()+schedule.get(i).getMonth()+schedule.get(i).getDay();
                 try {
                     Date schDate = simpleDateFormat.parse(schTime);
                     long diff = TodayDate.getTime() - schDate.getTime(); // 오늘부터 스케줄의 날짜 차이

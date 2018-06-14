@@ -15,7 +15,7 @@ public class TABLE_DAY {
         this.day_spend = day_spend;
     }
 
-    public String getYear() {
+    public String getFullYear() {
         return year;
     }
 
