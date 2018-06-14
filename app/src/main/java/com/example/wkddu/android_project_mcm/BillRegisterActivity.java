@@ -275,6 +275,12 @@ public class BillRegisterActivity extends AppCompatActivity {
             if (activity != null && !activity.isFinishing()) {
                 TextView imageDetail = activity.findViewById(R.id.image_details);
                 imageDetail.setText(result);
+
+                Toast.makeText(activity.getApplicationContext(),
+                    "등록이 완료되었습니다!", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(activity, MainActivity.class);
+                activity.startActivity(intent);
             }
         }
     }
