@@ -137,7 +137,7 @@ public class TodoFormFragment extends Fragment {
 
         todoFormSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //저장 버튼
                 Calendar resultCal;
                 if (selected != null) {
                     resultCal = selected;
@@ -145,7 +145,7 @@ public class TodoFormFragment extends Fragment {
                     resultCal = Calendar.getInstance();
                 }
                 String year = resultCal.get(Calendar.YEAR)+"";
-                String month = resultCal.get(Calendar.MONTH)+"";
+                String month = (resultCal.get(Calendar.MONTH)+1)+"";
                 String day = resultCal.get(Calendar.DAY_OF_MONTH)+"";
 
                 int defaultType;

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,14 +138,23 @@ public class SpendFormFragment extends Fragment {
                 }
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 String resultDate = formatter.format(resultCal.getTime());
+                String dated[] = resultDate.split("-");
 
+                Log.v("aaaaaa",dated[1]);
+                int s_spend = Integer.parseInt(spendFormCostEdit.getText().toString());
+                String s_usage = spendFormTitleEdit.getText().toString();
                 int defaultType;
                 if (type != null) {
                     defaultType = type.getTypeNum();
                 } else {
                     defaultType = 1;
                 }
-
+                TABLE_SCH table_sch = new TABLE_SCH(dated[0],dated[1],dated[2],defaultType,s_spend,s_usage);
+                dbHandler.addSch(table_sch);
+                spendFormCostEdit.setText("");
+                spendFormTitleEdit.setText("");
+                Toast.makeText(context, "저장이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                goToCalendar();
             }
         });
 
