@@ -264,10 +264,8 @@ public class CalenderFragment extends Fragment {
         CalendarPopupFragment calendarPopupFragment = new CalendarPopupFragment();
 
         DBHandler dbHandler = new DBHandler(context, null, null, 1);
-        ArrayList<TABLE_SCH> schedules = dbHandler
-                .getSchSub(year+"", month+"", dayList.get(position).substring(1));
-
-        ArrayList<TABLE_SCH> sches = new ArrayList<>();
+        ArrayList<TABLE_SCH> sches = dbHandler
+                .getSchSub(year+"", "0"+month+"", dayList.get(position).substring(1));
 
         if (sches.size() == 0) {
             /* 할 일도 없고 사용 내역도 없는 날짜의 경우 팝업이 뜨지 않습니담 */
