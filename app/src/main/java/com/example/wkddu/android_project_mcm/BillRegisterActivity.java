@@ -292,7 +292,16 @@ public class BillRegisterActivity extends AppCompatActivity {
 
 
                 String[] data3=data2[1].split(",");
+
+                int index1=data3[1].indexOf("권");
+
+                if(index1!=-1){
+
+                }
+
+                if()
                 String[] data4=data3[1].split("원");
+
 
                 cost=data3[0]+data4[0];//spend
 
