@@ -18,12 +18,11 @@ import java.util.List;
 import static android.graphics.Typeface.BOLD;
 
 public class CalendarDayAdapter extends BaseAdapter {
-    String[] dayList;
-
-    LayoutInflater inflater;
     Context context;
+    String[] dayList;
+    LayoutInflater inflater;
 
-    public CalendarDayAdapter(Context context, String[] list) {
+    public CalendarDayAdapter(Context context, String[] list, LayoutInflater inflater) {
         this.context = context;
         this.dayList = list;
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

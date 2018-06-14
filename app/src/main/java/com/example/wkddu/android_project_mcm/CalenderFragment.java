@@ -189,8 +189,8 @@ public class CalenderFragment extends Fragment {
         calendarYearText.setText(year + "년");
 
         /* 이번달 1일이 무슨요일인지... set(Year,Month,Day) */
-        calendar.set(year, month - 1, 1);
-        beforeCalendar.set(year, month - 2, 1);
+        calendar.set(year + 1900, month - 1, 1);
+        beforeCalendar.set(year + 1900, month - 2, 1);
         beforeLastDay = calendar.getActualMaximum(beforeCalendar.DAY_OF_MONTH);
 
         int dayNum = calendar.get(Calendar.DAY_OF_WEEK);
@@ -211,7 +211,7 @@ public class CalenderFragment extends Fragment {
         }
 
         /* 캘린더 상단 날짜 부분 내용 채우기 */
-        calendarDayAdapter = new CalendarDayAdapter(context, dayTitle);
+        calendarDayAdapter = new CalendarDayAdapter(context, dayTitle, getLayoutInflater());
         calendarDayTitle.setAdapter(calendarDayAdapter);
 
         /* 캘린더 내부에 날짜와 할 일 채우기 */

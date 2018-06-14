@@ -231,18 +231,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         return table_month;
     }
 
-    // Day
-    public void addTempDay(){
-        ContentValues value = new ContentValues();
-        value.put(DAY_YEAR, "2018");
-        value.put(DAY_MONTH, "6");
-        value.put(DAY_DAY, "13");
-        value.put(DAY_LIMIT,"10000");
-        value.put(DAY_SPEND,"12000");
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(DATABASE_TABLE_DAY, null, value);
-        db. close();
-    }
+
     public void addDay(TABLE_DAY day){
         ContentValues value = new ContentValues();
         value.put(DAY_YEAR,day.getFullYear());

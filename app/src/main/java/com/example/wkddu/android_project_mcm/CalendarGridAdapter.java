@@ -227,7 +227,6 @@ public class CalendarGridAdapter extends BaseAdapter {
 
                     ArrayList<TABLE_SCH> schedules = dbHandler.getSchSub((year+1900)+"", (month+1)+"", getItem(position).substring(1));
 
-                    dbHandler.addTempDay();
                     RecyclerView.LayoutManager layoutManager;
                     layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                     holder.calRecyclerView.setLayoutManager(layoutManager);
