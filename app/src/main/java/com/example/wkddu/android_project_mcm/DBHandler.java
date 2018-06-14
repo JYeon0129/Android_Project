@@ -430,7 +430,6 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query,null);
 
-//        Log.v("cursor size : " , cursor.getCount()+"");
         ArrayList<TABLE_SCH> sch_all = new ArrayList();
         TABLE_SCH table_sch = null;
         if(cursor.moveToFirst())

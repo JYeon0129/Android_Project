@@ -185,8 +185,13 @@ public class SpendFormFragment extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.mainFragmantContainer);
+        transaction.remove(currentFragment);
+
+        CalenderFragment calendarFragment = (CalenderFragment) new CalenderFragment();
+        transaction.replace(R.id.mainFragmantContainer, calendarFragment);
         transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
-        transaction.remove(currentFragment).commit();
+        transaction.commit();
+
 
         ((MainActivity) getActivity()).currentFragment = ((MainActivity) getActivity()).CALENDAR_FRAGMENT;
 

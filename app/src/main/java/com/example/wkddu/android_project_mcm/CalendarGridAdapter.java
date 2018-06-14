@@ -111,17 +111,22 @@ public class CalendarGridAdapter extends BaseAdapter {
                     * 미리보기로 대충 설정해뒀습니다! 이거 참고해서 해주시면 될 것 같아요.
                     */
 
+                    int day_limit = dbHandler.getDay(""+year,""+(month+1),""+today).getDay_limit();
+                    int day_spend = dbHandler.getDay(""+year,""+(month+1),""+today).getDay_spend();
+
                     if (getItem(position).charAt(0) == 'a' ||
                             currentMonth < month ||
                             Integer.parseInt(getItem(position).substring(1)) > today) { // 1번 케이스
+                        holder.calBalanceText.setText(day_limit+"");
                         holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.morelightgray));
                         holder.calBalanceText.setTextColor(context.getResources().getColor(R.color.darkgray));
                     } else {
-                        int day_limit = dbHandler.getDay(""+year,""+(month+1),""+today).getDay_limit();
-                        int day_spend = dbHandler.getDay(""+year,""+(month+1),""+today).getDay_spend();
+                        holder.calBalanceText.setText(day_spend+"");
                         if (day_limit < day_spend) { // 2번 케이스
                             holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.danger));
-                        } else { // 3번 케이스
+                        }
+
+                        if (position == 8 || position == 10 || position == 16) { // 3번 케이스
                             holder.calBalanceBg.setBackgroundColor(context.getResources().getColor(R.color.save));
                         }
                     }
@@ -129,12 +134,11 @@ public class CalendarGridAdapter extends BaseAdapter {
                     /* 쓸 수 있는 금액 or 사용한 금액 표기하기 */
                     holder.calDayText.setText(getItem(position).substring(1));
 
-                    String b = dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay();
-                    int a = dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay_limit();
-                    if(dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay_limit() != 0){
-//                        Log.v("day",b + " " + a);
-                        holder.calBalanceText.setText(dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay());
-                    }
+//                    String b = dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay();
+//                    int a = dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay_limit();
+//                    if(dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay_limit() != 0){
+//                        holder.calBalanceText.setText(dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay());
+//                    }
                     if (getItem(position).charAt(0) == 'a' || getItem(position).charAt(0) == 'b') {
                         holder.calAlphaView.setAlpha(0.6f);
                     }
