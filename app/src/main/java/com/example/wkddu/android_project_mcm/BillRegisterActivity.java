@@ -75,7 +75,7 @@ public class BillRegisterActivity extends AppCompatActivity {
 
     public static String storeName="";//결국 반환 되어야 할 데이터 (제목)
     public static String cost="";//결국 반환 되어야 할 데이터 (가격=> 사용한 가격)
-    public static String name_and_cost="";//token은 /인것임
+    public static String name_and_cost="";
     public static DBHandler dbHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
