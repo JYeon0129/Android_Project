@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbHandler = new DBHandler(this,DBHandler.DATABASE_NAME,null,1);
         dbHandler.onCreate(dbHandler.getWritableDatabase());
 
+        dbHandler.getSchAll();
         Intent i = getIntent();
         Clipboard clipboard = (Clipboard)i.getSerializableExtra("billregi");
         if(clipboard != null){
