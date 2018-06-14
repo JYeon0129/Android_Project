@@ -310,12 +310,14 @@ public class BillRegisterActivity extends AppCompatActivity {
                 String str = simpleDateFormat.format(date);
 
                 Clipboard clipboard = new Clipboard(str.split("-")[0],str.split("-")[1],storeName,cost);
+                Log.v("string_split",str.split("-")[0] + "   " + str.split("-")[1]);
                 dbHandler.addClipboard(clipboard);
 
                 Toast.makeText(activity.getApplicationContext(),
                     "등록이 완료되었습니다!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(activity, MainActivity.class);
+                intent.putExtra("billregi",clipboard);
                 activity.startActivity(intent);
 
             }

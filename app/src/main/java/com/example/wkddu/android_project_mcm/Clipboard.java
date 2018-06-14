@@ -1,6 +1,8 @@
 package com.example.wkddu.android_project_mcm;
 
-public class Clipboard {
+import java.io.Serializable;
+
+public class Clipboard implements Serializable{
     private String month;
     private String day;
     private String usage;

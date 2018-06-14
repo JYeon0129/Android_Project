@@ -34,16 +34,9 @@ public class ToSMSReceiver extends BroadcastReceiver {
             // PDU 포맷으로 되어 있는 메시지를 복원합니다.
             smsMessage[i] = SmsMessage.createFromPdu((byte[])messages[i]);
         }
-        // SMS 수신 시간 확인
-        Date curDate = new Date(smsMessage[0].getTimestampMillis());
-        Log.d("문자 수신 시간", curDate.toString());
-
-        // SMS 발신 번호 확인
-        String origNumber = smsMessage[0].getOriginatingAddress();
         // SMS 메시지 확인
         String message = smsMessage[0].getMessageBody().toString();
         StringParser(message);
-        Log.d("문자 내용", "발신자 : "+origNumber+", 내용 : " + message);
     }
 
     public void StringParser(String message){
@@ -57,11 +50,9 @@ public class ToSMSReceiver extends BroadcastReceiver {
         String usage = "";
 
         for(int i = 0; i < msg.length; i++){
-            Log.v("sms_line",msg[i]);
             String temp[] = msg[i].split(" ");
             for(int j = 0; j < temp.length; j++){
                 msg_split.add(temp[j]);
-                Log.v("sms_space_split",temp[j]);
             }
         }
         for(int i = 0; i < msg_split.size(); i++){
@@ -73,7 +64,6 @@ public class ToSMSReceiver extends BroadcastReceiver {
                 if(str.matches(date_pattern)){
                     month = str.split("\\/")[0];
                     day = str.split("\\/")[1];
-                    Log.v("sms_date_split",month + "  " + day);
                     date_flag = true;
                 }
             }
@@ -86,26 +76,19 @@ public class ToSMSReceiver extends BroadcastReceiver {
                     if(payment.equals("")){
                         payment = str1;
                     }
-                    Log.v("sms_payment_split",payment);
                 }
             }
             for(int i = 0; i <msg_split.size(); i++){
                 String str2 = msg_split.get(i);
                 if(str2.matches(usage_pattern) && !str2.contains("잔액") && !str2.matches(not_usage_pattern)&&!str2.contains("신한체크") && !str2.contains("기업BC") && !str2.equals("")){
                     usage = str2;
-
-                    Log.v("sms_usage_split",usage);
                 }
             }
         }
-        Log.v("after_sms_payment_split",payment);
-        Log.v("after_sms_usage_split",usage);
         if(!month.equals("")&& !day.equals("") && !payment.equals("") && !usage.equals("")){
             int pay = Integer.parseInt(payment);
             TABLE_SCH table_sch = new TABLE_SCH(month,day,pay,usage);
             dbHandler.addSch(table_sch);
-            TABLE_SCH tt = dbHandler.getSch("2018",month,day,8,Integer.parseInt(payment),usage);
-            Log.v("db_saved_sms",""+tt.getSpend());
             ArrayList<TABLE_SCH> sch = dbHandler.getSchAll();
             for(int i = 0; i< sch.size();i++){
                 Log.v(""+i+" 번 째 spend ", ""+sch.get(i).getSpend());
