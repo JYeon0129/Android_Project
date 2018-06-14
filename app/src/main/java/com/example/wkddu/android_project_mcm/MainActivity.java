@@ -45,7 +45,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         askPermission(new String[]{Manifest.permission.READ_SMS}, smsReadRequest);
         dbHandler = new DBHandler(this,DBHandler.DATABASE_NAME,null,1);
         dbHandler.onCreate(dbHandler.getWritableDatabase());
+<<<<<<< HEAD
         dbHandler.getSchAll();
+=======
+        
+        Intent i = getIntent();
+        Clipboard clipboard = (Clipboard)i.getSerializableExtra("billregi");
+        if(clipboard != null){
+            TABLE_SCH table_sch = new TABLE_SCH(clipboard.getMonth(),clipboard.getDay(),Integer.parseInt(clipboard.getPayment().trim()),clipboard.getUsage());
+            dbHandler.addSch(table_sch);
+            dbHandler.deleteClipboard();
+        }
+>>>>>>> 271efaad1ea2230bbb2e3e3de8a27dfcc06b5eaa
 
         Intent clipintent = new Intent(getApplicationContext(), ToClipboardListener.class);
         startService(clipintent);

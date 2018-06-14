@@ -23,7 +23,7 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class    BillFragment extends Fragment {
+public class BillFragment extends Fragment {
     TextView billBalanceText, billTypeText;
     Button billButton1, billButton2, billButton3;
     LinearLayout billType;
