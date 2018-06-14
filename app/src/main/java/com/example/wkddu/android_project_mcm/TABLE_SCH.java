@@ -29,7 +29,7 @@ public class TABLE_SCH {
         this.day = day;
         this.spend = spend;
         this.usage = usage;
-        this.category = 8;
+        this.category = 1;
     }
 
     public String getYear() {

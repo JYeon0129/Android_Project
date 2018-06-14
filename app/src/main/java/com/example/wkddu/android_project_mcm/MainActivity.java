@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         askPermission(new String[]{Manifest.permission.READ_SMS}, smsReadRequest);
         dbHandler = new DBHandler(this,DBHandler.DATABASE_NAME,null,1);
         dbHandler.onCreate(dbHandler.getWritableDatabase());
-        
+
         Intent i = getIntent();
         Clipboard clipboard = (Clipboard)i.getSerializableExtra("billregi");
         if(clipboard != null){

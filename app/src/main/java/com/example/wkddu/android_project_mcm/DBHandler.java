@@ -61,14 +61,14 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     public void onCreate(SQLiteDatabase db) {
         Log.v("Database","onCreate Database");
         //Clipboard
-        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
+
         String CREATE_CLIPBOARD_TABLE = "create table if not exists " + DATABASE_TABLE_CLIPBOARD + "(" + CLIP_MONTH +
                 " text, " + CLIP_DAY + " text, " + CLIP_USAGE + " text, " + CLIP_PAYMENT +" integer, PRIMARY KEY("+ CLIP_MONTH + ", " +
                 CLIP_DAY + ", "+ CLIP_USAGE + ", " + CLIP_PAYMENT + "))";
         db.execSQL(CREATE_CLIPBOARD_TABLE);
 
         //Month
-        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_MONTH);
+
         String CREATE_MONTH_TABLE = "create table if not exists " + DATABASE_TABLE_MONTH + "(" + MONTH_YEAR +
                 " text, " + MONTH_MONTH + " text, " + MONTH_TOTALBUDGET + " INTEGER, " + MONTH_TOTALSPEND +" INTEGER, " +
                 MONTH_TRANSFERREMAIN + " INTEGER, PRIMARY KEY("+ MONTH_YEAR + ", " +
@@ -76,14 +76,14 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         db.execSQL(CREATE_MONTH_TABLE);
 
         //Day
-        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_DAY);
+
         String CREATE_DAY_TABLE = "create table if not exists " + DATABASE_TABLE_DAY + "(" + DAY_YEAR +
                 " text, " + DAY_MONTH + " text, " + DAY_DAY + " text, " + DAY_LIMIT + " INTEGER, " + DAY_SPEND +
                 " INTEGER, PRIMARY KEY("+ DAY_YEAR + ", " + DAY_MONTH + ", " + DAY_DAY+ "))";
         db.execSQL(CREATE_DAY_TABLE);
 
         //Schedule
-        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_SCH);
+
         String CREATE_SCH_TABLE = "create table if not exists " + DATABASE_TABLE_SCH + "(" + SCH_YEAR +
                 " text, " + SCH_MONTH + " text, " + SCH_DAY + " text, " + SCH_CAT + " INTEGER, " + SCH_SPEND +
                 " INTEGER, " + SCH_USAGE + " text, PRIMARY KEY("+ SCH_YEAR + ", " + SCH_MONTH + ", " + SCH_DAY +
