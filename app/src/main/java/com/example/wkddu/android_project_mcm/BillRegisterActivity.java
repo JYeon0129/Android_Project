@@ -286,14 +286,23 @@ public class BillRegisterActivity extends AppCompatActivity {
                 imageDetail.setText(result);
 
                 String[] receiptData=result.split("/");
-                storeName=receiptData[0];//usage
-                cost=receiptData[1];//spend
+                String[] data1=receiptData[0].split(":");
+                String[] data2=receiptData[1].split(":");
+                storeName=data1[1];//usage
+
+
+                String[] data3=data2[1].split(",");
+                String[] data4=data3[1].split("원");
+
+                cost=data3[0]+data4[0];//spend
+
                 Date date = new Date();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");
                 String str = simpleDateFormat.format(date);
 
                 Clipboard clipboard = new Clipboard(str.split("-")[0],str.split("-")[1],storeName,cost);
                 dbHandler.addClipboard(clipboard);
+
             }
         }
     }
