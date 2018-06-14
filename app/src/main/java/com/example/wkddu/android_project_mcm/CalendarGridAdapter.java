@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -44,7 +45,7 @@ public class CalendarGridAdapter extends BaseAdapter {
     Calendar calendar;
     int gridViewHeight, year, month;
     int goalbudget = 10000;
-    DBHandler dbHandler = new DBHandler(context.getApplicationContext(), null, null, 1);
+    DBHandler dbHandler;
 
     public CalendarGridAdapter(Context context, List<String> list, int year, int month) {
         this.context = context;
@@ -213,20 +214,11 @@ public class CalendarGridAdapter extends BaseAdapter {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         //이것만 필요함
                     */
+
                     ArrayList<TABLE_SCH> schedules = dbHandler
                             .getSchSub(year+"", month+"", getItem(position).substring(1));
 
-
-                        ContentValues value = new ContentValues();
-                        value.put(DAY_YEAR, "2018");
-                        value.put(DAY_MONTH, "6");
-                        value.put(DAY_DAY, "13");
-                        value.put(DAY_LIMIT,"10000");
-                        value.put(DAY_SPEND,"12000");
-                    SQLiteDatabase db = this.getWritableDatabase();
-                    db.insert(DATABASE_TABLE_DAY, null, value);
-                    db.close();
-
+                    dbHandler.addTempDay();
                     RecyclerView.LayoutManager layoutManager;
                     layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
                     holder.calRecyclerView.setLayoutManager(layoutManager);
