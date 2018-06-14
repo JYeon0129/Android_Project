@@ -91,10 +91,9 @@ public class ToSMSReceiver extends BroadcastReceiver {
             }
             for(int i = 0; i <msg_split.size(); i++){
                 String str2 = msg_split.get(i);
-                if(str2.matches(usage_pattern) && !str2.contains("잔액") && !str2.matches(not_usage_pattern)&&!str2.contains("신한체크") && !str2.contains("기업BC")){
-                    if(usage.equals("")){
-                        usage = str2;
-                    }
+                if(str2.matches(usage_pattern) && !str2.contains("잔액") && !str2.matches(not_usage_pattern)&&!str2.contains("신한체크") && !str2.contains("기업BC") && !str2.equals("")){
+                    usage = str2;
+
                     Log.v("sms_usage_split",usage);
                 }
             }

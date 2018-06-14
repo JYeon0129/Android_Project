@@ -62,7 +62,6 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
         Log.v("Database","onCreate Database");
         //Clipboard
         db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
-        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
         String CREATE_CLIPBOARD_TABLE = "create table if not exists " + DATABASE_TABLE_CLIPBOARD + "(" + CLIP_MONTH +
                 " text, " + CLIP_DAY + " text, " + CLIP_USAGE + " text, " + CLIP_PAYMENT +" integer, PRIMARY KEY("+ CLIP_MONTH + ", " +
                 CLIP_DAY + ", "+ CLIP_USAGE + ", " + CLIP_PAYMENT + "))";
@@ -94,9 +93,14 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_CLIPBOARD);
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_MONTH);
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_DAY);
+        db.execSQL("DROP TABLE IF EXISTS "+DATABASE_TABLE_SCH);
         onCreate(db);
     }
     // 클립보드 테이블 메소드
+
     public void addClipboard(Clipboard clipboard){
         ContentValues value = new ContentValues();
         value.put(CLIP_MONTH,clipboard.getMonth());
@@ -367,6 +371,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
     }
 
     public ArrayList<TABLE_SCH> getSchAll(){
+        Log.v("getSchAll","call");
         String query = "SELECT * FROM "+ DATABASE_TABLE_SCH;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query,null);
@@ -408,6 +413,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
                     }
                 }
                 table_sch = new TABLE_SCH(year,month,day,sch_cat, sch_spend, sch_usage);
+                Log.v("getSCHall" ,year+"."+month+"."+day+" : "+sch_cat + " " + sch_usage + " " + sch_spend);
                 sch_all.add(table_sch);
                 cursor.moveToNext();
             }

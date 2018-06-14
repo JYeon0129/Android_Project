@@ -38,7 +38,7 @@ import java.util.Locale;
 
 public class TodoFormFragment extends Fragment {
     EditText todoFormTitleEdit, todoFormCostEdit;
-    TextView todoFormTypeText, todoFormBalanceText, todoFormAllowText, todoFormDateText;
+    TextView todoFormTypeText, todoFormBalanceText, todoFormAllowText, todoFormDateText, todoFormCostText;
     View todoFormTypeView;
     Button todoFormCancle, todoFormSave, todoFormButton1, todoFormButton2, todoFormButton3;
     ListView todoFormListView;
@@ -46,7 +46,10 @@ public class TodoFormFragment extends Fragment {
     Context context;
     Calendar selected;
     Type type;
-
+    DBHandler dbHandler;
+    ArrayList<TABLE_SCH> schedule;
+    ArrayList<TABLE_SCH> list_sch;
+    TodoListAdapter todoListAdapter;
 
     public TodoFormFragment() {
         // Required empty public constructor
@@ -68,8 +71,10 @@ public class TodoFormFragment extends Fragment {
     }
 
     public void init() {
+        dbHandler = new DBHandler(getContext(),DBHandler.DATABASE_NAME,null, 1);
         todoFormTitleEdit = (EditText) getActivity().findViewById(R.id.todoFormTitleEdit);
         todoFormCostEdit = (EditText) getActivity().findViewById(R.id.todoFormCostEdit);
+        todoFormCostText = (TextView) getActivity().findViewById(R.id.todoFormCostText);
         todoFormTypeText = (TextView) getActivity().findViewById(R.id.todoFormTypeText);
         todoFormDateText = (TextView) getActivity().findViewById(R.id.todoFormDateText);
         todoFormTypeView = (View) getActivity().findViewById(R.id.todoFormTypeView);
@@ -90,6 +95,8 @@ public class TodoFormFragment extends Fragment {
                         (calendar.get(Calendar.MONTH) + 1) + "월 " + calendar.get(Calendar.DATE) + "일");
 
         setTodoListAdapter();
+        type = new Type(1,"식비",R.color.bluegreen);
+        selectList(type.getTypeNum(),14);
 
         todoFormDateText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +137,7 @@ public class TodoFormFragment extends Fragment {
 
         todoFormSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //저장 버튼
                 Calendar resultCal;
                 if (selected != null) {
                     resultCal = selected;
@@ -138,7 +145,7 @@ public class TodoFormFragment extends Fragment {
                     resultCal = Calendar.getInstance();
                 }
                 String year = resultCal.get(Calendar.YEAR)+"";
-                String month = resultCal.get(Calendar.MONTH)+"";
+                String month = (resultCal.get(Calendar.MONTH)+1)+"";
                 String day = resultCal.get(Calendar.DAY_OF_MONTH)+"";
 
                 int defaultType;
@@ -162,21 +169,24 @@ public class TodoFormFragment extends Fragment {
         todoFormButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.v("click1","click btn1");
+                selectList(type.getTypeNum(),15);
             }
         });
 
         todoFormButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.v("click2","click btn2");
+                selectList(type.getTypeNum(),31);
             }
         });
 
         todoFormButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.v("click3","click btn3");
+                selectList(type.getTypeNum(),91);
             }
         });
     }
@@ -212,18 +222,7 @@ public class TodoFormFragment extends Fragment {
      */
 
     public void setTodoListAdapter() {
-        ArrayList<Schedule> spends = new ArrayList<>();
-        spends.add(new Schedule("술약속", 10000, 0,
-            new Date(2018, 6, 6)));
-        spends.add(new Schedule("닭발집 부숨", 22000, 0,
-                new Date(2018, 6, 7)));
-        spends.add(new Schedule("곱쏘*^^*", 14000, 0,
-                new Date(2018, 6, 8)));
-        spends.add(new Schedule("술약속", 3000, 0,
-                new Date(2018, 6, 9)));
 
-        TodoListAdapter todoListAdapter = new TodoListAdapter(context, R.layout.spend_list_row, spends);
-        todoFormListView.setAdapter(todoListAdapter);
     }
 
     public void setType(Type type) {
@@ -231,5 +230,41 @@ public class TodoFormFragment extends Fragment {
         todoFormTypeText.setText(type.getTypeName());
         todoFormTypeView.setBackgroundColor(context.getResources().getColor(type.getTypeColor()));
     }
-
+    public void selectList(int select_type, int period){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date TodayDate = new Date();
+        int period_total_spend=0;
+        schedule = new ArrayList<>();
+        list_sch = new ArrayList<>();
+        schedule = dbHandler.getSchAll();
+        for(int i = 0; i< schedule.size(); i++){
+            if(schedule.get(i).getCategory() == select_type){ // type일치
+                // 기간내 존재하는
+                String schTime = schedule.get(i).getYear()+schedule.get(i).getMonth()+schedule.get(i).getDay();
+                try {
+                    Date schDate = simpleDateFormat.parse(schTime);
+                    long diff = TodayDate.getTime() - schDate.getTime(); // 오늘부터 스케줄의 날짜 차이
+                    long diffDays = diff / (24 * 60 * 60 * 1000);
+                    if(diffDays < period && diffDays > 0){
+                        list_sch.add(schedule.get(i));
+                        period_total_spend += schedule.get(i).getSpend();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(list_sch.size() > 0){
+            int p = period_total_spend / list_sch.size();
+            String temp = String.valueOf(p);
+            todoFormCostText.setText(temp+"원");
+            Log.v("todoForm",""+temp+"원");
+        }
+        else{
+            Log.v("todoForm","else");
+            todoFormCostText.setText("0원");
+        }
+        todoListAdapter = new TodoListAdapter(getActivity(), R.layout.spend_list_row, list_sch);
+        todoFormListView.setAdapter(todoListAdapter);
+    }
 }
