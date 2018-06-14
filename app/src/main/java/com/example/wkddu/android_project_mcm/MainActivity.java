@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         askPermission(new String[]{Manifest.permission.READ_SMS}, smsReadRequest);
         dbHandler = new DBHandler(this,DBHandler.DATABASE_NAME,null,1);
         dbHandler.onCreate(dbHandler.getWritableDatabase());
+        dbHandler.getSchAll();
+
         Intent clipintent = new Intent(getApplicationContext(), ToClipboardListener.class);
         startService(clipintent);
 
