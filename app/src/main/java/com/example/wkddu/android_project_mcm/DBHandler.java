@@ -425,10 +425,13 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable{
 
     public ArrayList<TABLE_SCH> getSchSub(String s_year, String s_month, String s_day){
         String query = "SELECT * FROM "+DATABASE_TABLE_SCH + " WHERE " + SCH_YEAR + " = \'"+s_year +"\' and " +
-                SCH_MONTH + " = \'"+s_month +"\' and " + SCH_DAY + " = \'"+s_day +"\'";
+                SCH_MONTH + " = \'"+s_month +"\' " + "and " + SCH_DAY + " = \'"+s_day +"\'";
+
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query,null);
-        ArrayList sch_all = new ArrayList();
+
+//        Log.v("cursor size : " , cursor.getCount()+"");
+        ArrayList<TABLE_SCH> sch_all = new ArrayList();
         TABLE_SCH table_sch = null;
         if(cursor.moveToFirst())
         {

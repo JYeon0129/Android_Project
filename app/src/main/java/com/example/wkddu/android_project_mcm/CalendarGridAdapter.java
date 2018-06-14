@@ -132,7 +132,7 @@ public class CalendarGridAdapter extends BaseAdapter {
                     String b = dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay();
                     int a = dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay_limit();
                     if(dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay_limit() != 0){
-                        Log.v("day",b + " " + a);
+//                        Log.v("day",b + " " + a);
                         holder.calBalanceText.setText(dbHandler.getDay(year+"", (month+1)+"", getItem(position).substring(1)).getDay());
                     }
                     if (getItem(position).charAt(0) == 'a' || getItem(position).charAt(0) == 'b') {
@@ -146,8 +146,8 @@ public class CalendarGridAdapter extends BaseAdapter {
                      * ArrayList로 한건 미리보기용입니다. 이거 지우고 하시면 됩니다!
                      */
 
-                    ArrayList<TABLE_SCH> schedules = dbHandler.getSchSub(year+"", (month+1)+"", getItem(position).substring(1));
-                    Log.v("count : ", getItem(position).substring(1)+" : " + schedules.size());
+                    ArrayList<TABLE_SCH> schedules = dbHandler.getSchSub(year+"", "0"+(month+1)+"", getItem(position).substring(1));
+                    Log.v("count", getItem(position).substring(1) + " " + schedules.size());
 
                     if (schedules == null) {
                         schedules = new ArrayList<>();
@@ -165,7 +165,7 @@ public class CalendarGridAdapter extends BaseAdapter {
 
                 }
             } catch (Exception e) {
-                Log.v("calRecycle","ddddddddddddddddddddddddd");
+//                Log.v("calRecycle","ddddddddddddddddddddddddd");
             }
 
         } else {

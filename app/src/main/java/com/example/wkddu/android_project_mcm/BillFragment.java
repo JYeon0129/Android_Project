@@ -23,7 +23,7 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BillFragment extends Fragment {
+public class    BillFragment extends Fragment {
     TextView billBalanceText, billTypeText;
     Button billButton1, billButton2, billButton3;
     LinearLayout billType;
@@ -130,7 +130,7 @@ public class BillFragment extends Fragment {
                     Date schDate = simpleDateFormat.parse(schTime);
                     long diff = TodayDate.getTime() - schDate.getTime(); // 오늘부터 스케줄의 날짜 차이
                     long diffDays = diff / (24 * 60 * 60 * 1000);
-                    if(diffDays < period && diffDays > 0){
+                    if(diffDays < period && diffDays >= 0){
                         list_sch.add(schedule.get(i));
                     }
                 } catch (ParseException e) {

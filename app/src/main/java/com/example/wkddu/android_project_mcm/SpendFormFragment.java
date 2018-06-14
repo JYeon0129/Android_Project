@@ -150,6 +150,9 @@ public class SpendFormFragment extends Fragment {
                     defaultType = 1;
                 }
                 TABLE_SCH table_sch = new TABLE_SCH(dated[0],dated[1],dated[2],defaultType,s_spend,s_usage);
+                Log.v("year : " , dated[0]);
+                Log.v("month : " , dated[1]);
+                Log.v("day : " , dated[2]);
                 dbHandler.addSch(table_sch);
                 spendFormCostEdit.setText("");
                 spendFormTitleEdit.setText("");
