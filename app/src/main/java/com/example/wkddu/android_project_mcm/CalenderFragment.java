@@ -183,7 +183,7 @@ public class CalenderFragment extends Fragment {
         calendarDayTitle.setAdapter(calendarDayAdapter);
 
         /* 캘린더 내부에 날짜와 할 일 채우기 */
-        calendarGridAdapter = new CalendarGridAdapter(context, dayList, year-1900, month-1);
+        calendarGridAdapter = new CalendarGridAdapter(context, dayList, year, month-1);
         calendarGridView.setVerticalScrollBarEnabled(false);
 
         /* 캘린더 내부에 좌측, 우측 밀기 이벤트 적용 */
@@ -269,11 +269,10 @@ public class CalenderFragment extends Fragment {
 
         ArrayList<TABLE_SCH> sches = new ArrayList<>();
 
-        calendarPopupFragment.setData(dayList.get(position), sches);
-
         if (sches.size() == 0) {
             /* 할 일도 없고 사용 내역도 없는 날짜의 경우 팝업이 뜨지 않습니담 */
         } else {
+            calendarPopupFragment.setData(dayList.get(position), sches);
             calendarPopupFragment.show(fragmentManager, "calendarPopupWindow");
         }
     }
